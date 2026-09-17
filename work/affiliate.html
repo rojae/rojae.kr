@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>외부 파트너 제휴 연동 플랫폼 — 오재성</title>
+  <meta name="description" content="지마켓·옥션 회원과 외부 파트너를 잇는 제휴 연동의 첫 서비스입니다. 두 앱에서 발생하는 동의를 맞추는 일부터 정합 배치, 탈회, 리워드, 그리고 운영팀이 쓰는 어드민까지 한 묶음으로 만들었습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="외부 파트너 제휴 연동 플랫폼 — 오재성">
+  <meta property="og:description" content="지마켓·옥션 회원과 외부 파트너를 잇는 제휴 연동의 첫 서비스입니다. 두 앱에서 발생하는 동의를 맞추는 일부터 정합 배치, 탈회, 리워드, 그리고 운영팀이 쓰는 어드민까지 한 묶음으로 만들었습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/avatar.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈">rojae<span class="logo-dot">.</span></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">동의 하나에도 순서가 있다</a></li><li><a href="#s2">묶음으로 오는 배치</a></li><li><a href="#s3">실패를 어디까지 책임질 것인가</a></li><li><a href="#s4">만들고 끝이 아니라 운영까지</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">지마켓</span><span>삼성카드 첫 적용</span></div>
+          <h1>외부 파트너 제휴 연동 플랫폼</h1>
+          <p class="page-lead">지마켓·옥션 회원과 외부 파트너를 잇는 제휴 연동의 첫 서비스입니다. 두 앱에서 발생하는 동의를 맞추는 일부터 정합 배치, 탈회, 리워드, 그리고 운영팀이 쓰는 어드민까지 한 묶음으로 만들었습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2026.01 — 2026.06 개발, 이후 운영</dd></div>
+          <div><dt>팀</dt><dd>2인 팀</dd></div>
+          <div><dt>역할</dt><dd>주요 개발자</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li></ul></dd></div>
+        </dl>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">지마켓 앱 동의</span><span class="node">제휴사 앱 동의</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">제휴 연동 서비스</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">동의 상태 · 이력</span><span class="node">일배치 정합 · 월배치 파일</span><span class="node">탈회 · 리워드 연동</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">운영 어드민</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">제휴사 관리 · 동의 조회 · 배치 모니터링 · 개인정보 접근 감사</span></div></div></div><figcaption>기능 사이의 책임을 그린 개념도입니다. 실제 네트워크와 배포 구조는 다릅니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>어떤 상황이었나</h2>
+          <p>카드사 같은 외부 제휴사와 회원 데이터를 주고받는 표준 채널이 없었습니다. 제휴가 하나 생길 때마다 연동 방식을 처음부터 다시 설계해야 했고, 이번에는 첫 제휴사를 붙이면서 다음 제휴사도 같은 구조로 붙일 수 있게 만드는 것이 목표였습니다.</p>
+          <p>까다로운 점은 동의가 한 곳에서 나오지 않는다는 것이었습니다. 지마켓 앱의 안내 화면에서도, 제휴사 앱에서도 동의가 발생합니다. 한 방향으로 API를 호출하는 것만으로는 두 시스템의 동의 상태가 맞지 않고, 외부 연동이 실패했다고 회원 탈퇴 같은 핵심 처리가 막혀서도 안 됐습니다. 2인 팀에서 주요 개발자로 설계와 구현, 이후 운영까지 맡았습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>동의 하나에도 순서가 있다</h2>
+          <p>본인 인증이 끝난 뒤 동의를 저장하는 흐름은 두 트랜잭션으로 나눴습니다. 인증 성공 이벤트를 커밋 이후에 받아서, 동의와 동의 이력은 새 트랜잭션으로 저장합니다. 동의 저장이 실패해도 이미 끝난 인증을 되돌리지 않고, 두 실패를 따로 다루기 위해서였습니다. 같은 항목에 이미 동의가 있으면 성공으로 분류해서, 같은 요청이 두 번 와도 결과가 달라지지 않게 했습니다.</p>
+          <p>다만 커밋 직후 프로세스가 죽는 경우의 복구와, 항목별로 일부만 실패했을 때 그것을 로그와 알림으로 드러내는 일은 아직 보완할 부분으로 남아 있습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>묶음으로 오는 배치</h2>
+          <p>일배치는 하루치 데이터가 여러 묶음으로 나뉘어 들어오고, 묶음들이 거의 동시에 도착하기도 합니다. 처음 마스터 행을 만드는 경합과 이미 있는 행에 누적하는 경합은 실패하는 방식이 달라서 따로 처리했습니다. 마스터 생성은 별도 트랜잭션에서 유니크 경합을 받아내고, 누적 갱신은 마스터 행에 비관적 락을 걸어 순서대로 반영합니다. 같은 묶음 번호가 다시 오면 누적하지 않고, 마지막 묶음이 들어오면 빠진 번호와 건수를 비교합니다.</p>
+          <p>이 정합 확인은 묶음 누락과 건수 일치까지입니다. 양쪽 회사의 회원 상태가 의미적으로 같은지, 오래된 동의와 철회 이벤트 중 무엇이 우선인지는 다른 층의 문제라 이 코드로 보장한다고 말하지 않습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>실패를 어디까지 책임질 것인가</h2>
+          <p>리워드 응모는 외부 시스템을 호출합니다. 호출이 실패하면 MongoDB에 기록해 두고, 제휴사 · 회원 · 이벤트 조합에 유니크 인덱스를 걸어 같은 실패가 두 번 쌓이지 않게 했습니다. 사용자 흐름을 막지 않으면서 나중에 확인하고 재처리할 근거를 남기는 구조입니다.</p>
+          <p>이건 실패 기록을 보관하는 구조이지, 업무 데이터와 같은 트랜잭션에 발행 작업을 쓰는 Transactional Outbox는 아닙니다. 실패 기록의 중복을 막는 것과 외부 지급이 두 번 나가지 않는 것도 다른 이야기라서, 면접이나 문서에서 이 둘을 섞어 말하지 않으려고 합니다.</p>
+          <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>만들고 끝이 아니라 운영까지</h2>
+          <p>연동 기능만 만들어 놓으면 운영팀은 상태를 확인할 방법이 없습니다. 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 볼 수 있는 어드민을 Next.js로 함께 만들었습니다.</p>
+          <p>개인정보가 오가는 서비스라서 기록도 두 겹으로 남겼습니다. 연동 이력 자체와, 그 이력을 누가 조회했는지 남기는 감사 기록을 분리하고 보관 기간을 다르게 뒀습니다. 애플리케이션에 인증 가드가 없다는 점은 의존성과 설정을 점검해 확인하고, 게이트웨이를 신뢰 경계로 문서화하면서 우회 접근 차단은 인프라 요구사항으로 명시했습니다. 정적 점검이라 실제로 우회가 불가능하다는 것까지 증명한 건 아닙니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">이 프로젝트에서 가장 많이 배운 건 "성공했다"보다 "어디까지 보장하는가"를 정확히 말하는 태도였습니다. 트랜잭션 경계, 중복 판정, 실패 기록이 각각 무엇을 지키고 무엇을 지키지 않는지 나눠서 보게 됐습니다.</blockquote>
+        </section>
+
+        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <nav class="pager" aria-label="다른 프로젝트">
+          
+          <a class="next" href="auth.html"><span>다음 →</span><strong>통합인증 서비스</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

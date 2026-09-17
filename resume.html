@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>이력서 — 오재성</title>
+  <meta name="description" content="백엔드 개발자 오재성의 경력 요약.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="이력서 — 오재성">
+  <meta property="og:description" content="백엔드 개발자 오재성의 경력 요약.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/avatar.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="오재성 홈">rojae<span class="logo-dot">.</span></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="index.html#work">프로젝트</a>
+        <a href="index.html#experience">경력</a>
+        <a href="index.html#opensource">오픈소스</a>
+        <a href="index.html#writing">글</a>
+        <a class="nav-keep" href="resume.html" aria-current="page">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container">
+      <a class="breadcrumb" href="index.html"><span aria-hidden="true">←</span> 홈</a>
+      <header class="page-head">
+        <div class="resume-head">
+          <div>
+            <p class="hero-kicker">Server Engineer</p>
+            <h1>오재성</h1>
+          </div>
+          <button type="button" class="btn no-print" data-print>인쇄 / PDF 저장</button>
+        </div>
+        <p class="page-lead">전자금융 PG와 커머스에서 약 6년간 서버를 만들고 운영해 왔습니다. 지금은 지마켓 Member Engineering에서 회원·인증과 외부 파트너 연동을 맡고 있습니다. 기능이 동작하는 순간만큼, 실패하고 회복하는 경계와 그 뒤의 운영을 중요하게 생각합니다.</p>
+        <div class="resume-contact">
+          <a href="mailto:jaeseoh96@gmail.com">jaeseoh96@gmail.com</a>
+          <a href="https://github.com/rojae">github.com/rojae</a>
+          <a href="https://rojae.github.io/">rojae.github.io</a>
+        </div>
+      </header>
+
+      <section class="resume-block">
+        <h2>경력</h2>
+      <div class="company">
+        <div class="company-head"><h3>지마켓 <span>Member Engineering</span></h3><p class="period">2022.09 — 현재</p></div>
+        <article class="job">
+          <p class="period">2026.01 — 2026.06</p>
+          <div>
+            <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
+            <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 주요 개발자</p>
+            <ul class="points"><li>실시간 동의, 일배치 정합, 월배치 파일 수신, 탈회 · 리워드 연동 기능 개발</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li><li>외부 리워드 응모 실패를 MongoDB에 보관, 개인정보 연동 이력과 조회 감사 기록 분리</li><li>제휴사 관리 · 동의 조회 · 배치 모니터링 운영 어드민(Next.js) 구축</li></ul>
+            <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li></ul>
+            
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2025 — 현재</p>
+          <div>
+            <h4><a href="work/platform.html">회원 도메인 공통 모듈화 <span class="arrow" aria-hidden="true">→</span></a></h4>
+            <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발, 게이트웨이 도입 참여</p>
+            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, API 게이트웨이 도입으로 인증 · 권한 검증 중앙화에 기여</li></ul>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul>
+            
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2024.01 — 2024.12</p>
+          <div>
+            <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 설계 및 핵심 구현</p>
+            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 기능 구현</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li><li>휴대폰 본인확인(PASS) 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션 관리</li></ul>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
+            
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2024.06 — 2024.12</p>
+          <div>
+            <h4>약관 관리 서비스</h4>
+            <p class="job-sub">지마켓 · 옥션 통합 약관 · 3인 팀 · 메인 개발자</p>
+            <ul class="points"><li>분리되어 있던 지마켓 · 옥션 약관을 관리하는 통합 서비스와 사내 어드민 개발</li><li>약관 편집, 시행일자 기반 버전 관리와 반영, 변경 이력 확인 기능 구현</li></ul>
+            <ul class="tags" aria-label="기술"><li>Spring</li><li>JPA</li><li>QueryDSL</li><li>Redis</li><li>Oracle</li><li>MSSQL</li></ul>
+            
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2023 — 2024</p>
+          <div>
+            <h4><a href="work/login.html">로그인 시스템 Java/Spring 전환 <span class="arrow" aria-hidden="true">→</span></a></h4>
+            <p class="job-sub">로그인 장애 이후의 근본 대응 · 팀 프로젝트 · 원인 분석 · 전환 설계 기여</p>
+            <ul class="points"><li>로그인이 불가능했던 장애 이후 DB 연결 문제 분석과 Java/Spring 전환 설계에 참여</li><li>기존 런타임 제약이 연동 기술 적용을 막던 구조를 검토하고, 회원정보 조회 캐시(Caffeine) 도입에 참여</li></ul>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>Oracle</li><li>Redis Cluster</li><li>MongoDB</li><li>Caffeine</li></ul>
+            
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2022.10 — 2023.01</p>
+          <div>
+            <h4>판매자 통합가입 서비스</h4>
+            <p class="job-sub">지마켓 · 옥션 판매자 가입 통합 · 4~5인 팀 · 개발 · 운영 담당</p>
+            <ul class="points"><li>분리되어 있던 지마켓 · 옥션 판매자 가입을 통합하고, 서류 검토 · 승인 프로세스 개발</li><li>판매자 정보 암호화와 비동기 메시지 큐 기반 처리 적용</li></ul>
+            <ul class="tags" aria-label="기술"><li>Spring Security</li><li>JPA</li><li>WebFlux</li><li>Redis</li><li>Oracle</li><li>MSSQL</li></ul>
+            
+          </div>
+        </article>
+        <div class="others">
+          <h4 class="sub-title">연도별로 맡은 일</h4>
+          <ol class="years">
+            <li class="year">
+              <div class="year-head"><span class="year-num">2026</span><span class="year-theme">개인정보 암호화와 본인확인 전환</span></div>
+              <ul class="year-items"><li><strong>본인확인 모듈 전환</strong><span>기존 휴대폰 본인확인 모듈 종료에 대응해 NICE 통합인증 API를 연동하고, 지마켓 · 옥션 본인확인 서비스 운영 반영과 배포 절차를 문서화</span></li><li><strong>연계정보(CI) 암호화</strong><span>통합회원 CI를 읽고 쓰는 애플리케이션 경로를 수정해 저장과 조회 양쪽에 암호화 적용</span></li><li><strong>본인확인 식별정보 문서</strong><span>CI · DI · 외국인등록번호 등 본인확인 식별정보의 배경지식 문서 작성</span></li></ul>
+            </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">2025</span><span class="year-theme">회원 API 연동과 메시지 운영 감시</span></div>
+              <ul class="year-items"><li><strong>메시지 발송 모니터링</strong><span>이메일 · 알림톡 발송 지연과 에이전트 상태 모니터링, 이메일 발송 로그 발행 기능. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>전자쿠폰 인증 문의 대응</strong><span>구매한 전자쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
+            </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">2024</span><span class="year-theme">회원 입력과 인증 흐름 개선</span></div>
+              <ul class="year-items"><li><strong>로그인 · 가입 입력 간소화</strong><span>옥션 로그인과 개인 · 사업자 구매회원 가입의 반복 입력을 줄이고, 지마켓 간편가입의 성명 공백 예외 처리 추가</span></li><li><strong>휴대폰번호 변경 PASS 인증</strong><span>옥션 회원 휴대폰번호 변경에 PASS 통합인증 적용, 성인인증 후 선물받기 화면으로 돌아오지 않던 이동 흐름 수정</span></li><li><strong>계좌점유인증 · 전자쿠폰 인증</strong><span>유입 경로별 은행 정보 응답 API와 연동 가이드, 전자쿠폰 본인 · 소유인증 세션 관리</span></li></ul>
+            </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">2023</span><span class="year-theme">가입 예외 처리와 판매 권한 API</span></div>
+              <ul class="year-items"><li><strong>통합 가입 오류 수정</strong><span>통합 가입의 복수 아이디 제한 오류 수정</span></li><li><strong>해외 판매 권한 API</strong><span>지마켓 · 옥션 해외 판매 권한 확대 API</span></li><li><strong>통합멤버십 개편 대응</strong><span>멤버십 개편에 따른 회원 안내 변경</span></li></ul>
+            </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">2022</span><span class="year-theme">입사 · 회원가입 개선</span></div>
+              <ul class="year-items"><li><strong>회원가입 기본 정보 개선</strong><span>회원가입 기본 정보 입력 개선을 담당</span></li></ul>
+            </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">상시</span><span class="year-theme">개인정보 보호 운영</span></div>
+              <ul class="year-items"><li><strong>분리보관 · ISMS-P</strong><span>탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명</span></li></ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="company">
+        <div class="company-head"><h3>더존비즈온 <span>전자금융서비스 Unit</span></h3><p class="period">2020.07 — 2022.09</p></div>
+        <article class="job">
+          <p class="period">2021.09 — 2022.08</p>
+          <div>
+            <h4>공인전자문서 중계 서비스 구축</h4>
+            <p class="job-sub">신규 서비스 론칭 · 2~3인 팀 · 개발 · 운영 환경 구축</p>
+            <ul class="points"><li>법적 효력을 갖는 전자문서 중계 서비스의 API, Redis 토큰 기반 인증 서버, 관리자 기능 개발</li><li>리눅스 서버 이중화와 GitLab · Jenkins 배포 파이프라인 등 운영 환경 구축</li><li>서비스 심사를 위한 증적자료 작성 · 제출</li></ul>
+            <ul class="tags" aria-label="기술"><li>Spring</li><li>MyBatis</li><li>React</li><li>Redis</li><li>MariaDB</li><li>Nginx</li><li>HAProxy</li><li>Jenkins</li></ul>
+            <p class="job-link"><a class="link" href="https://www.newswire.co.kr/newsRead.php?no=949401" target="_blank" rel="noopener noreferrer">보도자료 <span aria-hidden="true">↗</span></a></p>
+          </div>
+        </article>
+        <article class="job">
+          <p class="period">2020.07 — 2021.09</p>
+          <div>
+            <h4>PG 결제 서비스 개발 · 운영</h4>
+            <p class="job-sub">상점 관리자 개편 · 2~3인 팀 · 개발 · 운영</p>
+            <ul class="points"><li>카드 · 계좌이체 · 가상계좌 · 휴대폰 결제를 다루는 PG 서비스 개발 · 운영</li><li>상점 관리자를 JSP 기반에서 Spring JPA · QueryDSL 기반으로 개편</li></ul>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>MyBatis</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li></ul>
+            
+          </div>
+        </article>
+      </div>
+      </section>
+
+      <section class="resume-block">
+        <h2>오픈소스</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="period">Owner</p>
+            <div><h3><a class="link" href="work/fluxgate.html">OpenFluxGate</a></h3><p class="team">Redis 기반 분산 Rate Limiting 라이브러리와 규칙 관리 어드민. Maven Central 배포.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">Owner</p>
+            <div><h3><a class="link" href="https://github.com/OpenFluxGate/fluxmirror">FluxMirror</a></h3><p class="team">Claude Code · Gemini CLI · Qwen Code의 도구 호출을 SQLite에 기록하고, 일간 · 주간 리포트와 로컬 대시보드로 보여주는 멀티 에이전트 활동 감사 도구.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">Owner</p>
+            <div><h3><a class="link" href="https://plugins.jetbrains.com/plugin/30083-issuelinker">IssueLinker</a></h3><p class="team">Git 브랜치 이름에서 이슈 키를 찾아 Jira · GitHub · GitLab 이슈를 바로 여는 IntelliJ 플러그인. JetBrains Marketplace 배포.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">개인 프로젝트</p>
+            <div><h3><a class="link" href="https://github.com/rojae/waf">WAF</a></h3><p class="team">Nginx + ModSecurity + OWASP CRS 기반 웹 방화벽. 실시간 위협 트랙과 분석 트랙(Kafka · ksqlDB · ClickHouse)을 나눈 로그 처리 구조를 설계.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">Contributor</p>
+            <div><h3><a class="link" href="https://github.com/OpenFeign/feign/pull/2871">OpenFeign/feign #2871</a></h3><p class="team">RetryableException에 retryAfter 없는 생성자 추가 — Kotlin에서 호출할 때 생기는 생성자 오버로드 모호성을 해소하고 단위 테스트 추가.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">Contributor</p>
+            <div><h3><a class="link" href="https://github.com/OpenFeign/feign/pull/2874">OpenFeign/feign #2874</a></h3><p class="team">어노테이션 파라미터 값 누락 시 힌트 메시지 — 파라미터 선언 오류를 더 빨리 찾을 수 있도록 예외 메시지 개선.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume-block">
+        <h2>글</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="period">장애 분석</p>
+            <div><h3><a class="link" href="https://rojae.github.io/posts/jvm-dns-caching-meets-connection-pools/">JVM DNS 캐싱과 커넥션 풀이 만날 때</a></h3><p class="team">라우팅 IP 변경 후 발생한 프로덕션 504를 JVM DNS 캐시와 커넥션 유지 관점에서 분석했습니다. 재현 코드와 영문판, 세미나 자료를 함께 공개했습니다.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">시리즈 · 4편</p>
+            <div><h3><a class="link" href="https://rojae.github.io/posts/spring-batch-intro/">Spring Batch 실전</a></h3><p class="team">개념과 환경 설정부터 Reader · Processor · Writer, 이메일 발송 배치 구현, 멀티스레드와 파티셔닝을 이용한 성능 최적화까지.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">시리즈 · 5편</p>
+            <div><h3><a class="link" href="https://rojae.github.io/posts/design-pattern-intro/">서비스가 커질수록 필요한 설계 패턴</a></h3><p class="team">메시징 시스템을 예제로 Factory · Strategy · Template Method · Chain of Responsibility 패턴이 필요한 순간을 정리했습니다.</p></div>
+          </div>
+          <div class="timeline-item">
+            <p class="period">에세이</p>
+            <div><h3><a class="link" href="https://rojae.github.io/posts/tech-without-business-wont-go/">비즈니스 없는 기술은 나아갈 수 없다</a></h3><p class="team">설계와 패턴 이야기를 하며 받은 질문에서 출발해, 기술 선택을 비즈니스 맥락과 연결하는 이유를 적었습니다.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="resume-block">
+        <h2>학력</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <p class="period">2020.08 졸업</p>
+            <div><h3>강원대학교</h3><p class="team">컴퓨터정보통신공학과 학사</p></div>
+          </div>
+        </div>
+      </section>
+
+      <p class="note">공개용 경력 요약 · 2026.09</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

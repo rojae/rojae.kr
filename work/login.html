@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>로그인 시스템 Java/Spring 전환 — 오재성</title>
+  <meta name="description" content="전체 로그인이 멈췄던 장애를 계기로 기존 플랫폼의 제약을 검토하고, 로그인 · 회원 기능을 Java/Spring으로 옮기는 작업에 참여했습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="로그인 시스템 Java/Spring 전환 — 오재성">
+  <meta property="og:description" content="전체 로그인이 멈췄던 장애를 계기로 기존 플랫폼의 제약을 검토하고, 로그인 · 회원 기능을 Java/Spring으로 옮기는 작업에 참여했습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/avatar.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈">rojae<span class="logo-dot">.</span></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">재기동으로 끝내지 않았다</a></li><li><a href="#s1">언어를 바꾼 게 아니라 제약을 푼 것</a></li><li><a href="#s2">내 역할의 범위</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">지마켓</span><span>로그인 장애 이후의 근본 대응</span></div>
+          <h1>로그인 시스템 Java/Spring 전환</h1>
+          <p class="page-lead">전체 로그인이 멈췄던 장애를 계기로 기존 플랫폼의 제약을 검토하고, 로그인 · 회원 기능을 Java/Spring으로 옮기는 작업에 참여했습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2023 — 2024</dd></div>
+          <div><dt>팀</dt><dd>팀 프로젝트</dd></div>
+          <div><dt>역할</dt><dd>원인 분석 · 전환 설계 기여</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>Oracle</li><li>Redis Cluster</li><li>MongoDB</li><li>Caffeine</li></ul></dd></div>
+        </dl>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">장애 · 재기동 복구</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">원인과 구조적 제약을 분리</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">전환 설계</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">Java/Spring 전환 · 캐시 도입</span></div></div></div><figcaption>진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>장애 분석</strong><span>DB 연결 실패가 어느 단계에서 났는지 확인</span></li><li><strong>제약 검토</strong><span>런타임 버전 고정이 유지보수와 연동에 주는 영향</span></li><li><strong>전환 설계</strong><span>로그인 · 회원 기능의 Java/Spring 전환</span></li><li><strong>조회 캐시</strong><span>회원정보 조회에 Caffeine 로컬 캐시</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>재기동으로 끝내지 않았다</h2>
+          <p>DB 연결을 맺는 단계에서 문제가 생겨 전체 로그인이 불가능한 장애가 있었습니다. 서버와 DB를 재기동해서 복구했지만, 재기동은 증상을 없앤 것이지 원인을 없앤 것은 아니었습니다.</p>
+          <p>살펴보니 당시 사내 보안 라이브러리 지원 문제로 기존 .NET 런타임 버전이 고정되어 있었고, 이 제약 때문에 Redis Cluster나 MongoDB 같은 연동 기술을 붙이기도 어려운 상태였습니다. 이 제약이 곧 장애의 직접 원인이라고 말할 수는 없지만, 같은 문제를 다시 마주했을 때 손쓸 수 있는 폭을 좁히고 있는 건 분명했습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>언어를 바꾼 게 아니라 제약을 푼 것</h2>
+          <p>그래서 재발 방지 패치가 아니라 로그인 · 회원 기능을 Java/Spring으로 옮기는 방향으로 설계에 참여했습니다. .NET이 나빠서가 아니라, 조직이 지원할 수 있는 런타임과 라이브러리 조건에서 유지보수와 연동이 가능한 쪽으로 옮긴 것입니다.</p>
+          <p>전환 과정에서 자주 조회되는 회원정보에 Caffeine 로컬 캐시를 두는 팀 작업에도 참여했습니다. 인스턴스별 캐시는 갱신이 늦을 수 있어서, 차단이나 탈퇴처럼 즉시 반영되어야 하는 상태는 캐시 대상과 만료 정책을 따로 봐야 합니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>내 역할의 범위</h2>
+          <p>복구와 전체 전환은 팀 작업이고, 제 역할은 원인 분석과 전환 설계에 기여한 범위입니다. 팀이 함께 운영하는 로그인 서비스의 규모를 제가 혼자 감당했다거나 성능을 끌어올렸다고 말하지 않습니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">장애 대응에서 무엇이 증상을 없앴는지와 무엇이 원인인지를 구분하게 됐습니다. 그리고 언어 자체보다, 조직이 지원할 수 있는 런타임과 라이브러리 조건이 유지보수 가능성을 좌우한다는 것도요.</blockquote>
+        </section>
+
+        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="platform.html"><span>← 이전</span><strong>회원 도메인 공통 모듈화</strong></a>
+          <a class="next" href="fluxgate.html"><span>다음 →</span><strong>OpenFluxGate</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

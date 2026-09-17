@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>회원 도메인 공통 모듈화 — 오재성</title>
+  <meta name="description" content="DB는 이미 하나였지만 API는 사이트마다 따로 개발하던 구조를, 공통 모듈과 사이트별 모듈을 조합해 배포하는 구조로 바꾼 팀 프로젝트입니다. 그 위에서 제휴 · 인증 모듈을 개발하고 API 게이트웨이 도입에 참여했습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="회원 도메인 공통 모듈화 — 오재성">
+  <meta property="og:description" content="DB는 이미 하나였지만 API는 사이트마다 따로 개발하던 구조를, 공통 모듈과 사이트별 모듈을 조합해 배포하는 구조로 바꾼 팀 프로젝트입니다. 그 위에서 제휴 · 인증 모듈을 개발하고 API 게이트웨이 도입에 참여했습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/avatar.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈">rojae<span class="logo-dot">.</span></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">DB가 하나라고 개발이 한 번은 아니었다</a></li><li><a href="#s1">내가 맡은 자리</a></li><li><a href="#s2">지금 상태</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 통합 백엔드</span></div>
+          <h1>회원 도메인 공통 모듈화</h1>
+          <p class="page-lead">DB는 이미 하나였지만 API는 사이트마다 따로 개발하던 구조를, 공통 모듈과 사이트별 모듈을 조합해 배포하는 구조로 바꾼 팀 프로젝트입니다. 그 위에서 제휴 · 인증 모듈을 개발하고 API 게이트웨이 도입에 참여했습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2025 — 현재</dd></div>
+          <div><dt>팀</dt><dd>팀 공동 설계</dd></div>
+          <div><dt>역할</dt><dd>제휴 · 인증 모듈 개발, 게이트웨이 도입 참여</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul></dd></div>
+        </dl>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">공통 모듈</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">지마켓 모듈</span><span class="node">옥션 모듈</span><span class="node">통합 모듈</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">사이트별 서비스로 조합 · 배포</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">API 게이트웨이</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">인증 · 권한 검증 · 라우팅</span></div></div></div><figcaption>코드 재사용과 조합을 그린 그림입니다. 실제 인스턴스와 네트워크 구성은 다릅니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>공통 모듈</strong><span>사이트와 무관하게 같은 의미를 갖는 회원 · 인증 기능</span></li><li><strong>사이트별 모듈</strong><span>지마켓 · 옥션 각각의 정책</span></li><li><strong>통합 모듈</strong><span>두 사이트를 함께 다루는 기능</span></li><li><strong>조합 배포</strong><span>필요한 모듈을 묶어 사이트별 서비스로</span></li><li><strong>API 게이트웨이</strong><span>인증 · 권한 검증, 멀티테넌시 라우팅, 모니터링</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>DB가 하나라고 개발이 한 번은 아니었다</h2>
+          <p>지마켓과 옥션은 통합 DB를 쓰고 있었지만 API 계층은 나뉘어 있었습니다. 구조가 같은 기능도 사이트마다 두 번 만들고 두 번 검증해야 했습니다. 팀에서 회원정보 · 로그인 · 캐싱 API를 공통 모듈과 사이트별 모듈로 나누고, 필요한 모듈을 조합해 사이트별 서비스로 배포하는 구조를 함께 설계했습니다.</p>
+          <p>공통화의 기준은 코드가 비슷한가가 아니라 업무 의미와 변경 이유가 같은가로 잡았습니다. 그래야 나중에 한쪽만 바뀌어야 할 때 공통 모듈이 발목을 잡지 않습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>내가 맡은 자리</h2>
+          <p>이 구조 위에서 제휴 · 인증 모듈을 주로 개발했습니다. 전체 아키텍처는 팀 공동 작업이고, 제 판단이 들어간 범위는 제휴와 인증 모듈 안에서 어떤 기능을 공유하고 어떤 정책을 사이트별로 남길지 정한 부분입니다.</p>
+          <p>서비스가 분화되면서 인증 · 권한 검증을 서비스마다 반복하기 어려워져, Gravitee API 게이트웨이 도입에도 참여했습니다. 호출자 인증을 게이트웨이로 모으더라도 특정 회원 데이터에 접근해도 되는지 같은 도메인 권한은 애플리케이션이 따로 판단해야 한다는 경계를 의식했습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>지금 상태</h2>
+          <p>프로덕션에 배포되어 운영 중이고, 새 연동을 붙일 때 공통 모듈을 재사용하는 기반이 생겼습니다. 공수를 얼마나 줄였는지 측정한 수치는 없어서, 그 부분은 재사용된 사례로만 설명합니다. 공통 모듈의 결함은 두 사이트에 함께 번질 수 있어서 배포 순서와 버전 관리가 더 중요해졌습니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">공통화는 중복을 줄이는 대신 공통 결함의 영향 범위를 넓힙니다. 무엇을 합치고 무엇을 남길지 정하는 일이 구조 설계의 핵심이라는 걸 배웠습니다.</blockquote>
+        </section>
+
+        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="auth.html"><span>← 이전</span><strong>통합인증 서비스</strong></a>
+          <a class="next" href="login.html"><span>다음 →</span><strong>로그인 시스템 Java/Spring 전환</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenFluxGate — 오재성</title>
+  <meta name="description" content="여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="OpenFluxGate — 오재성">
+  <meta property="og:description" content="여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="../assets/avatar.png">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈">rojae<span class="logo-dot">.</span></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">판단은 Redis 안에서 한 번에</a></li><li><a href="#s2">무엇을 같은 대상으로 볼 것인가</a></li><li><a href="#s3">라이브러리만으로는 쓸 수 없다</a></li><li><a href="#s4">지금 상태</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">오픈소스</span><span>Redis 기반 분산 Rate Limiting</span></div>
+          <h1>OpenFluxGate</h1>
+          <p class="page-lead">여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2025.11 — 진행 중</dd></div>
+          <div><dt>팀</dt><dd>개인 오픈소스</dd></div>
+          <div><dt>역할</dt><dd>설계 · 개발 · 배포</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot 2.7 / 3.x</li><li>Bucket4j</li><li>Redis · Lua</li><li>MongoDB</li><li>Micrometer</li><li>Next.js</li><li>Keycloak</li></ul></dd></div>
+        </dl>
+        <div class="page-links"><a class="btn" href="https://github.com/OpenFluxGate/fluxgate" target="_blank" rel="noopener noreferrer">GitHub 저장소 <span aria-hidden="true">↗</span></a><a class="btn" href="https://github.com/OpenFluxGate/fluxgate-studio" target="_blank" rel="noopener noreferrer">FluxGate Studio <span aria-hidden="true">↗</span></a><a class="btn" href="https://openfluxgate.github.io/" target="_blank" rel="noopener noreferrer">문서 포털 <span aria-hidden="true">↗</span></a><a class="btn" href="https://central.sonatype.com/namespace/io.github.openfluxgate" target="_blank" rel="noopener noreferrer">Maven Central <span aria-hidden="true">↗</span></a></div>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">요청</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">FluxGate Filter</span><span class="node">제한 키 식별 (IP · 사용자 · API 키)</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">토큰 버킷 판단</span><span class="node">Redis + Lua</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">허용 / 제한 응답</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">FluxGate Studio</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">규칙 저장 (MongoDB)</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">재시작 없이 규칙 반영</span></div></div></div><figcaption>각 앱이 Redis에 직접 붙는 방식과, 중앙 Rate Limit 서비스를 HTTP로 호출하는 방식을 모두 지원합니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>fluxgate-core</strong><span>Bucket4j 기반 제한 엔진</span></li><li><strong>fluxgate-redis-ratelimiter</strong><span>Lua 스크립트 기반 분산 제한</span></li><li><strong>fluxgate-mongo-adapter</strong><span>MongoDB 규칙 저장 · 동적 갱신</span></li><li><strong>spring-boot3 / boot2 starter</strong><span>Java 17+ jakarta / Java 11+ javax 자동 설정</span></li><li><strong>fluxgate-testkit</strong><span>통합 테스트 유틸리티와 샘플 앱</span></li><li><strong>FluxGate Studio</strong><span>규칙 관리 · 대시보드 · 시뮬레이션 어드민</span></li></ul>
+          <figure class="shot"><img src="../assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"><figcaption>공개 저장소 README</figcaption></figure>
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>왜 만들었나</h2>
+          <p>회사 서비스에 공통 유량제어 수단이 없었습니다. 요청이 몰릴 때 공용 자원을 보호할 방법이 필요했는데, 서버마다 따로 요청 수를 세면 인스턴스 수에 따라 전체 허용량이 달라집니다. 여러 인스턴스가 같은 허용량을 공유하면서, 서비스마다 제한 로직을 새로 짜지 않아도 되는 도구를 만들고 싶었습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>판단은 Redis 안에서 한 번에</h2>
+          <p>남은 토큰을 확인하는 것과 차감하는 것이 분리되어 있으면, 동시에 들어온 요청이 같은 잔여량을 보고 함께 통과합니다. 그래서 확인과 차감을 Lua 스크립트 하나로 Redis 안에서 실행합니다. 토큰 보충 계산에는 애플리케이션 서버 시간이 아니라 Redis 서버 시간을 쓰고 정수 연산만 사용해서, 인스턴스 간 시계 차이와 부동소수 오차가 허용량에 섞이지 않게 했습니다.</p>
+          <p>스크립트가 원자적으로 묶어주는 건 Redis 안의 명령까지입니다. Redis 자체가 느리거나 실패할 때 요청을 허용할지 거절할지는 보호하려는 대상에 따라 따로 정해야 합니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>무엇을 같은 대상으로 볼 것인가</h2>
+          <p>제한 알고리즘보다 먼저 정해야 했던 건 "누구를 같은 대상으로 셀 것인가"였습니다. IP, 사용자 ID, API 키 중 하나로 제한할 수도 있고, IP와 사용자를 합친 복합 키로 더 잘게 나눌 수도 있게 했습니다. 초 · 분 · 시간 단위 제한을 함께 거는 멀티 밴드 규칙과, 즉시 거절하는 대신 토큰 보충을 기다리는 정책도 넣었습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>라이브러리만으로는 쓸 수 없다</h2>
+          <p>규칙을 코드에 박아 두면 바꿀 때마다 배포해야 합니다. 규칙은 MongoDB에 저장하고 재시작 없이 갱신되게 했고, 그 규칙을 만들고 시뮬레이션해 볼 수 있는 어드민 FluxGate Studio를 Next.js와 Spring Boot로 따로 만들었습니다. 인증은 Keycloak OIDC를 붙였습니다.</p>
+          <p>적용하는 쪽에서 설정만으로 붙일 수 있도록 Spring Boot 2.7과 3.x 각각의 자동 설정 스타터를 두고, 구조화 로깅과 Micrometer 메트릭으로 지금 무엇이 막히고 있는지 볼 수 있게 했습니다. Docusaurus 문서 포털과 벤치마크 페이지도 함께 관리합니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>지금 상태</h2>
+          <p>Maven Central에 io.github.openfluxgate로 배포되어 있고, v0.3.7까지 릴리스했습니다. 사내에서는 팀 코드 리뷰와 개념 검증(POC)을 거쳐 도입을 검증하는 중입니다. 운영에서 얼마나 효과가 있었는지는 도입 뒤에 측정할 예정이라, 지금은 코드와 검증한 동작 범위로 설명합니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">제한 알고리즘은 시작일 뿐이었습니다. 무엇을 같은 대상으로 볼지, Redis가 실패하면 어떻게 할지, 지금 무엇이 막히는지 어떻게 볼지를 먼저 정해야 라이브러리를 실제로 쓸 수 있다는 걸 만들면서 배웠습니다.</blockquote>
+        </section>
+
+        
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="login.html"><span>← 이전</span><strong>로그인 시스템 Java/Spring 전환</strong></a>
+          
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
