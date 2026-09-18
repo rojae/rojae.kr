@@ -103,6 +103,7 @@ export const caseStudies = [
   {
     key: 'auth',
     featured: true,
+    diagram: 'auth',
     badge: '지마켓',
     title: '통합인증 서비스',
     sub: '지마켓 · 옥션 · ESMPLUS 공통 인증',
@@ -129,7 +130,7 @@ export const caseStudies = [
         [['지마켓 · 옥션 · ESMPLUS'], ['통합 인증 진입점'], ['도메인 · 인증 유형 판단'], ['인증업체 선택'], ['외부 인증업체']],
         [['어드민'], ['도메인별 연동 · 업체 비율 설정']],
       ],
-      caption: '설정된 비율에 따라 인증업체를 고르고, 결과는 인증 서비스 토큰으로 다음 단계에 넘깁니다.',
+      caption: '연동 서비스가 통합인증 진입점을 거치면 도메인 설정에 따라 인증 모듈이 정해지고, 외부 업체가 필요한 인증은 어드민에서 정한 비율로 업체가 선택됩니다. 비율 수치는 예시입니다.',
     },
     story: [
       { heading: '어떤 상황이었나', paragraphs: [

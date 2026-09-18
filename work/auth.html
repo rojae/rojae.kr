@@ -49,7 +49,93 @@
 
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">지마켓 · 옥션 · ESMPLUS</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">통합 인증 진입점</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">도메인 · 인증 유형 판단</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">인증업체 선택</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">외부 인증업체</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">어드민</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">도메인별 연동 · 업체 비율 설정</span></div></div></div><figcaption>설정된 비율에 따라 인증업체를 고르고, 결과는 인증 서비스 토큰으로 다음 단계에 넘깁니다.</figcaption></figure>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 600" role="img" aria-label="통합인증 서비스 구조도: 지마켓·옥션·ESMPLUS가 통합인증 진입점을 거쳐 여섯 가지 인증 모듈 중 하나를 사용하고, 인증업체 라우터가 설정된 비율로 외부 인증업체를 고른다. 결과는 토큰과 세션으로 전달되고, 어드민에서 도메인별 연동과 업체 비율을 조정한다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="250" y="20" width="480" height="400" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="490" y="44" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">통합인증 서비스</text>
+  <text x="490" y="64" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">도메인별 설정으로 어떤 인증을 어떤 업체로 처리할지 결정</text>
+  <rect x="275" y="84" width="430" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="490" y="104" font-size="13" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">진입점 · 도메인 식별 · 인증 유형 판단</text>
+  
+  <rect x="275" y="142" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="342.5" y="159" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지식인증</text>
+  <text x="342.5" y="178" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ID · 비밀번호</text>
+  
+  <rect x="420" y="142" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="487.5" y="159" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">소셜인증</text>
+  <text x="487.5" y="178" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">외부 계정 로그인</text>
+  
+  <rect x="565" y="142" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="632.5" y="159" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">소유인증</text>
+  <text x="632.5" y="178" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">휴대폰 · 이메일</text>
+  
+  <rect x="275" y="204" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="342.5" y="221" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">본인인증</text>
+  <text x="342.5" y="240" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">휴대폰 본인확인</text>
+  
+  <rect x="420" y="204" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="487.5" y="221" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">계좌인증</text>
+  <text x="487.5" y="240" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">계좌점유 확인</text>
+  
+  <rect x="565" y="204" width="135" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="632.5" y="221" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">기업인증</text>
+  <text x="632.5" y="240" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사업자 확인</text>
+  <rect x="275" y="278" width="430" height="56" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="490" y="294" font-size="13" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인증업체 라우터 · 비율 배분</text>
+  <rect x="290" y="306" width="400" height="14" rx="7" fill="var(--line)"/>
+  <rect x="290" y="306" width="280" height="14" rx="7" fill="var(--accent)"/>
+  <text x="430" y="313" font-size="10.5" font-weight="700" fill="#fff" text-anchor="middle" font-family="inherit" dominant-baseline="middle">업체 A 70%</text>
+  <text x="630" y="313" font-size="10.5" font-weight="700" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">업체 B 30%</text>
+  
+  <rect x="275" y="352" width="205" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="377.5" y="369" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인증 서비스 토큰</text>
+  <text x="377.5" y="388" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">결과를 토큰으로 후속 단계에</text>
+  
+  <rect x="500" y="352" width="205" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="602.5" y="369" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인증 세션 (Redis)</text>
+  <text x="602.5" y="388" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">내역 · 이력을 다음 단계까지</text>
+  <rect x="30" y="120" width="150" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="105" y="144" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓</text>
+  <path d="M180 144 L215 144 L215 104 L250 104" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="30" y="200" width="150" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="105" y="224" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">옥션</text>
+  <path d="M180 224 L215 224 L215 104 L250 104" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="30" y="280" width="150" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="105" y="304" font-size="14" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ESMPLUS</text>
+  <path d="M180 304 L215 304 L215 104 L250 104" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="105" y="96" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">연동 서비스</text>
+  
+  <rect x="800" y="120" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="137" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">본인확인 기관</text>
+  <text x="875" y="156" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">휴대폰 본인확인</text>
+  <path d="M730 306 L765 306 L765 145 L800 145" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  
+  <rect x="800" y="200" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="217" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">계좌인증 기관</text>
+  <text x="875" y="236" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">은행 계좌 확인</text>
+  <path d="M730 306 L765 306 L765 225 L800 225" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  
+  <rect x="800" y="280" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="297" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">소셜 로그인 제공자</text>
+  <text x="875" y="316" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">OAuth 연동</text>
+  <path d="M730 306 L765 306 L765 305 L800 305" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="875" y="96" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">외부 인증업체</text>
+  <rect x="800" y="360" width="150" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="875" y="375" font-size="11.5" font-weight="700" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">업체 장애 시</text>
+  <text x="875" y="392" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">비율을 옮겨 신규 요청 우회</text>
+  <rect x="250" y="470" width="480" height="100" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="490" y="494" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">어드민</text>
+  <rect x="272" y="512" width="138" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="341" y="532" font-size="12" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">도메인별 연동 설정</text>
+  <rect x="420" y="512" width="138" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="489" y="532" font-size="12" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인증 유형별 사용 여부</text>
+  <rect x="568" y="512" width="138" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="637" y="532" font-size="12" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인증업체 비율 조정</text>
+  <path d="M490 470 L490 424" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="560" y="447" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">배포 없이 설정 반영</text>
+  <path d="M275 377 L215 377 L215 320 L105 320" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="105" y="335" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">토큰으로 결과 회신</text>
+</svg><figcaption>연동 서비스가 통합인증 진입점을 거치면 도메인 설정에 따라 인증 모듈이 정해지고, 외부 업체가 필요한 인증은 어드민에서 정한 비율로 업체가 선택됩니다. 비율 수치는 예시입니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>인증 모듈</strong><span>지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>업체별 트래픽 비율을 운영 중에 변경</span></li><li><strong>인증 서비스 토큰</strong><span>도메인별 쿠키 대신 서비스가 발급한 토큰으로</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
           
         </section>

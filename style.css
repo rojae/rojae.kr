@@ -284,6 +284,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 .flow-row .flow-col:first-child .node { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); }
 .flow-arrow { width: 24px; height: 1px; background: var(--text-3); position: relative; flex: none; }
 .flow-arrow::after { content: ""; position: absolute; right: -1px; top: -3px; border: 3.5px solid transparent; border-left: 6px solid var(--text-3); border-right: 0; }
+.diagram-figure { padding: 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+.diagram { display: block; width: 100%; height: auto; font-family: var(--sans); }
+.diagram-figure figcaption { padding-top: 10px; }
 .flow-figure figcaption, .shot figcaption { font-size: 13px; color: var(--text-3); margin-top: 8px; }
 .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .feature-grid li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; }
