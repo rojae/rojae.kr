@@ -326,7 +326,7 @@ function renderResume() {
             <p class="hero-kicker">${profile.role}</p>
             <h1>${profile.name}</h1>
           </div>
-          <button type="button" class="btn no-print" data-print>인쇄 / PDF 저장</button>
+          <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
         <p class="page-lead">${profile.lead}</p>
         <div class="resume-contact">
@@ -339,6 +339,11 @@ function renderResume() {
       <section class="resume-block">
         <h2>경력</h2>
 ${renderExperience('', { headingLevel: 3 })}
+      </section>
+
+      <section class="resume-block">
+        <h2>기술</h2>
+        <ul class="tags"><li>Java 21</li><li>Spring Boot 3</li><li>Spring Security</li><li>Spring Batch</li><li>Spring Cloud Data Flow</li><li>WebFlux</li><li>JPA · Querydsl</li><li>Gravitee API Gateway</li><li>Kafka</li><li>Redis Cluster</li><li>Oracle</li><li>MongoDB</li><li>InfluxDB · Grafana</li><li>MariaDB Galera</li><li>HAProxy · Nginx</li><li>Jenkins</li></ul>
       </section>
 
       <section class="resume-block">

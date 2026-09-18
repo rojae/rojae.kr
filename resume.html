@@ -37,7 +37,7 @@
             <p class="hero-kicker">Server Engineer</p>
             <h1>오재성</h1>
           </div>
-          <button type="button" class="btn no-print" data-print>인쇄 / PDF 저장</button>
+          <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
         <p class="page-lead">전자금융 PG와 커머스에서 약 6년간 서버를 만들고 운영해 왔습니다. 지금은 지마켓 Member Engineering에서 회원·인증과 외부 파트너 연동을 맡고 있습니다. 기능이 동작하는 순간만큼, 실패하고 회복하는 경계와 그 뒤의 운영을 중요하게 생각합니다.</p>
         <div class="resume-contact">
@@ -55,8 +55,8 @@
           <p class="period">2026.01 — 2026.06</p>
           <div>
             <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 주요 개발자</p>
-            <ul class="points"><li>실시간 동의, 일배치 정합, 월배치 파일 수신, 탈회 · 리워드 연동 기능 개발</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li><li>외부 리워드 응모 실패를 MongoDB에 보관, 개인정보 연동 이력과 조회 감사 기록 분리</li><li>제휴사 관리 · 동의 조회 · 배치 모니터링 운영 어드민(Next.js) 구축</li></ul>
+            <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 설계 · 구현 · 운영 — 구조 결정 담당</p>
+            <ul class="points"><li>실시간 동의, 일배치 정합, 월배치 파일 수신, 탈회 · 리워드 연동 구조 결정 · 개발 — 오픈 첫 달 동의 약 1만 명</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li><li>외부 리워드 응모 실패를 MongoDB에 보관, 개인정보 연동 이력과 조회 감사 기록 분리</li><li>제휴사 관리 · 동의 조회 · 배치 모니터링 운영 어드민(Next.js) 구축</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li></ul>
             
           </div>
@@ -65,8 +65,8 @@
           <p class="period">2025 — 현재</p>
           <div>
             <h4><a href="work/platform.html">회원 도메인 공통 모듈화 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발, 게이트웨이 도입 참여</p>
-            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, API 게이트웨이 도입으로 인증 · 권한 검증 중앙화에 기여</li></ul>
+            <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</p>
+            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부 분산</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul>
             
           </div>
@@ -75,8 +75,8 @@
           <p class="period">2024.01 — 2024.12</p>
           <div>
             <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 설계 및 핵심 구현</p>
-            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 기능 구현</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li><li>휴대폰 본인확인(PASS) 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션 관리</li></ul>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 설계 결정 · 핵심 구현</p>
+            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 구조 결정 · 구현 — 월 인증 비용 약 1/3 절감, 관련 CS 90% 이상 감소</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li><li>휴대폰 본인확인(PASS) 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션 관리</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
             
           </div>
@@ -85,7 +85,7 @@
           <p class="period">2024.06 — 2024.12</p>
           <div>
             <h4><a href="work/terms.html">약관 관리 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 주요 개발 · 사내 리뷰 발표</p>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 약관 모델 · 구조 결정, 주요 개발 · 사내 리뷰 발표</p>
             <ul class="points"><li>지마켓 · 옥션 · ESMPLUS 약관을 약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝으로 통합 관리</li><li>HTML 에디터가 붙은 어드민, 공개 약관 페이지, Querydsl 동적 조회, 사이트 확장 구조</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>JPA</li><li>Querydsl</li><li>Thymeleaf</li><li>Blob Storage</li><li>Oracle</li><li>MSSQL</li></ul>
             
@@ -120,7 +120,7 @@
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2025</span><span class="year-theme">회원 API 연동과 메시지 운영 감시</span></div>
-              <ul class="year-items"><li><strong>메시지 발송 모니터링</strong><span>이메일 · 알림톡 발송 지연과 에이전트 상태 모니터링, 이메일 발송 로그 발행 기능. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>전자쿠폰 인증 문의 대응</strong><span>구매한 전자쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
+              <ul class="year-items"><li><strong>메시지 · 로그인 모니터링</strong><span>이메일 · 알림톡 · 앱푸시 발송과 로그인 이벤트를 Kafka로 적재해 InfluxDB → Grafana로 지연 · 에이전트 상태를 관측. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>전자쿠폰 인증 문의 대응</strong><span>구매한 전자쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2024</span><span class="year-theme">회원 입력과 인증 흐름 개선</span></div>
@@ -136,7 +136,7 @@
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">상시</span><span class="year-theme">개인정보 보호 운영</span></div>
-              <ul class="year-items"><li><strong>분리보관 · ISMS-P</strong><span>탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명</span></li></ul>
+              <ul class="year-items"><li><strong>분리보관 · ISMS-P</strong><span>탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명. 불안정하던 .NET 배치를 Spring Cloud Data Flow로 전환</span></li></ul>
             </li>
           </ol>
         </div>
@@ -147,7 +147,7 @@
           <p class="period">2021.09 — 2022.08</p>
           <div>
             <h4><a href="work/edoc.html">전자문서 유통 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</p>
+            <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 인프라 구조 결정 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</p>
             <ul class="points"><li>HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성</li><li>API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li><li>MariaDB Galera</li><li>MaxScale</li><li>HAProxy · keepalived</li><li>Nginx</li><li>Node.js · PM2</li><li>GitLab · Nexus · Jenkins</li></ul>
             
@@ -164,6 +164,11 @@
           </div>
         </article>
       </div>
+      </section>
+
+      <section class="resume-block">
+        <h2>기술</h2>
+        <ul class="tags"><li>Java 21</li><li>Spring Boot 3</li><li>Spring Security</li><li>Spring Batch</li><li>Spring Cloud Data Flow</li><li>WebFlux</li><li>JPA · Querydsl</li><li>Gravitee API Gateway</li><li>Kafka</li><li>Redis Cluster</li><li>Oracle</li><li>MongoDB</li><li>InfluxDB · Grafana</li><li>MariaDB Galera</li><li>HAProxy · Nginx</li><li>Jenkins</li></ul>
       </section>
 
       <section class="resume-block">

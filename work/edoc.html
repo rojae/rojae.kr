@@ -44,7 +44,7 @@
         <dl class="facts">
           <div><dt>기간</dt><dd>2021.09 — 2022.08</dd></div>
           <div><dt>팀</dt><dd>2인 팀 (팀장 + 본인)</dd></div>
-          <div><dt>역할</dt><dd>설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</dd></div>
+          <div><dt>역할</dt><dd>인프라 구조 결정 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li><li>MariaDB Galera</li><li>MaxScale</li><li>HAProxy · keepalived</li><li>Nginx</li><li>Node.js · PM2</li><li>GitLab · Nexus · Jenkins</li></ul></dd></div>
         </dl>
         <div class="page-links"><a class="btn" href="https://www.newswire.co.kr/newsRead.php?no=949401" target="_blank" rel="noopener noreferrer">보도자료 <span aria-hidden="true">↗</span></a></div>
@@ -134,7 +134,7 @@
         </section>
         <section id="s1" class="case-section">
           <h2>인프라를 직접 세우다</h2>
-          <p>운영 환경은 서버 22대로 구성했습니다. 앞단은 HAProxy + keepalived로 VIP를 잡아 WEB · WAS · AUTH · KEY 네 구간을 각각 2대씩 이중화했고, WEB은 Nginx 3대(그중 1대는 별도 도메인용), WAS는 Tomcat 2대에 API · 배치 · 관리자 서비스를 포트별로 나눠 올렸습니다. 인증 서버 2대에는 Redis 마스터 · 복제본과 Sentinel 3개(홀수 유지)를 두어 세션 토큰 저장소를 이중화했습니다.</p>
+          <p>운영 환경은 서버 22대로 구성하기로 결정했습니다. 어떤 구간을 몇 대로 이중화할지, 어느 계층에 무엇을 둘지는 제가 정했습니다. 앞단은 HAProxy + keepalived로 VIP를 잡아 WEB · WAS · AUTH · KEY 네 구간을 각각 2대씩 이중화했고, WEB은 Nginx 3대(그중 1대는 별도 도메인용), WAS는 Tomcat 2대에 API · 배치 · 관리자 서비스를 포트별로 나눠 올렸습니다. 인증 서버 2대에는 Redis 마스터 · 복제본과 Sentinel 3개(홀수 유지)를 두어 세션 토큰 저장소를 이중화했습니다.</p>
           <p>데이터베이스는 MariaDB Galera 클러스터 3대 앞에 MaxScale 2대 + keepalived를 두어 읽기 · 쓰기 분산과 장애 전환을 맡겼습니다. 키 서버 2대는 Apache Commons Daemon과 JKS로 암호화 키를 관리합니다. 서버별 초기 설정 파일, 포트 정리, 로그 위치, SSL 인증서 갱신 절차까지 문서로 남겨 이후 운영자가 따라갈 수 있게 했습니다.</p>
         </section>
         <section id="s2" class="case-section">

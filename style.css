@@ -201,7 +201,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .year-items li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; display: flex; flex-direction: column; gap: 2px; }
 .year-items strong { font-size: 15px; }
 .year-items span { font-size: 14px; color: var(--text-2); line-height: 1.6; }
-.ways-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 40px; }
+.ways-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; }
 .way { padding: 22px 0 8px; border-top: 2px solid var(--text); }
 .way h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
 .way p { color: var(--text-2); font-size: 15px; }
@@ -376,6 +376,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .pager .next { text-align: right; grid-column: 2; }
 
 .resume-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.resume-actions { display: flex; gap: 8px; flex: none; }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 16px; font-size: 15px; }
 .resume-contact a { color: var(--accent); }
 .resume-block { margin-top: 48px; }
@@ -464,8 +465,23 @@ ul { margin: 0; padding: 0; list-style: none; }
   .site-header, .site-footer, .breadcrumb, .no-print, .skip-link { display: none !important; }
   .page { padding: 0; }
   .page .container { max-width: none; padding: 0; }
-  .resume-block { margin-top: 24px; break-inside: avoid-page; }
-  .timeline-item, .job, .year { break-inside: avoid; padding-block: 14px; }
+  .resume-block { margin-top: 18px; }
+  .resume-block > h2 { break-after: avoid; margin-bottom: 10px; }
+  .company-head { break-after: avoid; }
+  .page-head h1 { font-size: 30px; }
+  .page-lead { font-size: 14px; }
+  .job h4, .timeline-item h3 { font-size: 15px; }
+  .points, .job-sub, .team { font-size: 12.5px; line-height: 1.55; }
+  .tags li { font-size: 11px; padding: 1px 7px; }
+  .years { gap: 12px; }
+  .year-items li { padding: 8px 10px; }
+  .year-items strong { font-size: 12.5px; }
+  .year-items span { font-size: 11.5px; }
+  .timeline-item, .job, .year { break-inside: avoid; padding-block: 10px; }
+  .others .sub-title, .section-head, .company { break-after: avoid; }
+  .others { break-before: auto; }
+  .years { margin-left: 8px; }
+  .others .sub-title { break-inside: avoid; }
   .year-items { grid-template-columns: 1fr 1fr; }
   .job .tags li { border: 0; padding: 0 6px 0 0; }
   a { color: inherit !important; }

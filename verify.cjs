@@ -77,7 +77,7 @@ const server = http.createServer((req, res) => {
     assert.equal(new URL(page.url()).hash, '#work');
     await page.getByRole('link', { name: '전체 이력서' }).click();
     await page.evaluate(() => { window.print = () => { window.__printed = true; }; });
-    await page.getByRole('button', { name: '인쇄 / PDF 저장' }).click();
+    await page.getByRole('button', { name: '인쇄' }).click();
     assert(await page.evaluate(() => window.__printed));
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.pdf({ path: path.join(output, 'public-resume.pdf'), format: 'A4', margin: { top: '15mm', bottom: '15mm', left: '15mm', right: '15mm' } });

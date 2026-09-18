@@ -59,6 +59,7 @@
       <div class="ways-grid">
         <article class="way"><h3>기능과 운영 화면을 같이 만듭니다</h3><p>인증 서비스에는 도메인별 설정과 업체 비율을 조정하는 어드민을, 제휴 연동에는 동의 조회 · 배치 모니터링 · 접근 감사 화면을 함께 만들었습니다. 오픈소스도 라이브러리 옆에 스타터와 관리 화면, 문서를 뒀습니다.</p></article>
         <article class="way"><h3>어디까지 보장하는지 정확히 말합니다</h3><p>트랜잭션 경계, 중복 판정, 실패 기록은 각각 지키는 범위가 다릅니다. 실패를 보관하는 구조를 Outbox라고 부르지 않고, 팀이 함께 한 일을 제가 한 일처럼 말하지 않습니다. 프로젝트 글마다 한계를 같이 적은 이유입니다.</p></article>
+        <article class="way"><h3>AI를 도구로 업무 흐름에 붙입니다</h3><p>사내 Kibana · DataGrip을 MCP로 AI 에이전트에 연결해 로그 · 데이터 조회를 대화로 처리하고, 업무 보고를 자동화하는 내부 도구를 만들어 씁니다. 여러 AI 코딩 에이전트의 활동을 기록 · 감사하는 FluxMirror를 오픈소스로 만들었습니다.</p></article>
         <article class="way"><h3>다음 사람을 위해 남깁니다</h3><p>본인확인 식별정보 배경지식, 인증 연동, 메일 발송 모니터링, 배포 절차 같은 운영 문서를 써 왔습니다. IP 변경으로 생긴 장애는 JVM DNS 캐시 관점에서 재현해 글과 세미나로 공유했습니다.</p></article>
       </div>
     </section>
@@ -75,7 +76,7 @@
             <h3><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼</a></h3>
             <p class="project-sub">삼성카드 첫 적용</p>
             <p class="project-summary">지마켓·옥션 회원과 외부 파트너를 잇는 제휴 연동의 첫 서비스입니다. 두 앱에서 발생하는 동의를 맞추는 일부터 정합 배치, 탈회, 리워드, 그리고 운영팀이 쓰는 어드민까지 한 묶음으로 만들었습니다.</p>
-            <ul class="points"><li>실시간 동의 · 일배치 정합 · 월배치 파일 · 탈회 · 리워드를 한 서비스로</li><li>동의 저장과 배치 집계의 트랜잭션 경계를 직접 설계</li><li>동의 조회 · 배치 모니터링 · 접근 감사까지 갖춘 운영 어드민</li></ul>
+            <ul class="points"><li>실시간 동의 · 일배치 정합 · 월배치 파일 · 탈회 · 리워드를 한 서비스로</li><li>동의 저장과 배치 집계의 트랜잭션 경계를 직접 결정</li><li>오픈 첫 달 동의 약 1만 명 (일 평균 200명, 최대 500명) · 운영 어드민 포함</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li></ul>
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
@@ -87,7 +88,7 @@
             <h3><a href="work/auth.html">통합인증 서비스</a></h3>
             <p class="project-sub">지마켓 · 옥션 · ESMPLUS 공통 인증</p>
             <p class="project-summary">사이트와 인증 수단마다 흩어져 있던 인증 기능을 하나의 서비스로 모았습니다. 인증 기능 자체뿐 아니라, 어떤 서비스가 어떤 인증을 쓸지와 인증업체 비율을 운영자가 어드민에서 조정할 수 있게 만드는 데까지가 이 프로젝트였습니다.</p>
-            <ul class="points"><li>지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증을 한 서비스의 모듈로</li><li>도메인별 연동과 인증업체 비율을 조정하는 어드민</li><li>도메인별 쿠키 대신 인증 서비스 토큰으로 결과 전달</li></ul>
+            <ul class="points"><li>지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증을 한 서비스의 모듈로</li><li>도메인별 연동과 인증업체 비율을 조정하는 어드민</li><li>인증업체 비율 조정으로 월 인증 비용 약 1/3 절감, 관련 CS 문의 90% 이상 감소</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li></ul>
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
@@ -131,7 +132,7 @@
         </article>
       </div>
       <ul class="more-projects">
-        <li><a href="work/platform.html"><span class="project-meta"><span class="badge">지마켓</span><span>2025 — 현재</span></span><strong>회원 도메인 공통 모듈화</strong><span class="more-sub">지마켓 · 옥션 통합 백엔드 · 제휴 · 인증 모듈 개발, 게이트웨이 도입 참여</span><span class="arrow" aria-hidden="true">→</span></a></li>
+        <li><a href="work/platform.html"><span class="project-meta"><span class="badge">지마켓</span><span>2025 — 현재</span></span><strong>회원 도메인 공통 모듈화</strong><span class="more-sub">지마켓 · 옥션 통합 백엔드 · 제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</span><span class="arrow" aria-hidden="true">→</span></a></li>
         <li><a href="work/login.html"><span class="project-meta"><span class="badge">지마켓</span><span>2023 — 2024</span></span><strong>로그인 시스템 Java/Spring 전환</strong><span class="more-sub">로그인 장애 이후의 근본 대응 · 원인 분석 · 전환 설계 기여</span><span class="arrow" aria-hidden="true">→</span></a></li>
         <li><a href="work/waf.html"><span class="project-meta"><span class="badge">오픈소스</span><span>2025.08 — 2025.12</span></span><strong>WAF 플랫폼</strong><span class="more-sub">Nginx + ModSecurity 위에 얹은 이중 트랙 로그 파이프라인 · 설계 · 구현 전부 담당 · 보안 회사 이사급 개발자 코칭</span><span class="arrow" aria-hidden="true">→</span></a></li>
       </ul>
@@ -148,8 +149,8 @@
           <p class="period">2026.01 — 2026.06</p>
           <div>
             <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 주요 개발자</p>
-            <ul class="points"><li>실시간 동의, 일배치 정합, 월배치 파일 수신, 탈회 · 리워드 연동 기능 개발</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li></ul>
+            <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 설계 · 구현 · 운영 — 구조 결정 담당</p>
+            <ul class="points"><li>실시간 동의, 일배치 정합, 월배치 파일 수신, 탈회 · 리워드 연동 구조 결정 · 개발 — 오픈 첫 달 동의 약 1만 명</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li></ul>
             
           </div>
@@ -158,8 +159,8 @@
           <p class="period">2025 — 현재</p>
           <div>
             <h4><a href="work/platform.html">회원 도메인 공통 모듈화 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발, 게이트웨이 도입 참여</p>
-            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, API 게이트웨이 도입으로 인증 · 권한 검증 중앙화에 기여</li></ul>
+            <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</p>
+            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부 분산</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li></ul>
             
           </div>
@@ -168,8 +169,8 @@
           <p class="period">2024.01 — 2024.12</p>
           <div>
             <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 설계 및 핵심 구현</p>
-            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 기능 구현</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li></ul>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 설계 결정 · 핵심 구현</p>
+            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 구조 결정 · 구현 — 월 인증 비용 약 1/3 절감, 관련 CS 90% 이상 감소</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li></ul>
             
           </div>
@@ -178,7 +179,7 @@
           <p class="period">2024.06 — 2024.12</p>
           <div>
             <h4><a href="work/terms.html">약관 관리 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 주요 개발 · 사내 리뷰 발표</p>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 약관 모델 · 구조 결정, 주요 개발 · 사내 리뷰 발표</p>
             <ul class="points"><li>지마켓 · 옥션 · ESMPLUS 약관을 약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝으로 통합 관리</li><li>HTML 에디터가 붙은 어드민, 공개 약관 페이지, Querydsl 동적 조회, 사이트 확장 구조</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>JPA</li><li>Querydsl</li><li>Thymeleaf</li></ul>
             
@@ -211,7 +212,7 @@
           <p class="period">2021.09 — 2022.08</p>
           <div>
             <h4><a href="work/edoc.html">전자문서 유통 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</p>
+            <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 인프라 구조 결정 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</p>
             <ul class="points"><li>HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성</li><li>API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li></ul>
             

@@ -44,7 +44,7 @@
         <dl class="facts">
           <div><dt>기간</dt><dd>2024.06 — 2024.12</dd></div>
           <div><dt>팀</dt><dd>4인 팀</dd></div>
-          <div><dt>역할</dt><dd>주요 개발 · 사내 리뷰 발표</dd></div>
+          <div><dt>역할</dt><dd>약관 모델 · 구조 결정, 주요 개발 · 사내 리뷰 발표</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>JPA</li><li>Querydsl</li><li>Thymeleaf</li><li>Blob Storage</li><li>Oracle</li><li>MSSQL</li></ul></dd></div>
         </dl>
         <div class="link-previews">
@@ -149,7 +149,7 @@
         </section>
         <section id="s1" class="case-section">
           <h2>약관을 세 가지로 나눠서 보기</h2>
-          <p>먼저 용어부터 정했습니다. 약관은 약관코드 하나로 관리되는 본체이고, 약관그룹은 화면 하나에 함께 노출되는 약관들의 묶음이며, 그룹 매핑은 그 둘을 실제로 잇는 관계입니다. 예를 들어 지마켓 개인 구매회원 가입 화면 하나에 약관 여섯 개가 매핑되어 있는 식입니다.</p>
+          <p>먼저 용어와 모델을 제가 정했습니다. 약관은 약관코드 하나로 관리되는 본체이고, 약관그룹은 화면 하나에 함께 노출되는 약관들의 묶음이며, 그룹 매핑은 그 둘을 실제로 잇는 관계입니다. 예를 들어 지마켓 개인 구매회원 가입 화면 하나에 약관 여섯 개가 매핑되어 있는 식입니다.</p>
           <p>약관 테이블은 식별 정보, 기본 정보(코드 · 이름 · 언어 · 버전 · 시행일자 · 필수 여부), 상태(노출 · 폐기), 링크(본문 · 요약 · 외부 약관), 법령 대응(재동의 · 대체동의 · 선동의), 고지와 동의 연동 정보로 영역을 나눠 설계했습니다. 그룹 매핑은 바뀔 때마다 이력이 남도록 그룹 ID를 올려 가며 기록해서, 나중에 "언제 누가 어떤 약관을 뺐는지" 추적할 수 있게 했습니다.</p>
         </section>
         <section id="s2" class="case-section">
