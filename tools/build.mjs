@@ -311,7 +311,7 @@ ${c.story.map((st, n) => `
     </div>
   </main>
 `;
-  return page({ title: `${c.title} — ${profile.name}`, description: c.summary, prefix: '../', body, current: 'work', script: false });
+  return page({ title: `${c.title} — ${profile.name}`, description: c.summary, prefix: '../', body, current: 'work', script: true });
 }
 
 // ---------- resume ----------

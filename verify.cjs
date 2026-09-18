@@ -60,6 +60,12 @@ const server = http.createServer((req, res) => {
     await page.screenshot({ path: path.join(output, 'mobile-first-screen.png') });
     await page.getByRole('link', { name: 'OpenFluxGate', exact: true }).click();
     assert.equal(await page.locator('h1').textContent(), 'OpenFluxGate');
+    await page.locator('.diagram-figure svg').click();
+    assert(await page.locator('dialog.lightbox').evaluate(d => d.open), 'lightbox opens on diagram click');
+    await page.locator('[data-zoom="+"]').click();
+    assert.equal(await page.locator('.lightbox-level').textContent(), '125%');
+    await page.keyboard.press('Escape');
+    assert(!(await page.locator('dialog.lightbox').evaluate(d => d.open)), 'lightbox closes on Escape');
     await page.getByRole('link', { name: /← 이전/ }).click();
     assert.equal(await page.locator('h1').textContent(), 'WAF 플랫폼');
     await page.locator('.breadcrumb:visible').first().click();
@@ -106,7 +112,7 @@ const server = http.createServer((req, res) => {
     await darkPage.screenshot({ path: path.join(output, 'desktop-dark-first-screen.png') });
     await dark.close();
     assert.deepEqual(errors, []);
-    console.log(JSON.stringify({ layoutChecks: checks, widths: [320,375,390,768,1024,1440], assertions: ['images', 'project navigation', '404 recovery', 'print trigger', 'clipboard success and denial', 'keyboard skip link', 'local links', 'no-JS home', 'file URL assets', 'dark mode screenshot', 'no page errors'], output }, null, 2));
+    console.log(JSON.stringify({ layoutChecks: checks, widths: [320,375,390,768,1024,1440], assertions: ['images', 'project navigation', '404 recovery', 'print trigger', 'clipboard success and denial', 'keyboard skip link', 'local links', 'no-JS home', 'file URL assets', 'dark mode screenshot', 'lightbox zoom', 'no page errors'], output }, null, 2));
   } finally {
     await browser.close();
     await new Promise(resolve => server.close(resolve));

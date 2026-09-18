@@ -319,6 +319,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 .follow-up { margin-top: 16px !important; padding: 16px 20px; border-radius: 12px; background: var(--surface); font-size: 15px !important; }
 .follow-up strong { display: block; color: var(--text); margin-bottom: 2px; }
 
+/* ---------- Lightbox ---------- */
+.zoomable { cursor: zoom-in; }
+.zoomable:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.lightbox { border: 0; padding: 0; margin: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; background: transparent; color: var(--text); }
+.lightbox::backdrop { background: rgb(10 12 16 / .82); backdrop-filter: blur(4px); }
+.lightbox-bar { position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; padding-right: max(16px, env(safe-area-inset-right)); background: color-mix(in srgb, var(--bg) 92%, transparent); border-bottom: 1px solid var(--line); z-index: 2; }
+.lightbox-title { font-size: 13px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lightbox-tools { display: flex; align-items: center; gap: 6px; flex: none; }
+.lightbox-tools button { height: 32px; min-width: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font-size: 15px; cursor: pointer; }
+.lightbox-tools button:hover { border-color: var(--accent); }
+.lightbox-level { font-size: 12px; color: var(--text-3); min-width: 42px; text-align: center; font-variant-numeric: tabular-nums; }
+.lightbox-stage { position: absolute; inset: 54px 0 0; overflow: auto; padding: 20px; -webkit-overflow-scrolling: touch; touch-action: pinch-zoom pan-x pan-y; display: flex; }
+.lightbox-content { margin: auto; flex: none; width: 100%; max-width: none; background: var(--bg); border-radius: 12px; padding: 12px; box-sizing: border-box; }
+.lightbox-content svg { width: 100%; height: auto; display: block; }
+.lightbox-content img { width: 100%; height: auto; display: block; border-radius: 8px; }
+@media (max-width: 640px) { .lightbox-title { display: none; } .lightbox-stage { padding: 10px; } }
+
 /* ---------- Detail pages (case study, resume) ---------- */
 .page { padding-block: 48px 88px; }
 .page .container { max-width: 800px; }
