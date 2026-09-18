@@ -424,8 +424,20 @@ export const openSource = [
     tags: ['Java', 'Redis', 'Spring Boot'],
   },
   {
+    title: 'WAF', role: 'Owner', lang: 'Java · Go · TypeScript',
+    text: 'Nginx + ModSecurity + OWASP CRS 기반 웹 방화벽. 위협 로그를 실시간 트랙과 분석 트랙(Kafka · ksqlDB · ClickHouse)으로 나눠 처리하고 대시보드로 보여주는 구조.',
+    href: 'https://github.com/rojae/waf',
+    tags: ['ModSecurity', 'Kafka', 'Spring Boot', 'Next.js'],
+  },
+  {
+    title: 'Auth Server', role: 'Owner', lang: 'Java',
+    text: 'Spring Authorization Server 기반 회원 · 인증 서비스. 코어 · OAuth2 · 소셜 로그인 · 통합 API 모듈로 나누고 Prometheus 모니터링을 붙인 개인 프로젝트. 현재는 서비스를 내린 상태.',
+    href: 'https://github.com/rojae/auth-server-be',
+    tags: ['Spring Security', 'OAuth2', 'Prometheus'],
+  },
+  {
     title: 'FluxMirror', role: 'Owner', lang: 'Rust',
-    text: 'Claude Code · Gemini CLI · Qwen Code의 도구 호출을 SQLite에 기록하고, 일간 · 주간 리포트와 로컬 대시보드로 보여주는 멀티 에이전트 활동 감사 도구.',
+    text: 'Claude Code · Gemini CLI · Qwen Code의 도구 호출을 SQLite에 기록하고 일간 · 주간 리포트로 보여주는 활동 감사 도구.',
     href: 'https://github.com/OpenFluxGate/fluxmirror',
     tags: ['Rust', 'SQLite', 'MCP'],
   },
@@ -434,12 +446,6 @@ export const openSource = [
     text: 'Git 브랜치 이름에서 이슈 키를 찾아 Jira · GitHub · GitLab 이슈를 바로 여는 IntelliJ 플러그인. JetBrains Marketplace 배포.',
     href: 'https://plugins.jetbrains.com/plugin/30083-issuelinker',
     tags: ['Kotlin', 'IntelliJ Platform'],
-  },
-  {
-    title: 'WAF', role: '개인 프로젝트', lang: 'Java · Go · TypeScript',
-    text: 'Nginx + ModSecurity + OWASP CRS 기반 웹 방화벽. 실시간 위협 트랙과 분석 트랙(Kafka · ksqlDB · ClickHouse)을 나눈 로그 처리 구조를 설계.',
-    href: 'https://github.com/rojae/waf',
-    tags: ['ModSecurity', 'Kafka', 'Spring Boot', 'Next.js'],
   },
 ];
 

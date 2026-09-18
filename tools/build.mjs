@@ -183,7 +183,7 @@ ${renderExperience('', { headingLevel: 3, compact: true })}
       <div class="os-grid">${osHtml}
       </div>
       <div class="contrib">
-        <h3 class="sub-title">업스트림 기여</h3>${contribHtml}
+        <h3 class="sub-title">OSS 기여</h3>${contribHtml}
       </div>
     </section>
 
