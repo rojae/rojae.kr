@@ -30,7 +30,7 @@ const server = http.createServer((req, res) => {
     let checks = 0;
     for (const width of [320, 375, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
-      for (const url of ['/index.html', '/work/affiliate.html', '/work/auth.html', '/work/platform.html', '/work/login.html', '/work/fluxgate.html', '/resume.html', '/missing-page']) {
+      for (const url of ['/index.html', '/work/affiliate.html', '/work/auth.html', '/work/terms.html', '/work/platform.html', '/work/login.html', '/work/waf.html', '/work/fluxgate.html', '/resume.html', '/missing-page']) {
         await page.goto(origin + url);
         await page.evaluate(() => document.querySelectorAll('img[loading=lazy]').forEach(img => { img.loading = 'eager'; }));
         for (const image of await page.locator('img').all()) {
@@ -61,7 +61,7 @@ const server = http.createServer((req, res) => {
     await page.getByRole('link', { name: 'OpenFluxGate', exact: true }).click();
     assert.equal(await page.locator('h1').textContent(), 'OpenFluxGate');
     await page.getByRole('link', { name: /← 이전/ }).click();
-    assert.equal(await page.locator('h1').textContent(), '로그인 시스템 Java/Spring 전환');
+    assert.equal(await page.locator('h1').textContent(), 'WAF 플랫폼');
     await page.locator('.breadcrumb:visible').first().click();
     assert.equal(new URL(page.url()).hash, '#work');
     await page.getByRole('link', { name: '전체 이력서' }).click();
@@ -83,7 +83,7 @@ const server = http.createServer((req, res) => {
     await page.goto(origin);
     await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(() => document.activeElement.textContent), '본문으로 이동');
-    for (const file of ['index.html', 'resume.html', 'work/affiliate.html', 'work/auth.html', 'work/platform.html', 'work/login.html', 'work/fluxgate.html']) {
+    for (const file of ['index.html', 'resume.html', 'work/affiliate.html', 'work/auth.html', 'work/terms.html', 'work/platform.html', 'work/login.html', 'work/waf.html', 'work/fluxgate.html']) {
       await page.goto(`${origin}/${file}`);
       const hrefs = await page.locator('a[href]').evaluateAll(links => links.map(a => a.href));
       for (const href of hrefs.filter(h => h.startsWith(origin))) {

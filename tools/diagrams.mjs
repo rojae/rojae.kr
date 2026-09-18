@@ -325,4 +325,58 @@ export function termsDiagram() {
   return wrap(W, H, '약관 관리 서비스 구조도: 약관 어드민에서 등록·갱신·에디터·그룹 매핑을 다루고, 약관 서비스가 약관 코드·버전·시행일자, 약관그룹·매핑과 이력, 법령 대응 필드, 고지·동의 연동을 관리한다. 메타는 RDB에, 본문 HTML과 에디터 데이터는 Blob 저장소에 둔다. 공개 약관 페이지는 최신 버전을 자동 선택해 보여주며, 사이트 접두사는 네이밍 전략으로 처리해 지마켓·옥션·ESMPLUS 세 사이트를 한 서비스로 다룬다.', p);
 }
 
-export const diagrams = { terms: termsDiagram, auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };
+export function wafDiagram() {
+  const W = 980, H = 640, p = [];
+  // 요청 → WAF
+  p.push(box(30, 40, 120, 48, { r: 10 })); p.push(text(90, 64, '클라이언트 요청', { size: 12.5, weight: 700 }));
+  p.push(box(200, 24, 230, 80, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(315, 48, 'Nginx + ModSecurity', { size: 14, weight: 800 })); p.push(text(315, 68, 'OWASP CRS · 이상 점수 모드', { size: 10.5, fill: 'var(--text-3)' })); p.push(text(315, 86, '정적 자원 화이트리스트 · 403 차단', { size: 10.5, fill: 'var(--text-3)' }));
+  p.push(arrow(150, 64, 200, 64));
+  p.push(box(480, 40, 120, 48, { r: 10 })); p.push(text(540, 64, '백엔드 앱', { size: 12.5, weight: 700 }));
+  p.push(arrow(430, 64, 480, 64));
+  p.push(text(455, 52, '통과', { size: 10, fill: 'var(--text-3)' }));
+  // 감사 로그 → Fluent Bit
+  p.push(store(650, 24, 140, 70, '감사 로그', 'JSON · RelevantOnly'));
+  p.push(arrow(430, 80, 650, 59));
+  p.push(box(830, 24, 120, 80, { r: 10, stroke: 'color-mix(in srgb, var(--accent) 45%, var(--line))' })); p.push(text(890, 48, 'Fluent Bit', { size: 13, weight: 700 })); p.push(text(890, 66, 'Lua 분류기', { size: 11, fill: 'var(--accent)', weight: 600 })); p.push(text(890, 84, '룰 ID · 이상 점수', { size: 10, fill: 'var(--text-3)' }));
+  p.push(arrow(790, 59, 830, 59));
+  // Kafka bus
+  p.push(box(200, 150, 750, 40, { fill: 'var(--accent-soft)', stroke: 'color-mix(in srgb, var(--accent) 35%, var(--line))', r: 10 }));
+  p.push(text(575, 170, 'Kafka  ·  waf-realtime-events / waf-logs / waf-alerts', { size: 12.5, weight: 700, fill: 'var(--accent)' }));
+  p.push(elbow(890, 104, 890, 150, { mx: 890 }));
+  // 실시간 트랙
+  p.push(label(340, 226, '실시간 트랙 — 지금 봐야 할 것'));
+  p.push(box(200, 240, 300, 220, { fill: 'var(--surface)', r: 12 }));
+  p.push(chip(216, 254, 268, 50, 'Go 실시간 처리기', '심각도 = 이상 점수 + 공격 유형 가중치 + 위험 IP'));
+  p.push(chip(216, 314, 268, 44, 'GeoIP 조회', 'MaxMind GeoLite2'));
+  p.push(store(240, 372, 220, 70, 'InfluxDB', '시계열 · 7일 보관'));
+  p.push(arrow(350, 190, 350, 254)); p.push(arrow(350, 304, 350, 314)); p.push(arrow(350, 358, 350, 372));
+  p.push(text(350, 452, 'SQLi · XSS · RCE · 이상 점수 ≥ 20', { size: 10, fill: 'var(--text-3)' }));
+  // 분석 트랙
+  p.push(label(770, 226, '분석 트랙 — 나중에 볼 것'));
+  p.push(box(560, 240, 390, 220, { fill: 'var(--surface)', r: 12 }));
+  p.push(chip(576, 254, 175, 50, 'ksqlDB', '1분 · 5분 윈도우 집계'));
+  p.push(chip(760, 254, 175, 50, 'Logstash', 'GeoIP · 필드 정규화'));
+  p.push(store(576, 320, 175, 64, 'Elasticsearch', '일 단위 인덱스'));
+  p.push(store(760, 320, 175, 64, 'ClickHouse', '스키마만 · 미연결'));
+  p.push(arrow(663, 190, 663, 254)); p.push(arrow(847, 190, 847, 254)); p.push(arrow(663, 304, 663, 320)); p.push(arrow(847, 304, 847, 320, { dash: '4 3' }));
+  p.push(text(663, 404, '빈도 · 차단율 · 상위 URI 알림', { size: 10, fill: 'var(--text-3)' }));
+  p.push(text(847, 404, '스캐너 노이즈는 여기로', { size: 10, fill: 'var(--text-3)' }));
+  p.push(elbow(576, 279, 500, 279, { mx: 540, dash: '4 3', head: true }));
+  p.push(text(538, 268, '집계 알림', { size: 9.5, fill: 'var(--text-3)' }));
+  // 대시보드 / 룰 관리
+  p.push(box(200, 500, 750, 120, { r: 14, stroke: 'var(--accent)', sw: 1.4 }));
+  p.push(text(575, 524, '대시보드 API (Spring Boot) + Next.js', { size: 14, weight: 800, fill: 'var(--accent)' }));
+  p.push(text(575, 542, 'InfluxDB · Elasticsearch를 읽어 SSE로 실시간 로그 · 메트릭 · 알림 스트리밍 · Google OAuth2 로그인', { size: 10.5, fill: 'var(--text-2)' }));
+  ['커스텀 룰 CRUD', '화이트리스트', '룰 파일 생성 + reload 신호', 'nginx -t 검증 후 무중단 reload'].forEach((t, i) => { p.push(box(218 + i * 182, 562, 168, 40, { r: 8 })); p.push(text(302 + i * 182, 582, t, { size: 11, weight: 600 })); });
+  p.push(arrow(350, 442, 350, 500)); p.push(arrow(663, 384, 663, 500));
+  p.push(`<path d="M950 582 L965 582 L965 64 L950 64" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>`);
+  p.push(text(962, 320, '룰 반영', { size: 10, fill: 'var(--accent)', weight: 600 }));
+  // 관측
+  p.push(chip(30, 254, 140, 44, 'Grafana', '실시간 메트릭'));
+  p.push(chip(30, 320, 140, 44, 'Kibana', '사후 조사'));
+  p.push(elbow(200, 407, 170, 276, { mx: 185, dash: '4 3' })); p.push(`<path d="M576 352 L540 352 L540 484 L185 484 L185 342 L170 342" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>`);
+  return wrap(W, H, 'WAF 플랫폼 구조도: 클라이언트 요청이 Nginx + ModSecurity를 거쳐 백엔드로 가고, 감사 로그를 Fluent Bit Lua 분류기가 Kafka로 보낸다. 실시간 트랙은 Go 처리기가 심각도와 GeoIP를 붙여 InfluxDB에 쓰고 Grafana가 본다. 분석 트랙은 ksqlDB 윈도우 집계와 Logstash를 거쳐 Elasticsearch에 색인되고 Kibana가 본다. ClickHouse는 스키마만 있고 연결되지 않았다. 대시보드 API와 Next.js가 SSE로 데이터를 보여주고, 커스텀 룰은 파일 생성과 reload 신호로 Nginx에 무중단 반영된다.', p);
+}
+
+export const diagrams = { waf: wafDiagram, terms: termsDiagram, auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WAF 플랫폼 — 오재성</title>
+  <meta name="description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="WAF 플랫폼 — 오재성">
+  <meta property="og:description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈"><svg class="logo-word" viewBox="5.1 -64.5 191.3 93.6" aria-hidden="true"><path d="M11.9 -2.7Q11.0 -3.4000000000000004 9.95 -4.5Q8.9 -5.6000000000000005 9.200000000000001 -7.6000000000000005Q9.5 -10.4 10.0 -12.55Q10.5 -14.700000000000001 11.200000000000001 -17.5Q11.4 -18.7 12.22872340425532 -21.6Q13.05744680851064 -24.5 14.27872340425532 -27.9Q15.5 -31.3 16.8 -34.35Q18.1 -37.4 19.1 -38.900000000000006Q20.200000000000003 -39.900000000000006 22.35 -39.900000000000006Q24.5 -39.900000000000006 25.3 -39.1Q26.400000000000002 -38.2 26.0 -35.95Q25.6 -33.7 23.200000000000003 -29.0Q22.700000000000003 -27.8 21.950000000000003 -26.450000000000003Q21.200000000000003 -25.1 20.900000000000002 -24.25Q20.6 -23.400000000000002 21.1 -23.5Q21.700000000000003 -24.6 23.300000000000004 -26.05Q24.900000000000002 -27.5 26.700000000000003 -28.9Q28.5 -30.3 30.1 -31.4Q31.700000000000003 -32.5 32.300000000000004 -32.800000000000004Q33.1 -33.300000000000004 34.150000000000006 -33.650000000000006Q35.2 -34.0 35.6 -34.2Q37.9 -35.300000000000004 40.650000000000006 -35.050000000000004Q43.400000000000006 -34.800000000000004 44.0 -33.300000000000004Q44.1 -32.5 44.650000000000006 -32.1Q45.2 -31.700000000000003 45.2 -31.700000000000003Q45.6 -31.700000000000003 45.650000000000006 -31.400000000000002Q45.7 -31.1 45.7 -31.1Q45.7 -30.400000000000002 44.35 -29.1Q43.0 -27.8 41.400000000000006 -27.700000000000003Q40.1 -27.6 39.1 -27.200000000000003Q38.1 -26.8 36.7 -26.200000000000003Q32.9 -24.0 29.85 -22.3Q26.8 -20.6 23.6 -17.1Q22.900000000000002 -16.3 22.1 -15.600000000000001Q21.3 -14.9 20.5 -13.600000000000001Q20.0 -13.100000000000001 19.5 -11.400000000000002Q19.0 -9.700000000000001 18.65 -8.15Q18.3 -6.6000000000000005 18.3 -6.300000000000001Q18.3 -6.300000000000001 18.0 -5.3500000000000005Q17.7 -4.4 17.0 -3.5Q15.8 -1.9000000000000001 14.65 -1.5Q13.5 -1.1 11.9 -2.7Z M52.8 -0.7000000000000001Q51.5 -0.7000000000000001 50.75 -1.2000000000000002Q50.0 -1.7000000000000002 48.9 -2.6Q47.0 -4.6000000000000005 45.85 -6.9Q44.7 -9.200000000000001 45.0 -10.9Q45.3 -11.700000000000001 45.25 -12.450000000000001Q45.2 -13.200000000000001 45.2 -13.200000000000001Q44.7 -13.700000000000001 44.900000000000006 -13.850000000000001Q45.1 -14.0 45.3 -14.4Q45.9 -14.4 45.7 -15.5Q45.5 -16.3 46.35 -18.950000000000003Q47.2 -21.6 48.7 -24.0Q49.3 -25.0 50.5 -26.65Q51.7 -28.3 53.150000000000006 -29.950000000000003Q54.6 -31.6 55.8 -32.6Q58.3 -34.7 60.45 -36.0Q62.6 -37.300000000000004 64.8 -37.800000000000004Q67.0 -38.300000000000004 69.35 -38.300000000000004Q71.7 -38.300000000000004 73.2 -36.7Q75.5 -35.7 76.45 -34.0Q77.4 -32.300000000000004 77.7 -29.6Q78.0 -26.6 77.1 -22.25Q76.2 -17.900000000000002 72.2 -12.200000000000001Q69.7 -8.6 67.30000000000001 -6.6Q64.9 -4.6000000000000005 62.0 -2.9000000000000004Q59.900000000000006 -1.5 57.5 -1.2Q55.1 -0.9 52.8 -0.7000000000000001ZM63.0 -12.9Q65.2 -14.8 66.15 -17.1Q67.1 -19.400000000000002 68.2 -22.5Q68.6 -23.1 68.75 -24.5Q68.9 -25.900000000000002 68.80000000000001 -27.25Q68.7 -28.6 68.1 -28.8Q67.2 -29.5 66.30000000000001 -29.15Q65.4 -28.8 64.0 -27.8Q61.0 -25.3 58.45 -22.05Q55.900000000000006 -18.8 54.900000000000006 -14.100000000000001Q54.6 -11.600000000000001 55.45 -10.350000000000001Q56.3 -9.1 58.25 -9.65Q60.2 -10.200000000000001 63.0 -12.9Z M78.2 20.900000000000002Q76.0 23.1 72.55000000000001 23.05Q69.10000000000001 23.0 66.7 20.5Q64.4 17.3 63.550000000000004 14.350000000000001Q62.7 11.4 63.2 9.5Q63.7 7.6000000000000005 65.3 7.6000000000000005Q65.8 7.6000000000000005 66.75 8.0Q67.7 8.4 68.5 8.978947368421053Q69.3 9.557894736842107 69.3 10.4Q69.3 11.9 69.6 13.0Q69.9 14.100000000000001 71.2 14.3Q72.3 14.700000000000001 73.45 14.05Q74.60000000000001 13.4 75.7 11.600000000000001Q76.7 10.3 77.9 7.5Q79.10000000000001 4.7 80.30000000000001 1.65Q81.5 -1.4000000000000001 82.2 -3.3000000000000003Q83.4 -7.4 84.10000000000001 -11.65Q84.80000000000001 -15.9 85.80000000000001 -20.8Q86.2 -23.5 86.75 -25.450000000000003Q87.30000000000001 -27.400000000000002 87.30000000000001 -27.8Q87.30000000000001 -28.200000000000003 87.4 -29.450000000000003Q87.5 -30.700000000000003 88.0 -31.700000000000003Q88.0 -33.2 88.45 -35.1Q88.9 -37.0 88.9 -37.4Q89.2 -37.7 90.15 -37.45Q91.10000000000001 -37.2 92.15 -36.7Q93.2 -36.2 93.7 -35.7Q94.5 -34.9 95.1 -33.95Q95.7 -33.0 95.95 -30.950000000000003Q96.2 -28.900000000000002 95.7 -24.700000000000003Q95.7 -24.1 95.4 -22.25Q95.10000000000001 -20.400000000000002 94.60000000000001 -18.1Q94.10000000000001 -15.8 93.60000000000001 -13.65Q93.10000000000001 -11.5 92.80000000000001 -10.100000000000001Q92.4 -8.6 91.9 -6.8Q91.4 -5.0 91.30000000000001 -4.3Q91.2 -3.7 90.6 -1.9500000000000002Q90.0 -0.2 89.35 1.5Q88.7 3.2 88.60000000000001 3.9000000000000004Q88.5 4.3 88.05000000000001 5.800000000000001Q87.60000000000001 7.300000000000001 86.2 10.4Q85.7 11.600000000000001 84.1 13.850000000000001Q82.5 16.1 80.80000000000001 18.150000000000002Q79.10000000000001 20.200000000000003 78.2 20.900000000000002ZM93.0 -47.6Q91.9 -48.900000000000006 92.35000000000001 -51.800000000000004Q92.80000000000001 -54.7 94.4 -56.800000000000004Q95.7 -58.300000000000004 97.95 -58.5Q100.2 -58.7 101.5 -57.6Q102.60000000000001 -55.900000000000006 102.9 -54.2Q103.2 -52.5 102.10000000000001 -50.900000000000006Q99.60000000000001 -48.1 96.95000000000002 -47.3Q94.30000000000001 -46.5 93.0 -47.6Z M105.4 -2.1Q105.0 -2.9000000000000004 103.65 -3.7Q102.3 -4.5 102.3 -4.9Q102.3 -5.300000000000001 101.85 -6.15Q101.4 -7.0 101.0 -7.4Q100.5 -8.0 101.3 -10.350000000000001Q102.1 -12.700000000000001 103.69999999999999 -16.1Q105.3 -19.5 107.2 -23.0Q108.0 -23.8 108.8 -25.1Q109.6 -26.400000000000002 110.0 -26.8Q110.0 -27.200000000000003 110.3 -27.550000000000004Q110.6 -27.900000000000002 111.0 -27.900000000000002L111.8 -29.5Q112.0 -29.900000000000002 113.03085106382979 -31.1Q114.06170212765957 -32.300000000000004 115.58085106382978 -33.75Q117.1 -35.2 118.63749999999999 -36.509090909090915Q120.175 -37.81818181818182 121.2 -38.400000000000006Q123.3 -39.800000000000004 125.55000000000001 -39.7Q127.80000000000001 -39.6 129.4 -38.300000000000004Q129.7 -38.0 130.75 -37.1Q131.8 -36.2 133.15 -35.1Q134.5 -34.0 135.5 -33.1L139.2 -29.8L137.45806451612904 -24.8Q136.2 -20.8 136.825 -17.8Q137.45 -14.8 138.7 -12.600000000000001Q139.2 -11.5 140.05 -10.9Q140.9 -10.3 142.3 -10.100000000000001Q143.1 -10.0 143.8 -9.5Q144.5 -9.0 144.5 -7.9Q144.5 -5.5 143.65 -4.45Q142.8 -3.4000000000000004 141.8 -3.2Q138.5 -2.8000000000000003 135.5 -3.9000000000000004Q132.5 -5.0 130.1 -9.600000000000001Q129.7 -10.200000000000001 129.05 -11.850000000000001Q128.4 -13.5 128.3 -14.0Q127.9 -13.5 127.25 -12.75Q126.6 -12.0 126.0 -11.4Q118.9 -4.2 113.82518248175182 -2.0500000000000003Q108.75036496350364 0.1 105.4 -2.1ZM110.9 -10.4Q111.6 -10.3 113.1 -11.15Q114.6 -12.0 117.1 -14.0Q120.5 -16.900000000000002 122.7 -18.800000000000004Q124.9 -20.700000000000003 127.0 -23.700000000000003L129.2 -27.3Q128.2 -29.6 127.39999999999999 -30.3Q126.6 -31.0 125.80000000000001 -31.0Q124.5 -31.0 122.7 -29.35Q120.9 -27.700000000000003 118.65 -24.550000000000004Q116.4 -21.400000000000002 113.6 -16.7Q112.3 -14.5 111.6 -12.45Q110.9 -10.4 110.9 -10.4Z M166.9 -2.0Q163.9 -0.30000000000000004 160.55 -0.05000000000000002Q157.2 0.2 154.3 -0.9500000000000001Q151.4 -2.1 149.6 -4.4Q148.6 -5.7 147.7 -8.55Q146.79999999999998 -11.4 147.4 -16.3Q148.0 -20.900000000000002 150.25 -25.6Q152.5 -30.3 155.8 -33.9Q159.1 -37.5 163.0 -38.800000000000004Q164.4 -39.300000000000004 165.85000000000002 -39.550000000000004Q167.3 -39.800000000000004 169.7 -39.6Q172.0 -39.300000000000004 173.8 -38.45Q175.6 -37.6 176.4 -36.6Q178.0 -35.0 178.5 -33.5Q179.0 -32.0 178.9 -30.6Q178.4 -27.400000000000002 176.05 -23.700000000000003Q173.7 -20.0 169.5 -18.2Q167.8 -17.5 165.5 -17.3Q163.2 -17.1 159.2 -17.900000000000002Q156.8 -18.400000000000002 156.05 -17.400000000000002Q155.29999999999998 -16.400000000000002 155.4 -13.5Q155.6 -11.700000000000001 156.25 -10.350000000000001Q156.9 -9.0 158.7 -8.5Q161.0 -8.1 162.0 -8.45Q163.0 -8.8 164.5 -9.5Q165.3 -10.0 166.05 -10.600000000000001Q166.8 -11.200000000000001 167.55 -11.8Q168.3 -12.4 168.8 -12.700000000000001Q169.3 -13.100000000000001 169.8 -13.200000000000001Q170.3 -13.3 170.8 -13.3Q171.9 -13.200000000000001 172.9 -12.100000000000001Q173.9 -11.0 174.2 -10.0Q174.2 -9.200000000000001 173.2 -7.750000000000001Q172.2 -6.300000000000001 170.55 -4.75Q168.9 -3.2 166.9 -2.0ZM165.6 -24.3Q166.3 -24.6 167.65 -25.700000000000003Q169.0 -26.8 170.1 -28.05Q171.2 -29.3 171.2 -30.0Q171.2 -31.1 169.75 -31.900000000000002Q168.3 -32.7 166.0 -32.2Q165.2 -32.0 164.1 -31.1Q163.0 -30.200000000000003 161.9 -29.050000000000004Q160.8 -27.900000000000002 160.0 -26.85Q159.2 -25.8 158.9 -25.200000000000003Q159.3 -24.700000000000003 160.5 -24.400000000000002Q161.7 -24.1 163.14999999999998 -24.1Q164.6 -24.1 165.6 -24.3Z" fill="var(--text)"/><circle cx="186.9" cy="-5.5" r="5.5" fill="var(--accent)"/></svg></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">지금 볼 것과 나중에 볼 것</a></li><li><a href="#s2">룰을 화면에서 고치면 Nginx에 반영되기까지</a></li><li><a href="#s3">검증한 것</a></li><li><a href="#s4">직접 분석해 보고 남기는 아쉬운 점</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">오픈소스</span><span>Nginx + ModSecurity 위에 얹은 이중 트랙 로그 파이프라인</span></div>
+          <h1>WAF 플랫폼</h1>
+          <p class="page-lead">ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2025.08 — 2025.12</dd></div>
+          <div><dt>팀</dt><dd>개인 프로젝트</dd></div>
+          <div><dt>역할</dt><dd>설계 · 개발 (Nginx · Go · Java · Next.js · k8s)</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Nginx</li><li>ModSecurity · OWASP CRS</li><li>Fluent Bit · Lua</li><li>Kafka</li><li>ksqlDB</li><li>Go</li><li>InfluxDB</li><li>Logstash</li><li>Elasticsearch</li><li>Spring Boot 3.2</li><li>Next.js 15</li><li>Kubernetes</li></ul></dd></div>
+        </dl>
+        <div class="page-links"><a class="btn" href="https://github.com/rojae/waf" target="_blank" rel="noopener noreferrer">GitHub 저장소 <span aria-hidden="true">↗</span></a></div>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 640" role="img" aria-label="WAF 플랫폼 구조도: 클라이언트 요청이 Nginx + ModSecurity를 거쳐 백엔드로 가고, 감사 로그를 Fluent Bit Lua 분류기가 Kafka로 보낸다. 실시간 트랙은 Go 처리기가 심각도와 GeoIP를 붙여 InfluxDB에 쓰고 Grafana가 본다. 분석 트랙은 ksqlDB 윈도우 집계와 Logstash를 거쳐 Elasticsearch에 색인되고 Kibana가 본다. ClickHouse는 스키마만 있고 연결되지 않았다. 대시보드 API와 Next.js가 SSE로 데이터를 보여주고, 커스텀 룰은 파일 생성과 reload 신호로 Nginx에 무중단 반영된다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="30" y="40" width="120" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="90" y="64" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">클라이언트 요청</text>
+  <rect x="200" y="24" width="230" height="80" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="315" y="48" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Nginx + ModSecurity</text>
+  <text x="315" y="68" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">OWASP CRS · 이상 점수 모드</text>
+  <text x="315" y="86" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">정적 자원 화이트리스트 · 403 차단</text>
+  <path d="M150 64 L200 64" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="480" y="40" width="120" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="540" y="64" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">백엔드 앱</text>
+  <path d="M430 64 L480 64" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="455" y="52" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">통과</text>
+  
+  <path d="M650 32 a70 8 0 0 1 140 0 v54 a70 8 0 0 1 -140 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M650 32 a70 8 0 0 0 140 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="720" y="61" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">감사 로그</text>
+  <text x="720" y="77" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">JSON · RelevantOnly</text>
+  <path d="M430 80 L650 59" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="830" y="24" width="120" height="80" rx="10" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/>
+  <text x="890" y="48" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Fluent Bit</text>
+  <text x="890" y="66" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Lua 분류기</text>
+  <text x="890" y="84" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">룰 ID · 이상 점수</text>
+  <path d="M790 59 L830 59" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="200" y="150" width="750" height="40" rx="10" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="575" y="170" font-size="12.5" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Kafka  ·  waf-realtime-events / waf-logs / waf-alerts</text>
+  <path d="M890 104 L890 104 L890 150 L890 150" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="340" y="226" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">실시간 트랙 — 지금 봐야 할 것</text>
+  <rect x="200" y="240" width="300" height="220" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  
+  <rect x="216" y="254" width="268" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="350" y="271" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Go 실시간 처리기</text>
+  <text x="350" y="290" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">심각도 = 이상 점수 + 공격 유형 가중치 + 위험 IP</text>
+  
+  <rect x="216" y="314" width="268" height="44" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="350" y="331" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">GeoIP 조회</text>
+  <text x="350" y="350" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MaxMind GeoLite2</text>
+  
+  <path d="M240 380 a110 8 0 0 1 220 0 v54 a110 8 0 0 1 -220 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M240 380 a110 8 0 0 0 220 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="350" y="409" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">InfluxDB</text>
+  <text x="350" y="425" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">시계열 · 7일 보관</text>
+  <path d="M350 190 L350 254" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M350 304 L350 314" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M350 358 L350 372" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="350" y="452" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">SQLi · XSS · RCE · 이상 점수 ≥ 20</text>
+  <text x="770" y="226" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">분석 트랙 — 나중에 볼 것</text>
+  <rect x="560" y="240" width="390" height="220" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  
+  <rect x="576" y="254" width="175" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="663.5" y="271" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ksqlDB</text>
+  <text x="663.5" y="290" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">1분 · 5분 윈도우 집계</text>
+  
+  <rect x="760" y="254" width="175" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="847.5" y="271" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Logstash</text>
+  <text x="847.5" y="290" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">GeoIP · 필드 정규화</text>
+  
+  <path d="M576 328 a87.5 8 0 0 1 175 0 v48 a87.5 8 0 0 1 -175 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M576 328 a87.5 8 0 0 0 175 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="663.5" y="354" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Elasticsearch</text>
+  <text x="663.5" y="370" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">일 단위 인덱스</text>
+  
+  <path d="M760 328 a87.5 8 0 0 1 175 0 v48 a87.5 8 0 0 1 -175 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M760 328 a87.5 8 0 0 0 175 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="847.5" y="354" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ClickHouse</text>
+  <text x="847.5" y="370" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">스키마만 · 미연결</text>
+  <path d="M663 190 L663 254" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M847 190 L847 254" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M663 304 L663 320" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M847 304 L847 320" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <text x="663" y="404" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">빈도 · 차단율 · 상위 URI 알림</text>
+  <text x="847" y="404" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">스캐너 노이즈는 여기로</text>
+  <path d="M576 279 L540 279 L540 279 L500 279" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <text x="538" y="268" font-size="9.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">집계 알림</text>
+  <rect x="200" y="500" width="750" height="120" rx="14" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text x="575" y="524" font-size="14" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">대시보드 API (Spring Boot) + Next.js</text>
+  <text x="575" y="542" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">InfluxDB · Elasticsearch를 읽어 SSE로 실시간 로그 · 메트릭 · 알림 스트리밍 · Google OAuth2 로그인</text>
+  <rect x="218" y="562" width="168" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="302" y="582" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">커스텀 룰 CRUD</text>
+  <rect x="400" y="562" width="168" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="484" y="582" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">화이트리스트</text>
+  <rect x="582" y="562" width="168" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="666" y="582" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">룰 파일 생성 + reload 신호</text>
+  <rect x="764" y="562" width="168" height="40" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="848" y="582" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">nginx -t 검증 후 무중단 reload</text>
+  <path d="M350 442 L350 500" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M663 384 L663 500" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M950 582 L965 582 L965 64 L950 64" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="962" y="320" font-size="10" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">룰 반영</text>
+  
+  <rect x="30" y="254" width="140" height="44" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="100" y="271" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Grafana</text>
+  <text x="100" y="290" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">실시간 메트릭</text>
+  
+  <rect x="30" y="320" width="140" height="44" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="100" y="337" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Kibana</text>
+  <text x="100" y="356" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사후 조사</text>
+  <path d="M200 407 L185 407 L185 276 L170 276" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <path d="M576 352 L540 352 L540 484 L185 484 L185 342 L170 342" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+</svg><figcaption>실제 저장소의 설정과 코드를 읽고 그린 구조도입니다. 점선은 코드에 자리만 있고 아직 연결되지 않은 경로입니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>차단 엔진</strong><span>Nginx + ModSecurity + OWASP CRS, 정적 자원 화이트리스트</span></li><li><strong>분류기</strong><span>Fluent Bit Lua — 룰 ID · 이상 점수로 트랙 결정</span></li><li><strong>실시간 트랙</strong><span>Go 처리기 → 심각도 산정 · GeoIP → InfluxDB → Grafana</span></li><li><strong>분석 트랙</strong><span>ksqlDB 윈도우 집계 · Logstash → Elasticsearch → Kibana</span></li><li><strong>대시보드 · 룰 관리</strong><span>Spring Boot API(SSE) + Next.js, 커스텀 룰 CRUD · 화이트리스트</span></li><li><strong>배포</strong><span>Docker Compose와 Kubernetes 매니페스트 (dev · staging · prod)</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>왜 만들었나</h2>
+          <p>회사에서 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금해졌습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.</p>
+          <p>그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 64개 커밋을 혼자 쌓았습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>지금 볼 것과 나중에 볼 것</h2>
+          <p>ModSecurity는 감사 로그를 JSON으로 남깁니다(SecAuditLogFormat JSON, RelevantOnly). Fluent Bit이 이 파일을 tail 하면서 Lua 스크립트로 이벤트를 분류합니다. SQL 인젝션(942xxx) · XSS(941xxx) · RCE(932xxx) 룰이 걸렸거나 CRS 이상 점수가 20 이상이면 실시간 트랙, 스캐너 탐지(913xxx)는 노이즈로 보고 분석 트랙으로 보냅니다.</p>
+          <p>실시간 트랙은 Go로 쓴 처리기가 Kafka에서 읽어 심각도를 다시 계산하고(이상 점수 + 공격 유형 가중치 + 위험 IP), GeoIP를 붙여 InfluxDB에 씁니다. Grafana와 대시보드가 이 데이터를 봅니다. 분석 트랙은 ksqlDB가 1분 · 5분 텀블링 윈도우로 "한 IP에서 분당 N건 이상", "차단율 30% 초과", "가장 많이 공격받은 URI" 같은 집계 스트림을 만들고, Logstash가 GeoIP를 붙여 Elasticsearch에 일 단위 인덱스로 색인합니다. Kibana에서 사후 조사를 합니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>룰을 화면에서 고치면 Nginx에 반영되기까지</h2>
+          <p>대시보드 API(Spring Boot)에서 커스텀 룰을 만들면 메모리에 두었다가 주기적으로 ModSecurity 룰 파일로 써 내려가고, 리로드 신호 파일을 남깁니다. Nginx 컨테이너의 시작 스크립트가 이 신호를 감시하다가 nginx -t로 설정을 검증한 뒤 graceful reload를 겁니다. 잘못된 룰이 들어와도 검증에서 걸려 기존 설정이 유지됩니다.</p>
+          <p>프론트는 Next.js 15 + React 19로 대시보드, 실시간 로그(SSE), 알림, 룰 · 화이트리스트 관리 화면을 두었고, 로그인은 Google OAuth2와 JWT로 붙였습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>검증한 것</h2>
+          <p>Kubernetes에 올린 상태에서 SQL 인젝션, XSS, 경로 조작, 명령어 주입 요청이 403 또는 연결 차단으로 막히고 정상 요청은 통과하는 것을 curl로 확인해 결과를 문서로 남겼습니다. 국가별 IP를 흉내 낸 공격 시뮬레이션 스크립트로 파이프라인 끝까지 이벤트가 흐르는 것도 확인했습니다. 배포는 네임스페이스 4개, Deployment 13개, StatefulSet 3개, NetworkPolicy와 PodMonitor를 포함한 매니페스트로 dev · staging · prod 환경을 나눴습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>직접 분석해 보고 남기는 아쉬운 점</h2>
+          <p>이 페이지를 쓰기 위해 저장소를 다시 읽으면서 README와 코드 사이의 간격을 몇 개 찾았습니다. README의 "production-ready", "초당 10,000+ 요청", "Helm 차트 · 오퍼레이터", "RBAC · 컴플라이언스"는 코드로 뒷받침되지 않습니다. 부하 테스트 기록이 없고, Helm 차트는 없으며(매니페스트와 셸 스크립트만 있음), 권한은 Google 로그인 여부만 확인할 뿐 역할 구분이 없습니다.</p>
+          <p>알림은 콘솔 출력에서 멈춰 있습니다. Slack · PagerDuty 전송은 주석 처리된 자리만 있고, 위험 IP 목록은 Go 코드에 하드코딩되어 있습니다. ClickHouse는 테이블 스키마와 컨테이너 정의까지 있지만 실제로 데이터를 쓰는 경로가 없어 OLAP 트랙은 이름만 있는 상태입니다. 자동화된 테스트와 CI가 없고, 테스트용 컨트롤러가 운영 코드에 함께 들어 있으며, 기본 토큰이 코드에 남아 있습니다.</p>
+          <p>그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 학습 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">WAF에서 어려운 건 막는 규칙이 아니라, 막은 뒤에 남는 신호를 사람이 볼 수 있는 크기로 줄이는 일이었습니다. 그리고 문서가 코드보다 앞서가면 그 간격이 곧 신뢰의 문제가 된다는 것도, 이번에 제 프로젝트를 남의 눈으로 다시 읽으며 배웠습니다.</blockquote>
+        </section>
+
+        
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="login.html"><span>← 이전</span><strong>로그인 시스템 Java/Spring 전환</strong></a>
+          <a class="next" href="fluxgate.html"><span>다음 →</span><strong>OpenFluxGate</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
