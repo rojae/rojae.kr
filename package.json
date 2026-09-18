@@ -1,0 +1,14 @@
+{
+  "name": "rojae-site",
+  "private": true,
+  "type": "module",
+  "description": "rojae.kr — 오재성 개인 사이트. 문구는 tools/content.mjs 한 곳에서 관리합니다.",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "pdf": "node tools/make-resume-pdf.mjs",
+    "verify": "node verify.cjs",
+    "logo": "python3 tools/make-logo.py",
+    "publish": "node tools/publish.mjs",
+    "help": "node tools/publish.mjs --help"
+  }
+}

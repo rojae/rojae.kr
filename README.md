@@ -2,6 +2,15 @@
 
 오재성의 개인 사이트. 빌드 도구나 외부 의존성 없이 HTML · CSS · JavaScript로만 구성했고, GitHub Pages로 배포합니다.
 
+## 빠른 사용법
+
+```bash
+node tools/publish.mjs --help              # 전체 사용법
+node tools/publish.mjs -m "약관 문구 수정"   # 빌드 → PDF → 검증 → 커밋 → 푸시 (한 번에)
+```
+
+문구는 `tools/content.mjs` 한 곳에서만 고칩니다. 고친 뒤 위 명령 한 줄이면 사이트(rojae.kr)와 이력서 PDF 4종이 함께 갱신됩니다.
+
 ## 구조
 
 - `index.html` — 홈
