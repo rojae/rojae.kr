@@ -311,6 +311,56 @@ export const caseStudies = [
     internal: true,
   },
   {
+    key: 'edoc',
+    diagram: 'edoc',
+    badge: '더존비즈온',
+    title: '전자문서 유통 서비스',
+    sub: 'KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지',
+    period: '2021.09 — 2022.09',
+    team: '2인 팀 (팀장 + 본인)',
+    role: '설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당',
+    stack: ['Java 8', 'Spring', 'MyBatis', 'Tomcat', 'Redis Sentinel', 'MariaDB Galera', 'MaxScale', 'HAProxy · keepalived', 'Nginx', 'Node.js · PM2', 'GitLab · Nexus · Jenkins'],
+    summary: '법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 새로 만들었습니다. 서버 22대의 인프라 구성부터 API · 관리자 · 배치 서비스, KISA 인증 심사와 가오픈까지, 2인 팀에서 거의 모든 부분을 직접 만들었습니다.',
+    cardPoints: [
+      'HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 이중화 인프라 구성',
+      'API · 관리자 · 배치 서비스와 KISA 연동, 키 서버 개발',
+      'KISA 전자문서유통중계자 인증 심사 적합 (2022.07) · 가오픈 (2022.09)',
+    ],
+    features: [
+      ['이중화 인프라', 'HAProxy + keepalived VIP 4쌍, WEB 3 · WAS 2 · AUTH 2 · KEY 2 · DB 3'],
+      ['API 서비스', '전자문서 등록 · 열람 · 유통정보 전달, KISA VPN 연동'],
+      ['인증 · 키 서버', 'Redis 토큰 인증 서버(Sentinel 이중화), JKS 기반 키 서버'],
+      ['관리자 서비스', '권한 분리 로그인, 이용자 · 공인전자주소 · 송수신 모니터링 · 유통 증명서'],
+      ['배치 서비스', '만료 문서 삭제, 등록 · 열람 · 탈퇴 재처리, 재암호화, 로그 정리'],
+      ['배포', 'GitLab · Nexus · Jenkins, Node 프론트는 PM2 무중단 + Nginx 로드밸런싱'],
+    ],
+    flow: { rows: [], caption: '운영 환경 서버 구성을 노트 기준으로 다시 그린 것입니다. 서버 이름과 주소는 뺐습니다.' },
+    story: [
+      { heading: '둘이서 시작한 신규 서비스', paragraphs: [
+        '전자문서유통중계자는 KISA 주관으로, 문서 자체가 법적 효력을 갖도록 유통정보와 열람 일시를 KISA에 전달하는 서비스입니다. 종이 문서를 전자화하는 전자고지 성격이라 개인 플랫폼은 이미 큰 회사들이 차지하고 있었고, 회사는 법인 간 유통에 집중하기로 했습니다. 다만 법인 유통 사례가 거의 없어 KISA도 명확한 답을 주지 못하는 구간이 있었습니다.',
+        '담당 개발자도 팀도 없는 상태에서 시작해, 결국 팀장님과 저 두 명이 남았습니다. 팀장님은 CS 개발 출신이라 설계와 인프라, 서비스 개발은 거의 전부 제가 맡게 됐습니다. 입사 만 1년을 갓 넘긴 때였습니다.',
+      ] },
+      { heading: '인프라를 직접 세우다', paragraphs: [
+        '운영 환경은 서버 22대로 구성했습니다. 앞단은 HAProxy + keepalived로 VIP를 잡아 WEB · WAS · AUTH · KEY 네 구간을 각각 2대씩 이중화했고, WEB은 Nginx 3대(그중 1대는 별도 도메인용), WAS는 Tomcat 2대에 API · 배치 · 관리자 서비스를 포트별로 나눠 올렸습니다. 인증 서버 2대에는 Redis 마스터 · 복제본과 Sentinel 3개(홀수 유지)를 두어 세션 토큰 저장소를 이중화했습니다.',
+        '데이터베이스는 MariaDB Galera 클러스터 3대 앞에 MaxScale 2대 + keepalived를 두어 읽기 · 쓰기 분산과 장애 전환을 맡겼습니다. 키 서버 2대는 Apache Commons Daemon과 JKS로 암호화 키를 관리합니다. 서버별 초기 설정 파일, 포트 정리, 로그 위치, SSL 인증서 갱신 절차까지 문서로 남겨 이후 운영자가 따라갈 수 있게 했습니다.',
+      ] },
+      { heading: 'API · 관리자 · 배치', paragraphs: [
+        'API 서버는 전자문서 등록 · 열람과 KISA로의 유통정보 전달을 담당합니다. KISA와는 VPN으로 연결해 통신하고, 명세서를 직접 정리했습니다. 관리자 서비스는 권한을 분리한 로그인, 이용자 · 관리자 정보, 공인전자주소와 탈퇴 이력, 이용자 · 관리자 활동과 KISA 송수신 모니터링, 유통 증명서 조회, 오류 알림을 제공합니다.',
+        '배치 서비스는 운영에서 생기는 뒷정리를 맡습니다. 만료 문서 삭제, 회원가입 · 문서 등록 · 열람 등록 · 탈퇴 · 이름 변경의 재처리, 송수신 내역과 로그 정리, 그리고 키 교체에 따른 재암호화까지 배치 명세서를 만들어 구현했습니다.',
+      ] },
+      { heading: 'KISA 심사, 두 번째에 적합', paragraphs: [
+        '전자문서유통중계자 인증 심사는 이틀에 걸쳐 진행됩니다. 1차 심사에서는 부적합을 받았고, 지적 사항을 보완해 2022년 7월 2차 심사에서 적합 판정을 받았습니다. 심사 직후 서버별 설정 파일을 그대로 보존해 두어, 심사받은 구성과 운영 구성이 달라지지 않도록 했습니다. 방화벽 정책 신청, 패키지 설치를 위한 인터넷 개방 요청 같은 기안도 직접 올렸습니다.',
+        '2022년 9월 6일 가오픈했고, 이후 회사의 비즈니스 플랫폼과 연동했습니다.',
+      ] },
+      { heading: '배포는 자동으로, 프론트는 무중단으로', paragraphs: [
+        '개발 환경에는 GitLab · Nexus · Jenkins를 두고, API · 관리자 · 배치 서버가 같은 절차(브랜치 매개변수 → Maven 빌드 → 배포 스크립트)로 배포되게 했습니다. 운영 배포 스크립트는 기존 war를 날짜별로 백업한 뒤 교체합니다. Node.js 프론트는 PM2 fork 모드로 인스턴스 4개를 띄우고 Nginx가 ip_hash로 분산하며, Jenkins가 소스를 옮기고 pm2 reload를 호출해 무중단으로 바꿉니다.',
+      ] },
+    ],
+    closing: '만 1년 남짓의 개발자에게 인프라부터 심사까지 맡긴 건 무리한 일이었지만, 덕분에 숲을 보는 눈이 생겼습니다. 서비스가 동작하려면 코드 바깥에 무엇이 있어야 하는지, 그리고 그것을 다음 사람에게 넘기려면 무엇을 적어 둬야 하는지를 이때 배웠습니다. 퇴사 전 남긴 인수인계 문서가 50개가 넘습니다.',
+    links: [['보도자료', 'https://www.newswire.co.kr/newsRead.php?no=949401']],
+    internal: true,
+  },
+  {
     key: 'waf',
     diagram: 'waf',
     badge: '오픈소스',
@@ -500,13 +550,11 @@ export const experience = [
     team: '전자금융서비스 Unit',
     period: '2020.07 — 2022.09',
     projects: [
-      { title: '공인전자문서 중계 서비스 구축', sub: '신규 서비스 론칭', period: '2021.09 — 2022.08', team: '2~3인 팀', role: '개발 · 운영 환경 구축',
+      { ref: 'edoc', period: '2021.09 — 2022.09',
         points: [
-          '법적 효력을 갖는 전자문서 중계 서비스의 API, Redis 토큰 기반 인증 서버, 관리자 기능 개발',
-          '리눅스 서버 이중화와 GitLab · Jenkins 배포 파이프라인 등 운영 환경 구축',
-          '서비스 심사를 위한 증적자료 작성 · 제출',
-        ], tags: ['Spring', 'MyBatis', 'React', 'Redis', 'MariaDB', 'Nginx', 'HAProxy', 'Jenkins'],
-        link: ['보도자료', 'https://www.newswire.co.kr/newsRead.php?no=949401'] },
+          'HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성',
+          'API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈',
+        ] },
       { title: 'PG 결제 서비스 개발 · 운영', sub: '상점 관리자 개편', period: '2020.07 — 2021.09', team: '2~3인 팀', role: '개발 · 운영',
         points: [
           '카드 · 계좌이체 · 가상계좌 · 휴대폰 결제를 다루는 PG 서비스 개발 · 운영',

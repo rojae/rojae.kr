@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>전자문서 유통 서비스 — 오재성</title>
+  <meta name="description" content="법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 새로 만들었습니다. 서버 22대의 인프라 구성부터 API · 관리자 · 배치 서비스, KISA 인증 심사와 가오픈까지, 2인 팀에서 거의 모든 부분을 직접 만들었습니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="전자문서 유통 서비스 — 오재성">
+  <meta property="og:description" content="법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 새로 만들었습니다. 서버 22대의 인프라 구성부터 API · 관리자 · 배치 서비스, KISA 인증 심사와 가오픈까지, 2인 팀에서 거의 모든 부분을 직접 만들었습니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈"><svg class="logo-word" viewBox="5.1 -64.5 191.3 93.6" aria-hidden="true"><path d="M11.9 -2.7Q11.0 -3.4000000000000004 9.95 -4.5Q8.9 -5.6000000000000005 9.200000000000001 -7.6000000000000005Q9.5 -10.4 10.0 -12.55Q10.5 -14.700000000000001 11.200000000000001 -17.5Q11.4 -18.7 12.22872340425532 -21.6Q13.05744680851064 -24.5 14.27872340425532 -27.9Q15.5 -31.3 16.8 -34.35Q18.1 -37.4 19.1 -38.900000000000006Q20.200000000000003 -39.900000000000006 22.35 -39.900000000000006Q24.5 -39.900000000000006 25.3 -39.1Q26.400000000000002 -38.2 26.0 -35.95Q25.6 -33.7 23.200000000000003 -29.0Q22.700000000000003 -27.8 21.950000000000003 -26.450000000000003Q21.200000000000003 -25.1 20.900000000000002 -24.25Q20.6 -23.400000000000002 21.1 -23.5Q21.700000000000003 -24.6 23.300000000000004 -26.05Q24.900000000000002 -27.5 26.700000000000003 -28.9Q28.5 -30.3 30.1 -31.4Q31.700000000000003 -32.5 32.300000000000004 -32.800000000000004Q33.1 -33.300000000000004 34.150000000000006 -33.650000000000006Q35.2 -34.0 35.6 -34.2Q37.9 -35.300000000000004 40.650000000000006 -35.050000000000004Q43.400000000000006 -34.800000000000004 44.0 -33.300000000000004Q44.1 -32.5 44.650000000000006 -32.1Q45.2 -31.700000000000003 45.2 -31.700000000000003Q45.6 -31.700000000000003 45.650000000000006 -31.400000000000002Q45.7 -31.1 45.7 -31.1Q45.7 -30.400000000000002 44.35 -29.1Q43.0 -27.8 41.400000000000006 -27.700000000000003Q40.1 -27.6 39.1 -27.200000000000003Q38.1 -26.8 36.7 -26.200000000000003Q32.9 -24.0 29.85 -22.3Q26.8 -20.6 23.6 -17.1Q22.900000000000002 -16.3 22.1 -15.600000000000001Q21.3 -14.9 20.5 -13.600000000000001Q20.0 -13.100000000000001 19.5 -11.400000000000002Q19.0 -9.700000000000001 18.65 -8.15Q18.3 -6.6000000000000005 18.3 -6.300000000000001Q18.3 -6.300000000000001 18.0 -5.3500000000000005Q17.7 -4.4 17.0 -3.5Q15.8 -1.9000000000000001 14.65 -1.5Q13.5 -1.1 11.9 -2.7Z M52.8 -0.7000000000000001Q51.5 -0.7000000000000001 50.75 -1.2000000000000002Q50.0 -1.7000000000000002 48.9 -2.6Q47.0 -4.6000000000000005 45.85 -6.9Q44.7 -9.200000000000001 45.0 -10.9Q45.3 -11.700000000000001 45.25 -12.450000000000001Q45.2 -13.200000000000001 45.2 -13.200000000000001Q44.7 -13.700000000000001 44.900000000000006 -13.850000000000001Q45.1 -14.0 45.3 -14.4Q45.9 -14.4 45.7 -15.5Q45.5 -16.3 46.35 -18.950000000000003Q47.2 -21.6 48.7 -24.0Q49.3 -25.0 50.5 -26.65Q51.7 -28.3 53.150000000000006 -29.950000000000003Q54.6 -31.6 55.8 -32.6Q58.3 -34.7 60.45 -36.0Q62.6 -37.300000000000004 64.8 -37.800000000000004Q67.0 -38.300000000000004 69.35 -38.300000000000004Q71.7 -38.300000000000004 73.2 -36.7Q75.5 -35.7 76.45 -34.0Q77.4 -32.300000000000004 77.7 -29.6Q78.0 -26.6 77.1 -22.25Q76.2 -17.900000000000002 72.2 -12.200000000000001Q69.7 -8.6 67.30000000000001 -6.6Q64.9 -4.6000000000000005 62.0 -2.9000000000000004Q59.900000000000006 -1.5 57.5 -1.2Q55.1 -0.9 52.8 -0.7000000000000001ZM63.0 -12.9Q65.2 -14.8 66.15 -17.1Q67.1 -19.400000000000002 68.2 -22.5Q68.6 -23.1 68.75 -24.5Q68.9 -25.900000000000002 68.80000000000001 -27.25Q68.7 -28.6 68.1 -28.8Q67.2 -29.5 66.30000000000001 -29.15Q65.4 -28.8 64.0 -27.8Q61.0 -25.3 58.45 -22.05Q55.900000000000006 -18.8 54.900000000000006 -14.100000000000001Q54.6 -11.600000000000001 55.45 -10.350000000000001Q56.3 -9.1 58.25 -9.65Q60.2 -10.200000000000001 63.0 -12.9Z M78.2 20.900000000000002Q76.0 23.1 72.55000000000001 23.05Q69.10000000000001 23.0 66.7 20.5Q64.4 17.3 63.550000000000004 14.350000000000001Q62.7 11.4 63.2 9.5Q63.7 7.6000000000000005 65.3 7.6000000000000005Q65.8 7.6000000000000005 66.75 8.0Q67.7 8.4 68.5 8.978947368421053Q69.3 9.557894736842107 69.3 10.4Q69.3 11.9 69.6 13.0Q69.9 14.100000000000001 71.2 14.3Q72.3 14.700000000000001 73.45 14.05Q74.60000000000001 13.4 75.7 11.600000000000001Q76.7 10.3 77.9 7.5Q79.10000000000001 4.7 80.30000000000001 1.65Q81.5 -1.4000000000000001 82.2 -3.3000000000000003Q83.4 -7.4 84.10000000000001 -11.65Q84.80000000000001 -15.9 85.80000000000001 -20.8Q86.2 -23.5 86.75 -25.450000000000003Q87.30000000000001 -27.400000000000002 87.30000000000001 -27.8Q87.30000000000001 -28.200000000000003 87.4 -29.450000000000003Q87.5 -30.700000000000003 88.0 -31.700000000000003Q88.0 -33.2 88.45 -35.1Q88.9 -37.0 88.9 -37.4Q89.2 -37.7 90.15 -37.45Q91.10000000000001 -37.2 92.15 -36.7Q93.2 -36.2 93.7 -35.7Q94.5 -34.9 95.1 -33.95Q95.7 -33.0 95.95 -30.950000000000003Q96.2 -28.900000000000002 95.7 -24.700000000000003Q95.7 -24.1 95.4 -22.25Q95.10000000000001 -20.400000000000002 94.60000000000001 -18.1Q94.10000000000001 -15.8 93.60000000000001 -13.65Q93.10000000000001 -11.5 92.80000000000001 -10.100000000000001Q92.4 -8.6 91.9 -6.8Q91.4 -5.0 91.30000000000001 -4.3Q91.2 -3.7 90.6 -1.9500000000000002Q90.0 -0.2 89.35 1.5Q88.7 3.2 88.60000000000001 3.9000000000000004Q88.5 4.3 88.05000000000001 5.800000000000001Q87.60000000000001 7.300000000000001 86.2 10.4Q85.7 11.600000000000001 84.1 13.850000000000001Q82.5 16.1 80.80000000000001 18.150000000000002Q79.10000000000001 20.200000000000003 78.2 20.900000000000002ZM93.0 -47.6Q91.9 -48.900000000000006 92.35000000000001 -51.800000000000004Q92.80000000000001 -54.7 94.4 -56.800000000000004Q95.7 -58.300000000000004 97.95 -58.5Q100.2 -58.7 101.5 -57.6Q102.60000000000001 -55.900000000000006 102.9 -54.2Q103.2 -52.5 102.10000000000001 -50.900000000000006Q99.60000000000001 -48.1 96.95000000000002 -47.3Q94.30000000000001 -46.5 93.0 -47.6Z M105.4 -2.1Q105.0 -2.9000000000000004 103.65 -3.7Q102.3 -4.5 102.3 -4.9Q102.3 -5.300000000000001 101.85 -6.15Q101.4 -7.0 101.0 -7.4Q100.5 -8.0 101.3 -10.350000000000001Q102.1 -12.700000000000001 103.69999999999999 -16.1Q105.3 -19.5 107.2 -23.0Q108.0 -23.8 108.8 -25.1Q109.6 -26.400000000000002 110.0 -26.8Q110.0 -27.200000000000003 110.3 -27.550000000000004Q110.6 -27.900000000000002 111.0 -27.900000000000002L111.8 -29.5Q112.0 -29.900000000000002 113.03085106382979 -31.1Q114.06170212765957 -32.300000000000004 115.58085106382978 -33.75Q117.1 -35.2 118.63749999999999 -36.509090909090915Q120.175 -37.81818181818182 121.2 -38.400000000000006Q123.3 -39.800000000000004 125.55000000000001 -39.7Q127.80000000000001 -39.6 129.4 -38.300000000000004Q129.7 -38.0 130.75 -37.1Q131.8 -36.2 133.15 -35.1Q134.5 -34.0 135.5 -33.1L139.2 -29.8L137.45806451612904 -24.8Q136.2 -20.8 136.825 -17.8Q137.45 -14.8 138.7 -12.600000000000001Q139.2 -11.5 140.05 -10.9Q140.9 -10.3 142.3 -10.100000000000001Q143.1 -10.0 143.8 -9.5Q144.5 -9.0 144.5 -7.9Q144.5 -5.5 143.65 -4.45Q142.8 -3.4000000000000004 141.8 -3.2Q138.5 -2.8000000000000003 135.5 -3.9000000000000004Q132.5 -5.0 130.1 -9.600000000000001Q129.7 -10.200000000000001 129.05 -11.850000000000001Q128.4 -13.5 128.3 -14.0Q127.9 -13.5 127.25 -12.75Q126.6 -12.0 126.0 -11.4Q118.9 -4.2 113.82518248175182 -2.0500000000000003Q108.75036496350364 0.1 105.4 -2.1ZM110.9 -10.4Q111.6 -10.3 113.1 -11.15Q114.6 -12.0 117.1 -14.0Q120.5 -16.900000000000002 122.7 -18.800000000000004Q124.9 -20.700000000000003 127.0 -23.700000000000003L129.2 -27.3Q128.2 -29.6 127.39999999999999 -30.3Q126.6 -31.0 125.80000000000001 -31.0Q124.5 -31.0 122.7 -29.35Q120.9 -27.700000000000003 118.65 -24.550000000000004Q116.4 -21.400000000000002 113.6 -16.7Q112.3 -14.5 111.6 -12.45Q110.9 -10.4 110.9 -10.4Z M166.9 -2.0Q163.9 -0.30000000000000004 160.55 -0.05000000000000002Q157.2 0.2 154.3 -0.9500000000000001Q151.4 -2.1 149.6 -4.4Q148.6 -5.7 147.7 -8.55Q146.79999999999998 -11.4 147.4 -16.3Q148.0 -20.900000000000002 150.25 -25.6Q152.5 -30.3 155.8 -33.9Q159.1 -37.5 163.0 -38.800000000000004Q164.4 -39.300000000000004 165.85000000000002 -39.550000000000004Q167.3 -39.800000000000004 169.7 -39.6Q172.0 -39.300000000000004 173.8 -38.45Q175.6 -37.6 176.4 -36.6Q178.0 -35.0 178.5 -33.5Q179.0 -32.0 178.9 -30.6Q178.4 -27.400000000000002 176.05 -23.700000000000003Q173.7 -20.0 169.5 -18.2Q167.8 -17.5 165.5 -17.3Q163.2 -17.1 159.2 -17.900000000000002Q156.8 -18.400000000000002 156.05 -17.400000000000002Q155.29999999999998 -16.400000000000002 155.4 -13.5Q155.6 -11.700000000000001 156.25 -10.350000000000001Q156.9 -9.0 158.7 -8.5Q161.0 -8.1 162.0 -8.45Q163.0 -8.8 164.5 -9.5Q165.3 -10.0 166.05 -10.600000000000001Q166.8 -11.200000000000001 167.55 -11.8Q168.3 -12.4 168.8 -12.700000000000001Q169.3 -13.100000000000001 169.8 -13.200000000000001Q170.3 -13.3 170.8 -13.3Q171.9 -13.200000000000001 172.9 -12.100000000000001Q173.9 -11.0 174.2 -10.0Q174.2 -9.200000000000001 173.2 -7.750000000000001Q172.2 -6.300000000000001 170.55 -4.75Q168.9 -3.2 166.9 -2.0ZM165.6 -24.3Q166.3 -24.6 167.65 -25.700000000000003Q169.0 -26.8 170.1 -28.05Q171.2 -29.3 171.2 -30.0Q171.2 -31.1 169.75 -31.900000000000002Q168.3 -32.7 166.0 -32.2Q165.2 -32.0 164.1 -31.1Q163.0 -30.200000000000003 161.9 -29.050000000000004Q160.8 -27.900000000000002 160.0 -26.85Q159.2 -25.8 158.9 -25.200000000000003Q159.3 -24.700000000000003 160.5 -24.400000000000002Q161.7 -24.1 163.14999999999998 -24.1Q164.6 -24.1 165.6 -24.3Z" fill="var(--text)"/><circle cx="186.9" cy="-5.5" r="5.5" fill="var(--accent)"/></svg></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">둘이서 시작한 신규 서비스</a></li><li><a href="#s1">인프라를 직접 세우다</a></li><li><a href="#s2">API · 관리자 · 배치</a></li><li><a href="#s3">KISA 심사, 두 번째에 적합</a></li><li><a href="#s4">배포는 자동으로, 프론트는 무중단으로</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">더존비즈온</span><span>KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지</span></div>
+          <h1>전자문서 유통 서비스</h1>
+          <p class="page-lead">법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 새로 만들었습니다. 서버 22대의 인프라 구성부터 API · 관리자 · 배치 서비스, KISA 인증 심사와 가오픈까지, 2인 팀에서 거의 모든 부분을 직접 만들었습니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2021.09 — 2022.09</dd></div>
+          <div><dt>팀</dt><dd>2인 팀 (팀장 + 본인)</dd></div>
+          <div><dt>역할</dt><dd>설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li><li>MariaDB Galera</li><li>MaxScale</li><li>HAProxy · keepalived</li><li>Nginx</li><li>Node.js · PM2</li><li>GitLab · Nexus · Jenkins</li></ul></dd></div>
+        </dl>
+        <div class="page-links"><a class="btn" href="https://www.newswire.co.kr/newsRead.php?no=949401" target="_blank" rel="noopener noreferrer">보도자료 <span aria-hidden="true">↗</span></a></div>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 620" role="img" aria-label="전자문서 유통 서비스 구성도: 이용자 요청이 HAProxy VIP를 거쳐 Nginx WEB 3대, 다시 HAProxy VIP를 거쳐 Tomcat WAS 2대의 API·관리자·배치로 간다. WAS는 KISA API와 VPN으로 통신하고, AUTH 서버(Redis master·replica, Sentinel 3개)에서 토큰을 검증하며, KEY 서버에서 암호화 키를 받는다. DB는 MaxScale 2대 뒤 MariaDB Galera 3대. 개발·배포는 GitLab, Nexus, Jenkins.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="30" y="40" width="120" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="90" y="62" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">이용자 · 법인</text>
+  <path d="M150 62 L200 62" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="200" y="40" width="150" height="44" rx="8" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/><text x="275" y="57" font-size="12" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HAProxy ×2</text><text x="275" y="73" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">keepalived VIP · HTTPS</text>
+  <path d="M350 62 L390 62" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="390" y="24" width="250" height="76" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="515" y="42" font-size="12.5" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">WEB · Nginx ×3</text>
+  <rect x="402" y="52" width="70" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="437" y="69" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">web-1</text><text x="437" y="85" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ip_hash</text>
+  <rect x="480" y="52" width="70" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="515" y="69" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">web-2</text><text x="515" y="85" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">ip_hash</text>
+  <rect x="558" y="52" width="70" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="593" y="69" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">web-3</text><text x="593" y="85" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">별도 도메인</text>
+  <text x="515" y="112" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Node.js 프론트 · PM2 fork ×4 · 무중단 reload</text>
+  <path d="M640 62 L680 62" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="680" y="40" width="120" height="44" rx="8" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/><text x="740" y="57" font-size="12" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HAProxy ×2</text><text x="740" y="73" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">WAS VIP</text>
+  <path d="M800 62 L830 62" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="830" y="24" width="120" height="130" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="890" y="42" font-size="12" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">WAS · Tomcat ×2</text>
+  <rect x="840" y="52" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="890" y="69" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">API</text>
+  <rect x="840" y="86" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="890" y="103" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">관리자</text>
+  <rect x="840" y="120" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="890" y="137" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">배치</text>
+  <rect x="830" y="190" width="120" height="56" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="890" y="210" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">KISA API</text>
+  <text x="890" y="230" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">VPN 전용선</text>
+  <path d="M890 154 L890 190" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="890" y="262" font-size="9.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">유통정보 · 열람일시 전달</text>
+  <rect x="560" y="190" width="120" height="44" rx="8" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/><text x="620" y="207" font-size="12" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HAProxy ×2</text><text x="620" y="223" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">AUTH VIP</text>
+  <rect x="560" y="250" width="250" height="96" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="685" y="268" font-size="12" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">AUTH · Tomcat ×2</text>
+  <rect x="572" y="280" width="110" height="54" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="627" y="297" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Redis</text><text x="627" y="313" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">master · replica</text>
+  <rect x="690" y="280" width="110" height="54" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="745" y="297" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Sentinel ×3</text><text x="745" y="313" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">홀수 유지</text>
+  <path d="M830 132 L700 132 L700 190 L620 190" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M620 234 L620 250" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="708" y="174" font-size="9.5" font-weight="500" fill="var(--text-3)" text-anchor="start" font-family="inherit" dominant-baseline="middle">토큰 검증</text>
+  <rect x="390" y="190" width="120" height="44" rx="8" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/><text x="450" y="207" font-size="12" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HAProxy ×2</text><text x="450" y="223" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">KEY VIP</text>
+  <rect x="390" y="250" width="150" height="96" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="465" y="268" font-size="12" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">KEY ×2</text>
+  <rect x="402" y="280" width="126" height="54" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="465" y="297" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">JKS 키 서버</text><text x="465" y="313" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Commons Daemon</text>
+  <path d="M830 140 L545 140 L545 190 L450 190" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M450 234 L450 250" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="553" y="174" font-size="9.5" font-weight="500" fill="var(--text-3)" text-anchor="start" font-family="inherit" dominant-baseline="middle">암호화 키</text>
+  <rect x="200" y="400" width="150" height="44" rx="8" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/><text x="275" y="417" font-size="12" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MaxScale ×2</text><text x="275" y="433" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">keepalived VIP · R/W 분산</text>
+  <rect x="200" y="460" width="330" height="96" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="365" y="478" font-size="12" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MariaDB Galera Cluster ×3</text>
+  
+  <path d="M212 498 a48 8 0 0 1 96 0 v40 a48 8 0 0 1 -96 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M212 498 a48 8 0 0 0 96 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="260" y="520" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">maria-1</text>
+  
+  
+  <path d="M318 498 a48 8 0 0 1 96 0 v40 a48 8 0 0 1 -96 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M318 498 a48 8 0 0 0 96 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="366" y="520" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">maria-2</text>
+  
+  
+  <path d="M424 498 a48 8 0 0 1 96 0 v40 a48 8 0 0 1 -96 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M424 498 a48 8 0 0 0 96 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="472" y="520" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">maria-3</text>
+  
+  <path d="M275 444 L275 460" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M830 146 L300 146 L300 400 L275 400" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="320" y="388" font-size="9.5" font-weight="500" fill="var(--text-3)" text-anchor="start" font-family="inherit" dominant-baseline="middle">WAS · AUTH · 배치의 DB 접근</text>
+  <rect x="600" y="400" width="350" height="156" rx="12" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="775" y="420" font-size="12" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">개발 · 배포</text>
+  <rect x="612" y="436" width="102" height="32" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="663" y="453" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">GitLab</text>
+  <rect x="724" y="436" width="102" height="32" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="775" y="453" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Nexus</text>
+  <rect x="836" y="436" width="102" height="32" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/><text x="887" y="453" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Jenkins</text>
+  <text x="775" y="492" font-size="10" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">브랜치 매개변수 → Maven 빌드 → 배포 스크립트(war 백업 후 교체)</text>
+  <text x="775" y="510" font-size="10" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">프론트: 소스 전달 → pm2 reload</text>
+  <text x="775" y="536" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">심사 직후 서버별 설정 파일 보존 · 포트 · 로그 · SSL 갱신 절차 문서화</text>
+  <text x="490" y="596" font-size="11" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">운영 서버 22대 — HA 8 · WEB 3 · WAS 2 · AUTH 2 · KEY 2 · MaxScale 2 · DB 3</text>
+</svg><figcaption>운영 환경 서버 구성을 노트 기준으로 다시 그린 것입니다. 서버 이름과 주소는 뺐습니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>이중화 인프라</strong><span>HAProxy + keepalived VIP 4쌍, WEB 3 · WAS 2 · AUTH 2 · KEY 2 · DB 3</span></li><li><strong>API 서비스</strong><span>전자문서 등록 · 열람 · 유통정보 전달, KISA VPN 연동</span></li><li><strong>인증 · 키 서버</strong><span>Redis 토큰 인증 서버(Sentinel 이중화), JKS 기반 키 서버</span></li><li><strong>관리자 서비스</strong><span>권한 분리 로그인, 이용자 · 공인전자주소 · 송수신 모니터링 · 유통 증명서</span></li><li><strong>배치 서비스</strong><span>만료 문서 삭제, 등록 · 열람 · 탈퇴 재처리, 재암호화, 로그 정리</span></li><li><strong>배포</strong><span>GitLab · Nexus · Jenkins, Node 프론트는 PM2 무중단 + Nginx 로드밸런싱</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>둘이서 시작한 신규 서비스</h2>
+          <p>전자문서유통중계자는 KISA 주관으로, 문서 자체가 법적 효력을 갖도록 유통정보와 열람 일시를 KISA에 전달하는 서비스입니다. 종이 문서를 전자화하는 전자고지 성격이라 개인 플랫폼은 이미 큰 회사들이 차지하고 있었고, 회사는 법인 간 유통에 집중하기로 했습니다. 다만 법인 유통 사례가 거의 없어 KISA도 명확한 답을 주지 못하는 구간이 있었습니다.</p>
+          <p>담당 개발자도 팀도 없는 상태에서 시작해, 결국 팀장님과 저 두 명이 남았습니다. 팀장님은 CS 개발 출신이라 설계와 인프라, 서비스 개발은 거의 전부 제가 맡게 됐습니다. 입사 만 1년을 갓 넘긴 때였습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>인프라를 직접 세우다</h2>
+          <p>운영 환경은 서버 22대로 구성했습니다. 앞단은 HAProxy + keepalived로 VIP를 잡아 WEB · WAS · AUTH · KEY 네 구간을 각각 2대씩 이중화했고, WEB은 Nginx 3대(그중 1대는 별도 도메인용), WAS는 Tomcat 2대에 API · 배치 · 관리자 서비스를 포트별로 나눠 올렸습니다. 인증 서버 2대에는 Redis 마스터 · 복제본과 Sentinel 3개(홀수 유지)를 두어 세션 토큰 저장소를 이중화했습니다.</p>
+          <p>데이터베이스는 MariaDB Galera 클러스터 3대 앞에 MaxScale 2대 + keepalived를 두어 읽기 · 쓰기 분산과 장애 전환을 맡겼습니다. 키 서버 2대는 Apache Commons Daemon과 JKS로 암호화 키를 관리합니다. 서버별 초기 설정 파일, 포트 정리, 로그 위치, SSL 인증서 갱신 절차까지 문서로 남겨 이후 운영자가 따라갈 수 있게 했습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>API · 관리자 · 배치</h2>
+          <p>API 서버는 전자문서 등록 · 열람과 KISA로의 유통정보 전달을 담당합니다. KISA와는 VPN으로 연결해 통신하고, 명세서를 직접 정리했습니다. 관리자 서비스는 권한을 분리한 로그인, 이용자 · 관리자 정보, 공인전자주소와 탈퇴 이력, 이용자 · 관리자 활동과 KISA 송수신 모니터링, 유통 증명서 조회, 오류 알림을 제공합니다.</p>
+          <p>배치 서비스는 운영에서 생기는 뒷정리를 맡습니다. 만료 문서 삭제, 회원가입 · 문서 등록 · 열람 등록 · 탈퇴 · 이름 변경의 재처리, 송수신 내역과 로그 정리, 그리고 키 교체에 따른 재암호화까지 배치 명세서를 만들어 구현했습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>KISA 심사, 두 번째에 적합</h2>
+          <p>전자문서유통중계자 인증 심사는 이틀에 걸쳐 진행됩니다. 1차 심사에서는 부적합을 받았고, 지적 사항을 보완해 2022년 7월 2차 심사에서 적합 판정을 받았습니다. 심사 직후 서버별 설정 파일을 그대로 보존해 두어, 심사받은 구성과 운영 구성이 달라지지 않도록 했습니다. 방화벽 정책 신청, 패키지 설치를 위한 인터넷 개방 요청 같은 기안도 직접 올렸습니다.</p>
+          <p>2022년 9월 6일 가오픈했고, 이후 회사의 비즈니스 플랫폼과 연동했습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>배포는 자동으로, 프론트는 무중단으로</h2>
+          <p>개발 환경에는 GitLab · Nexus · Jenkins를 두고, API · 관리자 · 배치 서버가 같은 절차(브랜치 매개변수 → Maven 빌드 → 배포 스크립트)로 배포되게 했습니다. 운영 배포 스크립트는 기존 war를 날짜별로 백업한 뒤 교체합니다. Node.js 프론트는 PM2 fork 모드로 인스턴스 4개를 띄우고 Nginx가 ip_hash로 분산하며, Jenkins가 소스를 옮기고 pm2 reload를 호출해 무중단으로 바꿉니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">만 1년 남짓의 개발자에게 인프라부터 심사까지 맡긴 건 무리한 일이었지만, 덕분에 숲을 보는 눈이 생겼습니다. 서비스가 동작하려면 코드 바깥에 무엇이 있어야 하는지, 그리고 그것을 다음 사람에게 넘기려면 무엇을 적어 둬야 하는지를 이때 배웠습니다. 퇴사 전 남긴 인수인계 문서가 50개가 넘습니다.</blockquote>
+        </section>
+
+        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="login.html"><span>← 이전</span><strong>로그인 시스템 Java/Spring 전환</strong></a>
+          <a class="next" href="waf.html"><span>다음 →</span><strong>WAF 플랫폼</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -379,4 +379,65 @@ export function wafDiagram() {
   return wrap(W, H, 'WAF 플랫폼 구조도: 클라이언트 요청이 Nginx + ModSecurity를 거쳐 백엔드로 가고, 감사 로그를 Fluent Bit Lua 분류기가 Kafka로 보낸다. 실시간 트랙은 Go 처리기가 심각도와 GeoIP를 붙여 InfluxDB에 쓰고 Grafana가 본다. 분석 트랙은 ksqlDB 윈도우 집계와 Logstash를 거쳐 Elasticsearch에 색인되고 Kibana가 본다. ClickHouse는 스키마만 있고 연결되지 않았다. 대시보드 API와 Next.js가 SSE로 데이터를 보여주고, 커스텀 룰은 파일 생성과 reload 신호로 Nginx에 무중단 반영된다.', p);
 }
 
-export const diagrams = { waf: wafDiagram, terms: termsDiagram, auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };
+export function edocDiagram() {
+  const W = 980, H = 620, p = [];
+  const ha = (x, y, w, t, sub) => `${box(x, y, w, 44, { r: 8, stroke: 'color-mix(in srgb, var(--accent) 45%, var(--line))' })}${text(x + w / 2, y + 17, t, { size: 12, weight: 700, fill: 'var(--accent)' })}${text(x + w / 2, y + 33, sub, { size: 10, fill: 'var(--text-3)' })}`;
+  const node = (x, y, w, h, t, sub) => `${box(x, y, w, h, { r: 8 })}${text(x + w / 2, y + 17, t, { size: 12, weight: 700 })}${sub ? text(x + w / 2, y + 33, sub, { size: 10, fill: 'var(--text-3)' }) : ''}`;
+  // 사용자
+  p.push(box(30, 40, 120, 44, { r: 10 })); p.push(text(90, 62, '이용자 · 법인', { size: 12.5, weight: 700 }));
+  p.push(arrow(150, 62, 200, 62));
+  // WEB HA → WEB
+  p.push(ha(200, 40, 150, 'HAProxy ×2', 'keepalived VIP · HTTPS'));
+  p.push(arrow(350, 62, 390, 62));
+  p.push(box(390, 24, 250, 76, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(515, 42, 'WEB · Nginx ×3', { size: 12.5, weight: 800 }));
+  [0, 1, 2].forEach(i => p.push(node(402 + i * 78, 52, 70, 38, `web-${i + 1}`, i === 2 ? '별도 도메인' : 'ip_hash')));
+  p.push(text(515, 112, 'Node.js 프론트 · PM2 fork ×4 · 무중단 reload', { size: 10, fill: 'var(--text-3)' }));
+  // WAS HA → WAS
+  p.push(arrow(640, 62, 680, 62));
+  p.push(ha(680, 40, 120, 'HAProxy ×2', 'WAS VIP'));
+  p.push(arrow(800, 62, 830, 62));
+  p.push(box(830, 24, 120, 130, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(890, 42, 'WAS · Tomcat ×2', { size: 12, weight: 800 }));
+  p.push(node(840, 52, 100, 30, 'API', '')); p.push(node(840, 86, 100, 30, '관리자', '')); p.push(node(840, 120, 100, 30, '배치', ''));
+  // KISA
+  p.push(box(830, 190, 120, 56, { r: 10, dash: '5 4' })); p.push(text(890, 210, 'KISA API', { size: 12, weight: 700 })); p.push(text(890, 230, 'VPN 전용선', { size: 10, fill: 'var(--text-3)' }));
+  p.push(arrow(890, 154, 890, 190, { dash: '5 4' }));
+  p.push(text(890, 262, '유통정보 · 열람일시 전달', { size: 9.5, fill: 'var(--text-3)' }));
+  // AUTH
+  p.push(ha(560, 190, 120, 'HAProxy ×2', 'AUTH VIP'));
+  p.push(box(560, 250, 250, 96, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(685, 268, 'AUTH · Tomcat ×2', { size: 12, weight: 800 }));
+  p.push(node(572, 280, 110, 54, 'Redis', 'master · replica'));
+  p.push(node(690, 280, 110, 54, 'Sentinel ×3', '홀수 유지'));
+  p.push(elbow(830, 132, 620, 190, { mx: 700 }));
+  p.push(arrow(620, 234, 620, 250));
+  p.push(text(708, 174, '토큰 검증', { size: 9.5, fill: 'var(--text-3)', anchor: 'start' }));
+  // KEY
+  p.push(ha(390, 190, 120, 'HAProxy ×2', 'KEY VIP'));
+  p.push(box(390, 250, 150, 96, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(465, 268, 'KEY ×2', { size: 12, weight: 800 }));
+  p.push(node(402, 280, 126, 54, 'JKS 키 서버', 'Commons Daemon'));
+  p.push(elbow(830, 140, 450, 190, { mx: 545 }));
+  p.push(arrow(450, 234, 450, 250));
+  p.push(text(553, 174, '암호화 키', { size: 9.5, fill: 'var(--text-3)', anchor: 'start' }));
+  // DB
+  p.push(ha(200, 400, 150, 'MaxScale ×2', 'keepalived VIP · R/W 분산'));
+  p.push(box(200, 460, 330, 96, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(365, 478, 'MariaDB Galera Cluster ×3', { size: 12, weight: 800 }));
+  [0, 1, 2].forEach(i => p.push(store(212 + i * 106, 490, 96, 56, `maria-${i + 1}`, '')));
+  p.push(arrow(275, 444, 275, 460));
+  p.push(elbow(830, 146, 275, 400, { mx: 300 }));
+  p.push(text(320, 388, 'WAS · AUTH · 배치의 DB 접근', { size: 9.5, fill: 'var(--text-3)', anchor: 'start' }));
+  // 개발 · 배포
+  p.push(box(600, 400, 350, 156, { r: 12, dash: '4 3' }));
+  p.push(text(775, 420, '개발 · 배포', { size: 12, weight: 800 }));
+  ['GitLab', 'Nexus', 'Jenkins'].forEach((t, i) => p.push(node(612 + i * 112, 436, 102, 32, t, '')));
+  p.push(text(775, 492, '브랜치 매개변수 → Maven 빌드 → 배포 스크립트(war 백업 후 교체)', { size: 10, fill: 'var(--text-2)' }));
+  p.push(text(775, 510, '프론트: 소스 전달 → pm2 reload', { size: 10, fill: 'var(--text-2)' }));
+  p.push(text(775, 536, '심사 직후 서버별 설정 파일 보존 · 포트 · 로그 · SSL 갱신 절차 문서화', { size: 10, fill: 'var(--text-3)' }));
+  p.push(text(490, 596, '운영 서버 22대 — HA 8 · WEB 3 · WAS 2 · AUTH 2 · KEY 2 · MaxScale 2 · DB 3', { size: 11, weight: 700, fill: 'var(--accent)' }));
+  return wrap(W, H, '전자문서 유통 서비스 구성도: 이용자 요청이 HAProxy VIP를 거쳐 Nginx WEB 3대, 다시 HAProxy VIP를 거쳐 Tomcat WAS 2대의 API·관리자·배치로 간다. WAS는 KISA API와 VPN으로 통신하고, AUTH 서버(Redis master·replica, Sentinel 3개)에서 토큰을 검증하며, KEY 서버에서 암호화 키를 받는다. DB는 MaxScale 2대 뒤 MariaDB Galera 3대. 개발·배포는 GitLab, Nexus, Jenkins.', p);
+}
+
+export const diagrams = { edoc: edocDiagram, waf: wafDiagram, terms: termsDiagram, auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };
