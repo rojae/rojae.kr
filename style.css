@@ -298,6 +298,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 .diagram-figure { padding: 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
 .diagram { display: block; width: 100%; height: auto; font-family: var(--sans); }
 .diagram-figure figcaption { padding-top: 10px; }
+.diagram-tip { display: none; }
+@media (max-width: 640px) {
+  .diagram-figure { padding: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+  .diagram { min-width: 760px; }
+  .diagram-figure figcaption { position: sticky; left: 0; }
+  .diagram-tip { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; }
+}
 .flow-figure figcaption, .shot figcaption { font-size: 13px; color: var(--text-3); margin-top: 8px; }
 .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .feature-grid li { padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; }

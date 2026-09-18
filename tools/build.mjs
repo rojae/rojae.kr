@@ -287,7 +287,7 @@ ${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<
         </div>\n` : ''}
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
+          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption><span class="diagram-tip">↔ 옆으로 밀어서 보기 · 탭하면 크게</span><br class="diagram-tip">${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
           <ul class="feature-grid">${c.features.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
           ${c.image ? `<figure class="shot"><img src="../assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"><figcaption>공개 저장소 README</figcaption></figure>` : ''}
         </section>
