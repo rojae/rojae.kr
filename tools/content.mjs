@@ -14,7 +14,7 @@ export const profile = {
   facts: [
     ['현재', '지마켓 · Member Engineering'],
     ['주요 영역', '회원 · 인증 · 외부 연동'],
-    ['기술', 'Java · Spring · Redis · Oracle'],
+    ['기술', 'Java 21 · Spring Boot 3 · OpenShift'],
   ],
 };
 
@@ -54,7 +54,7 @@ export const caseStudies = [
     period: '2026.01 — 2026.06 개발, 이후 운영',
     team: '2인 팀',
     role: '설계 · 구현 · 운영 — 구조 결정 담당',
-    stack: ['Java 21', 'Spring Boot 3.2', 'WebFlux', 'Spring Batch', 'Oracle', 'MongoDB', 'Next.js', 'SFTP'],
+    stack: ['Java 21', 'Spring Boot 3.2', 'WebFlux', 'Spring Batch', 'Oracle', 'MongoDB', 'Next.js', 'SFTP', 'OpenShift · ArgoCD'],
     summary: '지마켓·옥션 회원과 외부 파트너를 잇는 제휴 연동의 첫 서비스입니다. 두 앱에서 발생하는 동의를 맞추는 일부터 정합 배치, 탈회, 리워드, 그리고 운영팀이 쓰는 어드민까지 한 묶음으로 만들었습니다.',
     cardPoints: [
       '실시간 동의 · 일배치 정합 · 월배치 파일 · 탈회 · 리워드를 한 서비스로',
@@ -547,6 +547,7 @@ export const experience = [
       ] },
       { year: '상시', theme: '개인정보 보호 운영', items: [
         ['분리보관 · ISMS-P', '탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명. 불안정하던 .NET 배치를 Spring Cloud Data Flow로 전환'],
+        ['배포 · 운영 환경', 'OpenShift(Kubernetes) 위에서 ArgoCD 기반 GitOps로 회원 서비스 배포 · 운영'],
       ] },
     ],
   },
@@ -715,7 +716,7 @@ export const resume = {
     'Language': ['Java 21', 'JavaScript / TypeScript', 'Go (스터디)'],
     'Framework': ['Spring Boot 3', 'WebFlux', 'JPA / Querydsl', 'Spring Batch', 'Spring Cloud Data Flow', 'Next.js'],
     'Security': ['Spring Security', 'JWT / OAuth2', 'Redis 세션', '암호화 (AES-256)', 'Rate Limiting', '개인정보 접근 감사', 'ISMS-P 대응'],
-    'Infra / Gateway': ['Gravitee API Gateway', 'Nginx', 'HAProxy · keepalived', 'Kafka', 'Redis Cluster · Sentinel', 'Jenkins', 'Kubernetes (스터디)'],
+    'Infra / Gateway': ['OpenShift (Kubernetes)', 'ArgoCD (GitOps)', 'Gravitee API Gateway', 'Nginx', 'HAProxy · keepalived', 'Kafka', 'Redis Cluster · Sentinel', 'Jenkins'],
     'Database': ['Oracle', 'MongoDB', 'MSSQL', 'MariaDB Galera · MaxScale'],
     'Observability': ['Grafana', 'InfluxDB', 'ELK'],
   },

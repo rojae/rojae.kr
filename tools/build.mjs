@@ -345,7 +345,7 @@ ${renderExperience('', { headingLevel: 3 })}
 
       <section class="resume-block">
         <h2>기술</h2>
-        <ul class="tags"><li>Java 21</li><li>Spring Boot 3</li><li>Spring Security</li><li>Spring Batch</li><li>Spring Cloud Data Flow</li><li>WebFlux</li><li>JPA · Querydsl</li><li>Gravitee API Gateway</li><li>Kafka</li><li>Redis Cluster</li><li>Oracle</li><li>MongoDB</li><li>InfluxDB · Grafana</li><li>MariaDB Galera</li><li>HAProxy · Nginx</li><li>Jenkins</li></ul>
+        <ul class="tags"><li>Java 21</li><li>Spring Boot 3</li><li>Spring Security</li><li>Spring Batch</li><li>Spring Cloud Data Flow</li><li>WebFlux</li><li>JPA · Querydsl</li><li>OpenShift (Kubernetes)</li><li>ArgoCD</li><li>Gravitee API Gateway</li><li>Kafka</li><li>Redis Cluster</li><li>Oracle</li><li>MongoDB</li><li>InfluxDB · Grafana</li><li>MariaDB Galera</li><li>HAProxy · Nginx</li><li>Jenkins</li></ul>
       </section>
 
       <section class="resume-block">
