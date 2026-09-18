@@ -630,14 +630,14 @@ export const openSource = [
 export const contributions = [
   {
     repo: 'OpenFeign/feign', number: 2871, merged: '2025.06',
-    title: 'RetryableException에 retryAfter 없는 생성자 추가',
-    text: 'Kotlin에서 호출할 때 생기는 생성자 오버로드 모호성을 해소하고 단위 테스트 추가.',
+    title: 'Add constructor to RetryableException for cases without retryAfter',
+    text: 'Kotlin에서 호출할 때 생기는 생성자 오버로드 모호성 해소 + 단위 테스트',
     href: 'https://github.com/OpenFeign/feign/pull/2871',
   },
   {
     repo: 'OpenFeign/feign', number: 2874, merged: '2025.06',
-    title: '어노테이션 파라미터 값 누락 시 힌트 메시지',
-    text: '파라미터 선언 오류를 더 빨리 찾을 수 있도록 예외 메시지 개선.',
+    title: 'Add hint message for missing annotation param value',
+    text: '파라미터 선언 오류를 바로 찾을 수 있게 예외 메시지 개선',
     href: 'https://github.com/OpenFeign/feign/pull/2874',
   },
 ];
