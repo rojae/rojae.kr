@@ -131,6 +131,7 @@ function renderIndex() {
         <div>
           <p class="hero-kicker">${profile.role}</p>
           <h1 id="hero-title">${profile.headline}</h1>
+          <p class="hero-tagline">${profile.tagline}</p>
           <p class="hero-lead">${profile.lead}</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#work">프로젝트 보기</a>

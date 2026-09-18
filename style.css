@@ -97,7 +97,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22a55b; box-shadow: 0 0 0 4px color-mix(in srgb, #22a55b 20%, transparent); }
 .hero h1 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.25; }
 .hero h1 em { font-style: normal; color: var(--accent); }
-.hero-lead { margin-top: 20px; font-size: 18px; color: var(--text-2); max-width: 600px; }
+.hero-tagline { margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--text-3); letter-spacing: -0.01em; }
+.hero-lead { margin-top: 14px; font-size: 18px; color: var(--text-2); max-width: 600px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
 .avatar { width: 148px; height: 148px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
 .hero-facts {

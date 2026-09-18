@@ -9,6 +9,7 @@ export const profile = {
   github: 'https://github.com/rojae',
   blog: 'https://rojae.github.io/',
   headline: '회원과 인증, 서비스 사이의<br><em>연결</em>을 만드는 서버 개발자<br>오재성입니다.',
+  tagline: '6년 차 Java/Spring 서버 개발자 · 커머스 회원 · 인증 · 외부 파트너 연동 · 운영까지',
   lead: '전자금융 PG와 커머스에서 약 6년간 서버를 만들고 운영해 왔습니다. 지금은 지마켓 Member Engineering에서 회원·인증과 외부 파트너 연동을 맡고 있습니다. 기능이 동작하는 순간만큼, 실패하고 회복하는 경계와 그 뒤의 운영을 중요하게 생각합니다.',
   facts: [
     ['현재', '지마켓 · Member Engineering'],
