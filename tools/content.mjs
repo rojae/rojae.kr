@@ -5,7 +5,7 @@ export const profile = {
   name: '오재성',
   handle: 'rojae',
   role: 'Server Engineer',
-  email: 'jaeseoh96@gmail.com',
+  email: 'rojae@kakao.com',
   github: 'https://github.com/rojae',
   blog: 'https://rojae.github.io/',
   headline: '회원과 인증, 서비스 사이의<br><em>연결</em>을 만드는 서버 개발자<br>오재성입니다.',

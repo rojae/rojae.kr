@@ -75,11 +75,11 @@ const server = http.createServer((req, res) => {
     await page.getByRole('link', { name: '홈으로 돌아가기' }).click();
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await page.getByRole('button', { name: '이메일 복사' }).click();
-    assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'jaeseoh96@gmail.com');
+    assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'rojae@kakao.com');
     await page.evaluate(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => Promise.reject(new Error('denied')) }, configurable: true }); });
     await page.getByRole('button', { name: '이메일 복사' }).click();
     assert.match(await page.locator('.copy-status').textContent(), /선택했습니다/);
-    assert.equal(await page.evaluate(() => getSelection().toString()), 'jaeseoh96@gmail.com');
+    assert.equal(await page.evaluate(() => getSelection().toString()), 'rojae@kakao.com');
     await page.goto(origin);
     await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(() => document.activeElement.textContent), '본문으로 이동');

@@ -6,7 +6,7 @@
   copyButton?.addEventListener('click', async () => {
     const status = document.querySelector('.copy-status');
     try {
-      await navigator.clipboard.writeText('jaeseoh96@gmail.com');
+      await navigator.clipboard.writeText('rojae@kakao.com');
       status.textContent = '이메일 주소를 복사했습니다.';
     } catch {
       const range = document.createRange();
