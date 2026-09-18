@@ -201,8 +201,8 @@ ${renderExperience('', { headingLevel: 3, compact: true })}
     <section id="contact" class="section container" aria-labelledby="contact-title">
       <div class="contact-card">
         <div>
-          <h2 id="contact-title">연락</h2>
-          <p>채용 · 협업 · 기술 관련 문의는 이메일로 주세요.</p>
+          <h2 id="contact-title">Contact</h2>
+          <p>채용이나 협업 제안, 기술 이야기는 이메일로 주세요.</p>
         </div>
         <div class="contact-actions">
           <a class="btn btn-primary email" href="mailto:${profile.email}">${profile.email}</a>
