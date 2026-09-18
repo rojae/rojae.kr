@@ -206,6 +206,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .way { padding: 22px 0 8px; border-top: 2px solid var(--text); }
 .way h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
 .way p { color: var(--text-2); font-size: 15px; }
+.way a { color: var(--accent); font-weight: 600; }
+.way a:hover { text-decoration: underline; }
 .job-link { margin-top: 12px; font-size: 14px; }
 
 /* ---------- Open source ---------- */

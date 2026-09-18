@@ -112,7 +112,7 @@ export const caseStudies = [
     sub: '지마켓 · 옥션 · ESMPLUS 공통 인증',
     period: '2024.01 — 2024.12',
     team: '3인 팀',
-    role: '설계 결정 · 핵심 구현',
+    role: '프로젝트 리딩 · 설계 결정 · 핵심 구현',
     stack: ['Java', 'Spring Boot', 'Spring Security', 'WebFlux', 'Redis Cluster', 'JWT', 'JPA', 'QueryDSL', 'Oracle', 'MSSQL'],
     summary: '사이트와 인증 수단마다 흩어져 있던 인증 기능을 하나의 서비스로 모았습니다. 인증 기능 자체뿐 아니라, 어떤 서비스가 어떤 인증을 쓸지와 인증업체 비율을 운영자가 어드민에서 조정할 수 있게 만드는 데까지가 이 프로젝트였습니다.',
     cardPoints: [
@@ -138,7 +138,7 @@ export const caseStudies = [
     story: [
       { heading: '어떤 상황이었나', paragraphs: [
         '지마켓과 옥션의 인증 기능이 서비스마다 따로 있었습니다. 인증 로직 하나를 고치려면 여러 곳을 같이 손봐야 했고, 인증업체는 한 곳에 의존하고 있어서 그 업체에 문제가 생기면 할 수 있는 일이 별로 없었습니다. 비용을 조정할 여지도 없었습니다.',
-        '다뤄야 할 인증 유형도 많았습니다. 지식인증, 소셜인증, 소유인증, 본인인증, 계좌인증, 기업인증. 3인 팀에서 구조와 인증업체 라우팅 방식을 제가 결정하고 핵심 구현을 맡았습니다.',
+        '다뤄야 할 인증 유형도 많았습니다. 지식인증, 소셜인증, 소유인증, 본인인증, 계좌인증, 기업인증. 3인 팀에서 프로젝트를 리딩하며 구조와 인증업체 라우팅 방식을 결정하고 핵심 구현을 맡았습니다. 오픈 직전 명세가 바뀌는 일을 겪으며 회의록과 설계 문서, 진행 공유를 먼저 챙기게 됐고, 그 과정은 따로 글로 남겼습니다.',
       ] },
       { heading: '인증을 모듈로, 설정은 어드민으로', paragraphs: [
         '인증 유형별 기능을 한 서비스 안의 모듈로 정리하고, 어떤 도메인이 어떤 인증을 어떤 설정으로 쓰는지는 코드가 아니라 어드민 설정으로 뺐습니다. 새 서비스가 인증을 붙일 때 코드를 고치는 대신 설정을 추가하면 되는 구조를 목표로 했습니다.',
@@ -577,7 +577,11 @@ export const ways = [
   },
   {
     title: '어디까지 보장하는지 정확히 말합니다',
-    text: '트랜잭션 경계, 중복 판정, 실패 기록은 각각 지키는 범위가 다릅니다. 실패를 보관하는 구조를 Outbox라고 부르지 않고, 팀이 함께 한 일을 제가 한 일처럼 말하지 않습니다. 프로젝트 글마다 한계를 같이 적은 이유입니다.',
+    text: '트랜잭션 경계, 중복 판정, 실패 기록은 각각 지키는 범위가 다릅니다. 동의 흐름과 배치 집계처럼 경계가 중요한 곳은 단위 · 통합 테스트로 고정해 두고, 실패를 보관하는 구조를 Outbox라고 부르지 않으며, 팀이 함께 한 일을 제가 한 일처럼 말하지 않습니다. 프로젝트 글마다 한계를 같이 적은 이유입니다.',
+  },
+  {
+    title: '맡은 프로젝트는 끝까지 끌고 갑니다',
+    text: '통합인증 프로젝트를 리딩하면서 오픈 이틀 전 명세가 바뀌는 일을 겪고, 그 뒤로 회의록 · 설계 문서 · 진행 상황 공유를 먼저 챙기는 쪽으로 바꿨습니다. 그때의 시행착오는 <a href="https://rojae.github.io/posts/the-sorrows-of-young-rojae/" target="_blank" rel="noopener noreferrer">글로 남겨</a> 두었습니다.',
   },
   {
     title: 'AI를 도구로 업무 흐름에 붙입니다',
@@ -585,7 +589,7 @@ export const ways = [
   },
   {
     title: '다음 사람을 위해 남깁니다',
-    text: '본인확인 식별정보 배경지식, 인증 연동, 메일 발송 모니터링, 배포 절차 같은 운영 문서를 써 왔습니다. IP 변경으로 생긴 장애는 JVM DNS 캐시 관점에서 재현해 글과 세미나로 공유했습니다.',
+    text: '본인확인 식별정보 배경지식, 인증 연동, 메일 발송 모니터링, 배포 절차 같은 운영 문서를 써 왔습니다. IP 변경으로 생긴 장애는 재현 코드를 만들고 JVM DNS 캐시 관점에서 원인을 정리해 글과 사내 세미나로 공유했습니다.',
   },
 ];
 
@@ -645,6 +649,7 @@ export const writing = [
     href: 'https://rojae.github.io/posts/jvm-dns-caching-meets-connection-pools/',
     extra: [
       ['재현 코드', 'https://github.com/rojae/feign-dns-lookup-test'],
+      ['세미나 자료', 'https://docs.google.com/presentation/d/1P_IMupN3iSSR1Z3zRhs0NlMWHGXGVUcXvM9oiynObVY/edit?usp=sharing'],
       ['Medium (EN)', 'https://medium.com/@jaethon96/how-is-dns-managed-in-jvm-0b1cadd08ba2'],
     ],
   },
@@ -659,6 +664,13 @@ export const writing = [
       ['발송 배치', 'https://rojae.github.io/posts/spring-batch-email/'],
       ['성능 최적화', 'https://rojae.github.io/posts/spring-batch-performance/'],
     ],
+  },
+  {
+    type: '회고',
+    title: '젊은 로재씨의 슬픔 — 우당탕탕 PL 데뷔기',
+    text: '통합인증 프로젝트를 리딩하며 겪은 일과, 그 뒤로 문서화와 공유를 먼저 챙기게 된 이유. 리더와 보스의 차이에 대한 생각.',
+    href: 'https://rojae.github.io/posts/the-sorrows-of-young-rojae/',
+    extra: [],
   },
   {
     type: '시리즈 · 5편',

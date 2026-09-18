@@ -114,7 +114,7 @@ function renderIndex() {
             <span class="arrow" aria-hidden="true">↗</span>
           </a>`).join('');
 
-  const writingHtml = writing.slice(0, 3).map(w => `
+  const writingHtml = writing.slice(0, 4).map(w => `
         <article class="post">
           <span class="post-type">${w.type}</span>
           <div>
