@@ -378,6 +378,9 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 .resume-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
 .resume-actions { display: flex; gap: 8px; flex: none; }
+.resume-formats { margin-top: 12px; font-size: 14px; color: var(--text-3); }
+.resume-formats a { color: var(--accent); font-weight: 600; }
+.resume-formats a:hover { text-decoration: underline; }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 16px; font-size: 15px; }
 .resume-contact a { color: var(--accent); }
 .resume-block { margin-top: 48px; }

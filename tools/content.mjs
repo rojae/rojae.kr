@@ -682,3 +682,31 @@ export const writing = [
 ];
 
 export const education = [['2020.08 졸업', '강원대학교', '컴퓨터정보통신공학과 학사']];
+
+// 이력서 PDF(resume-builder compact 템플릿)에만 쓰는 요약 데이터. 사이트 본문과 수치를 맞춰 유지합니다.
+export const resume = {
+  nameEn: 'Jaeseong Oh',
+  title: '서버 개발자 (6년 차) · 회원 · 인증 · 외부 파트너 연동',
+  summary: [
+    '전자금융 PG(2년)와 커머스 회원 · 인증(4년+)에서 Java/Spring 서버를 만들고 운영해 온 6년 차 서버 개발자. 기능이 동작하는 순간만큼 실패하고 회복하는 경계와 그 뒤의 운영을 중요하게 생각합니다.',
+    '지마켓 · 옥션 통합인증 서비스의 구조와 인증업체 라우팅을 결정해 **월 인증 비용 약 1/3 절감, 인증 관련 CS 90% 이상 감소**. 삼성카드 첫 적용 제휴 연동 플랫폼의 트랜잭션 · 배치 구조를 결정하고 운영 어드민까지 만들어 **오픈 첫 달 동의 약 1만 명**. 지마켓 · 옥션 · ESMPLUS 약관을 한 서비스로 통합해 운영 중.',
+    '더존비즈온에서는 입사 1년 차에 2인 팀으로 전자문서 유통 서비스의 서버 22대 이중화 인프라 · API · 관리자 · 배치를 만들고 KISA 전자문서유통중계자 인증 심사 적합. Redis 기반 분산 Rate Limiting 오픈소스 OpenFluxGate를 설계 · 배포하고 OpenFeign에 개선 2건을 기여 · 병합.',
+  ],
+  highlights: [
+    { value: '6년+', label: 'PG · 커머스 회원/인증 서버' },
+    { value: '비용 약 1/3↓ · CS 90%↓', label: '통합인증 · 인증업체 라우팅' },
+    { value: '첫 달 동의 1만 명', label: '삼성카드 제휴 연동 플랫폼' },
+    { value: '서버 22대 · KISA 적합', label: '전자문서 유통 서비스' },
+    { value: 'OpenFluxGate · OpenFeign', label: '오픈소스 배포 · 기여' },
+  ],
+  skills: {
+    'Language': ['Java 21', 'JavaScript / TypeScript', 'Go (스터디)'],
+    'Framework': ['Spring Boot 3', 'WebFlux', 'JPA / Querydsl', 'Spring Batch', 'Spring Cloud Data Flow', 'Next.js'],
+    'Security': ['Spring Security', 'JWT / OAuth2', 'Redis 세션', '암호화 (AES-256)', 'Rate Limiting', '개인정보 접근 감사', 'ISMS-P 대응'],
+    'Infra / Gateway': ['Gravitee API Gateway', 'Nginx', 'HAProxy · keepalived', 'Kafka', 'Redis Cluster · Sentinel', 'Jenkins', 'Kubernetes (스터디)'],
+    'Database': ['Oracle', 'MongoDB', 'MSSQL', 'MariaDB Galera · MaxScale'],
+    'Observability': ['Grafana', 'InfluxDB', 'ELK'],
+  },
+  education: [{ school: '강원대학교', degree: '컴퓨터정보통신공학과 학사', period: '2014.02 ~ 2020.08' }],
+  awards: [{ title: 'KNU 청년창업사례 Festival 최우수상', date: '2015.12' }],
+};

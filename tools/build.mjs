@@ -330,6 +330,7 @@ function renderResume() {
           <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
         <p class="page-lead">${profile.lead}</p>
+        <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (2쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
         <div class="resume-contact">
           <a href="mailto:${profile.email}">${profile.email}</a>
           <a href="${profile.github}">github.com/rojae</a>
