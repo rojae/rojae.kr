@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WAF 플랫폼 — 오재성</title>
-  <meta name="description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.">
+  <meta name="description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 설계와 구현을 맡아 끝까지 만들었습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="WAF 플랫폼 — 오재성">
-  <meta property="og:description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.">
+  <meta property="og:description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 설계와 구현을 맡아 끝까지 만들었습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -38,12 +38,12 @@
         <header class="page-head">
           <div class="project-meta"><span class="badge">오픈소스</span><span>Nginx + ModSecurity 위에 얹은 이중 트랙 로그 파이프라인</span></div>
           <h1>WAF 플랫폼</h1>
-          <p class="page-lead">ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.</p>
+          <p class="page-lead">ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 설계와 구현을 맡아 끝까지 만들었습니다.</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2025.08 — 2025.12</dd></div>
-          <div><dt>팀</dt><dd>개인 프로젝트</dd></div>
-          <div><dt>역할</dt><dd>설계 · 개발 (Nginx · Go · Java · Next.js · k8s)</dd></div>
+          <div><dt>팀</dt><dd>외부 개발자 스터디</dd></div>
+          <div><dt>역할</dt><dd>설계 · 구현 담당 · 보안 회사 이사급 개발자 코칭</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Nginx</li><li>ModSecurity · OWASP CRS</li><li>Fluent Bit · Lua</li><li>Kafka</li><li>ksqlDB</li><li>Go</li><li>InfluxDB</li><li>Logstash</li><li>Elasticsearch</li><li>Spring Boot 3.2</li><li>Next.js 15</li><li>Kubernetes</li></ul></dd></div>
         </dl>
         <div class="page-links"><a class="btn" href="https://github.com/rojae/waf" target="_blank" rel="noopener noreferrer">GitHub 저장소 <span aria-hidden="true">↗</span></a></div>
@@ -156,8 +156,8 @@
 
         <section id="s0" class="case-section">
           <h2>왜 만들었나</h2>
-          <p>회사에서 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금해졌습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.</p>
-          <p>그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 64개 커밋을 혼자 쌓았습니다.</p>
+          <p>회사 밖 개발자들과 함께한 스터디 프로젝트입니다. 보안 회사에서 이사급으로 일하는 개발자가 코칭을 맡아 방향을 잡아 주었고, 저는 설계와 구현을 담당했습니다. 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금하던 참이었습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.</p>
+          <p>그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 코칭을 받으며 64개 커밋을 쌓았습니다.</p>
         </section>
         <section id="s1" class="case-section">
           <h2>지금 볼 것과 나중에 볼 것</h2>
@@ -177,7 +177,7 @@
           <h2>직접 분석해 보고 남기는 아쉬운 점</h2>
           <p>이 페이지를 쓰기 위해 저장소를 다시 읽으면서 README와 코드 사이의 간격을 몇 개 찾았습니다. README의 "production-ready", "초당 10,000+ 요청", "Helm 차트 · 오퍼레이터", "RBAC · 컴플라이언스"는 코드로 뒷받침되지 않습니다. 부하 테스트 기록이 없고, Helm 차트는 없으며(매니페스트와 셸 스크립트만 있음), 권한은 Google 로그인 여부만 확인할 뿐 역할 구분이 없습니다.</p>
           <p>알림은 콘솔 출력에서 멈춰 있습니다. Slack · PagerDuty 전송은 주석 처리된 자리만 있고, 위험 IP 목록은 Go 코드에 하드코딩되어 있습니다. ClickHouse는 테이블 스키마와 컨테이너 정의까지 있지만 실제로 데이터를 쓰는 경로가 없어 OLAP 트랙은 이름만 있는 상태입니다. 자동화된 테스트와 CI가 없고, 테스트용 컨트롤러가 운영 코드에 함께 들어 있으며, 기본 토큰이 코드에 남아 있습니다.</p>
-          <p>그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 학습 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.</p>
+          <p>그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 현업 보안 개발자의 코칭을 받으며 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 스터디 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.</p>
         </section>
 
         <section id="closing" class="case-section">

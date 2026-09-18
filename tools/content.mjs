@@ -317,10 +317,10 @@ export const caseStudies = [
     title: 'WAF 플랫폼',
     sub: 'Nginx + ModSecurity 위에 얹은 이중 트랙 로그 파이프라인',
     period: '2025.08 — 2025.12',
-    team: '개인 프로젝트',
-    role: '설계 · 개발 (Nginx · Go · Java · Next.js · k8s)',
+    team: '외부 개발자 스터디',
+    role: '설계 · 구현 담당 · 보안 회사 이사급 개발자 코칭',
     stack: ['Nginx', 'ModSecurity · OWASP CRS', 'Fluent Bit · Lua', 'Kafka', 'ksqlDB', 'Go', 'InfluxDB', 'Logstash', 'Elasticsearch', 'Spring Boot 3.2', 'Next.js 15', 'Kubernetes'],
-    summary: 'ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지 혼자 끝까지 만들어 봤습니다.',
+    summary: 'ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 설계와 구현을 맡아 끝까지 만들었습니다.',
     cardPoints: [
       'ModSecurity 감사 로그를 Lua 분류기로 실시간 / 분석 트랙에 배분',
       'Go 처리기 · ksqlDB 윈도우 집계 · Elasticsearch 색인의 파이프라인',
@@ -337,8 +337,8 @@ export const caseStudies = [
     flow: { rows: [], caption: '실제 저장소의 설정과 코드를 읽고 그린 구조도입니다. 점선은 코드에 자리만 있고 아직 연결되지 않은 경로입니다.' },
     story: [
       { heading: '왜 만들었나', paragraphs: [
-        '회사에서 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금해졌습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.',
-        '그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 64개 커밋을 혼자 쌓았습니다.',
+        '회사 밖 개발자들과 함께한 스터디 프로젝트입니다. 보안 회사에서 이사급으로 일하는 개발자가 코칭을 맡아 방향을 잡아 주었고, 저는 설계와 구현을 담당했습니다. 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금하던 참이었습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.',
+        '그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 코칭을 받으며 64개 커밋을 쌓았습니다.',
       ] },
       { heading: '지금 볼 것과 나중에 볼 것', paragraphs: [
         'ModSecurity는 감사 로그를 JSON으로 남깁니다(SecAuditLogFormat JSON, RelevantOnly). Fluent Bit이 이 파일을 tail 하면서 Lua 스크립트로 이벤트를 분류합니다. SQL 인젝션(942xxx) · XSS(941xxx) · RCE(932xxx) 룰이 걸렸거나 CRS 이상 점수가 20 이상이면 실시간 트랙, 스캐너 탐지(913xxx)는 노이즈로 보고 분석 트랙으로 보냅니다.',
@@ -354,7 +354,7 @@ export const caseStudies = [
       { heading: '직접 분석해 보고 남기는 아쉬운 점', paragraphs: [
         '이 페이지를 쓰기 위해 저장소를 다시 읽으면서 README와 코드 사이의 간격을 몇 개 찾았습니다. README의 "production-ready", "초당 10,000+ 요청", "Helm 차트 · 오퍼레이터", "RBAC · 컴플라이언스"는 코드로 뒷받침되지 않습니다. 부하 테스트 기록이 없고, Helm 차트는 없으며(매니페스트와 셸 스크립트만 있음), 권한은 Google 로그인 여부만 확인할 뿐 역할 구분이 없습니다.',
         '알림은 콘솔 출력에서 멈춰 있습니다. Slack · PagerDuty 전송은 주석 처리된 자리만 있고, 위험 IP 목록은 Go 코드에 하드코딩되어 있습니다. ClickHouse는 테이블 스키마와 컨테이너 정의까지 있지만 실제로 데이터를 쓰는 경로가 없어 OLAP 트랙은 이름만 있는 상태입니다. 자동화된 테스트와 CI가 없고, 테스트용 컨트롤러가 운영 코드에 함께 들어 있으며, 기본 토큰이 코드에 남아 있습니다.',
-        '그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 학습 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.',
+        '그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 현업 보안 개발자의 코칭을 받으며 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 스터디 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.',
       ] },
     ],
     closing: 'WAF에서 어려운 건 막는 규칙이 아니라, 막은 뒤에 남는 신호를 사람이 볼 수 있는 크기로 줄이는 일이었습니다. 그리고 문서가 코드보다 앞서가면 그 간격이 곧 신뢰의 문제가 된다는 것도, 이번에 제 프로젝트를 남의 눈으로 다시 읽으며 배웠습니다.',
@@ -540,7 +540,7 @@ export const openSource = [
     tags: ['Java', 'Redis', 'Spring Boot'],
   },
   {
-    title: 'WAF 플랫폼', role: 'Owner', lang: 'Java · Go · TypeScript',
+    title: 'WAF 플랫폼', role: '스터디 프로젝트', lang: 'Java · Go · TypeScript',
     text: 'Nginx + ModSecurity + OWASP CRS 기반 웹 방화벽. 막은 요청을 실시간 트랙(Go · InfluxDB)과 분석 트랙(Kafka · ksqlDB · Elasticsearch)으로 나눠 처리하고, 대시보드에서 룰을 고치면 Nginx에 무중단 반영.',
     href: 'work/waf.html', internalLink: true,
     tags: ['ModSecurity', 'Kafka', 'Spring Boot', 'Next.js'],
