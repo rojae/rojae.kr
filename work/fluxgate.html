@@ -50,7 +50,79 @@
 
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">요청</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">FluxGate Filter</span><span class="node">제한 키 식별 (IP · 사용자 · API 키)</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">토큰 버킷 판단</span><span class="node">Redis + Lua</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">허용 / 제한 응답</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">FluxGate Studio</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">규칙 저장 (MongoDB)</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">재시작 없이 규칙 반영</span></div></div></div><figcaption>각 앱이 Redis에 직접 붙는 방식과, 중앙 Rate Limit 서비스를 HTTP로 호출하는 방식을 모두 지원합니다.</figcaption></figure>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 600" role="img" aria-label="OpenFluxGate 구조도: 클라이언트 요청이 Spring Boot 스타터로 붙은 FluxGate Filter에서 제한 키를 식별하고, RateLimitHandler가 멀티 밴드 규칙으로 판단한다. Redis 직접 접근 또는 HTTP API 모드로 Redis의 Lua 스크립트가 확인과 차감을 한 번에 처리한다. 규칙은 FluxGate Studio에서 MongoDB에 저장되어 재시작 없이 반영되고, Prometheus 메트릭과 구조화 로그로 관측한다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="30" y="60" width="120" height="48" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="90" y="84" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">클라이언트 요청</text>
+  
+  <rect x="200" y="20" width="560" height="270" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="480" y="44" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">애플리케이션 (Spring Boot 2.7 / 3.x 스타터)</text>
+  <text x="480" y="64" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">설정만으로 필터가 붙는다</text>
+  <rect x="224" y="68" width="512" height="56" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="480" y="88" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">FluxGate Filter · 제한 키 식별 (LimitScope)</text>
+  <text x="480" y="108" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">IP · 사용자 ID · API 키 · 복합 키(IP + 사용자) — 무엇을 같은 대상으로 셀 것인가</text>
+  <path d="M150 84 L224 84" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M480 124 L480 144" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="224" y="144" width="512" height="56" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="480" y="164" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">RateLimitHandler · 멀티 밴드 규칙</text>
+  <text x="480" y="184" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">초 · 분 · 시간 제한을 함께 적용 · WAIT_FOR_REFILL이면 보충을 기다림</text>
+  
+  <rect x="224" y="220" width="246" height="52" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="347" y="237" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Direct Redis</text>
+  <text x="347" y="256" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">앱이 Redis에 직접</text>
+  
+  <rect x="490" y="220" width="246" height="52" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="613" y="237" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HTTP API 모드</text>
+  <text x="613" y="256" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">중앙 Rate Limit 서비스 호출</text>
+  <path d="M347 200 L347 220" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M613 200 L613 220" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  
+  <path d="M800 198 a75 8 0 0 1 150 0 v64 a75 8 0 0 1 -150 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M800 198 a75 8 0 0 0 150 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="232" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Redis</text>
+  <text x="875" y="248" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Lua 스크립트</text>
+  <text x="875" y="288" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">확인 + 차감을 한 번에</text>
+  <path d="M736 246 L800 240" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M347 272 L347 300 L780 300 L780 250 L800 250" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="875" y="304" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Redis 서버 시간 · 정수 연산</text>
+  <text x="875" y="318" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">인스턴스 시계 차이가 섞이지 않음</text>
+  <rect x="30" y="200" width="120" height="72" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="90" y="224" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">허용 / 제한</text>
+  <text x="90" y="244" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">429 또는 통과</text>
+  <text x="90" y="258" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Retry-After</text>
+  <path d="M224 172 L187 172 L187 236 L150 236" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="330" y="340" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">규칙 관리</text>
+  <rect x="200" y="356" width="260" height="110" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="330" y="380" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">FluxGate Studio</text>
+  <text x="330" y="398" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Next.js + Spring Boot · Keycloak OIDC</text>
+  <rect x="216" y="412" width="228" height="22" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="330" y="423" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">규칙 생성 · 수정 · 토글</text>
+  <rect x="216" y="438" width="228" height="22" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="330" y="449" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">대시보드 · 시뮬레이션</text>
+  
+  <path d="M520 374 a75 8 0 0 1 150 0 v74 a75 8 0 0 1 -150 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M520 374 a75 8 0 0 0 150 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="595" y="413" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MongoDB</text>
+  <text x="595" y="429" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">규칙 저장</text>
+  <path d="M460 411 L520 411" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M595 366 L595 366 L595 290 L480 290" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="690" y="330" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">재시작 없이 규칙 반영</text>
+  <text x="875" y="340" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">관측</text>
+  
+  <rect x="800" y="356" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="373" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Prometheus</text>
+  <text x="875" y="392" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Micrometer 메트릭</text>
+  
+  <rect x="800" y="420" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="437" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">구조화 로그</text>
+  <text x="875" y="456" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">correlation ID · JSON</text>
+  <path d="M736 172 L775 172 L775 381 L800 381" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <path d="M736 176 L778 176 L778 445 L800 445" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <rect x="200" y="500" width="750" height="76" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="575" y="524" font-size="13" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">배포 · 상태</text>
+  <text x="575" y="545" font-size="11" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Maven Central io.github.openfluxgate · v0.3.7 · Docusaurus 문서 포털 · 벤치마크 페이지</text>
+  <text x="575" y="562" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사내: 팀 코드 리뷰 · POC 완료, 프로덕션 도입 검증 중 — 운영 효과는 도입 후 측정</text>
+</svg><figcaption>각 앱이 Redis에 직접 붙는 방식과, 중앙 Rate Limit 서비스를 HTTP로 호출하는 방식을 모두 지원합니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>fluxgate-core</strong><span>Bucket4j 기반 제한 엔진</span></li><li><strong>fluxgate-redis-ratelimiter</strong><span>Lua 스크립트 기반 분산 제한</span></li><li><strong>fluxgate-mongo-adapter</strong><span>MongoDB 규칙 저장 · 동적 갱신</span></li><li><strong>spring-boot3 / boot2 starter</strong><span>Java 17+ jakarta / Java 11+ javax 자동 설정</span></li><li><strong>fluxgate-testkit</strong><span>통합 테스트 유틸리티와 샘플 앱</span></li><li><strong>FluxGate Studio</strong><span>규칙 관리 · 대시보드 · 시뮬레이션 어드민</span></li></ul>
           <figure class="shot"><img src="../assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"><figcaption>공개 저장소 README</figcaption></figure>
         </section>

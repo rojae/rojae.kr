@@ -49,7 +49,76 @@
 
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">공통 모듈</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">지마켓 모듈</span><span class="node">옥션 모듈</span><span class="node">통합 모듈</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">사이트별 서비스로 조합 · 배포</span></div></div><div class="flow-row"><div class="flow-col"><span class="node">API 게이트웨이</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">인증 · 권한 검증 · 라우팅</span></div></div></div><figcaption>코드 재사용과 조합을 그린 그림입니다. 실제 인스턴스와 네트워크 구성은 다릅니다.</figcaption></figure>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 560" role="img" aria-label="회원 도메인 공통 모듈화 구조도: 지마켓·옥션 앱과 내부 서비스 요청이 Gravitee API 게이트웨이에서 인증·권한 검증과 라우팅을 거쳐 사이트별 회원 서비스로 간다. 각 서비스는 공통 모듈, 사이트 모듈, 통합 모듈, 제휴·인증 모듈을 조합해 배포하며 통합 Oracle을 공유한다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="30" y="40" width="130" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="95" y="62" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 앱 · 웹</text>
+  <rect x="30" y="100" width="130" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="95" y="122" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">옥션 앱 · 웹</text>
+  <rect x="30" y="160" width="130" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="95" y="182" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">내부 서비스</text>
+  <rect x="220" y="40" width="200" height="164" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="320" y="66" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">API 게이트웨이</text>
+  <text x="320" y="84" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Gravitee</text>
+  <rect x="236" y="100" width="168" height="26" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="320" y="113" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">호출자 인증 · 권한 검증</text>
+  <rect x="236" y="132" width="168" height="26" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="320" y="145" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">멀티테넌시 라우팅</text>
+  <rect x="236" y="164" width="168" height="26" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="320" y="177" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">운영 모니터링</text>
+  <path d="M160 62 L190 62 L190 122 L220 122" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M160 122 L190 122 L190 122 L220 122" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M160 182 L190 182 L190 122 L220 122" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="700" y="30" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사이트별로 조합 · 배포</text>
+  <rect x="500" y="40" width="200" height="70" rx="12" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/>
+  <text x="600" y="64" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 회원 서비스</text>
+  <text x="600" y="86" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">공통 + 지마켓 + 통합 + 제휴 · 인증</text>
+  <rect x="730" y="40" width="200" height="70" rx="12" fill="var(--bg)" stroke="color-mix(in srgb, var(--accent) 45%, var(--line))" stroke-width="1.2"/>
+  <text x="830" y="64" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">옥션 회원 서비스</text>
+  <text x="830" y="86" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">공통 + 옥션 + 통합 + 제휴 · 인증</text>
+  <path d="M420 122 L460 122 L460 75 L500 75" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M420 122 L460 122 L460 75 L730 75" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  
+  <rect x="250" y="250" width="680" height="210" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="590" y="274" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">모듈 구성</text>
+  <text x="590" y="294" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">DB는 하나였지만 API는 사이트마다 두 번 만들던 구조를, 조합해 배포하는 구조로</text>
+  
+  <rect x="272" y="306" width="152" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="348" y="323" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">공통 모듈</text>
+  <text x="348" y="342" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">회원정보 · 로그인 · 캐싱</text>
+  
+  <rect x="437" y="306" width="152" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="513" y="323" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 모듈</text>
+  <text x="513" y="342" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 정책</text>
+  
+  <rect x="602" y="306" width="152" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="678" y="323" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">옥션 모듈</text>
+  <text x="678" y="342" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">옥션 정책</text>
+  
+  <rect x="767" y="306" width="152" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="843" y="323" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">통합 모듈</text>
+  <text x="843" y="342" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">두 사이트 함께</text>
+  <rect x="272" y="374" width="646" height="64" rx="8" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text x="595" y="394" font-size="13" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴 · 인증 모듈</text>
+  <text x="595" y="414" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">공통 구조 위에서 제가 주로 개발한 부분 — 어떤 기능을 공유하고 어떤 정책을 사이트별로 남길지</text>
+  <text x="595" y="428" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">전체 아키텍처는 팀 공동 설계</text>
+  <path d="M600 250 L600 110" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <path d="M830 250 L830 110" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+  <text x="715" y="180" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">필요한 모듈을 조합</text>
+  
+  <path d="M70 308 a65 8 0 0 1 130 0 v60 a65 8 0 0 1 -130 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M70 308 a65 8 0 0 0 130 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="135" y="340" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">통합 Oracle</text>
+  <text x="135" y="356" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 · 옥션 공용</text>
+  
+  <path d="M70 408 a65 8 0 0 1 130 0 v40 a65 8 0 0 1 -130 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M70 408 a65 8 0 0 0 130 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="135" y="430" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MongoDB · Redis</text>
+  
+  <path d="M250 331 L225 331 L225 338 L200 338" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="135" y="480" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">데이터는 이미 하나였다.</text>
+  <text x="135" y="495" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">나뉘어 있던 건 API 계층.</text>
+</svg><figcaption>코드 재사용과 조합을 그린 그림입니다. 실제 인스턴스와 네트워크 구성은 다릅니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>공통 모듈</strong><span>사이트와 무관하게 같은 의미를 갖는 회원 · 인증 기능</span></li><li><strong>사이트별 모듈</strong><span>지마켓 · 옥션 각각의 정책</span></li><li><strong>통합 모듈</strong><span>두 사이트를 함께 다루는 기능</span></li><li><strong>조합 배포</strong><span>필요한 모듈을 묶어 사이트별 서비스로</span></li><li><strong>API 게이트웨이</strong><span>인증 · 권한 검증, 멀티테넌시 라우팅, 모니터링</span></li></ul>
           
         </section>

@@ -49,7 +49,81 @@
 
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          <figure class="flow-figure"><div class="flow"><div class="flow-row"><div class="flow-col"><span class="node">장애 · 재기동 복구</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">원인과 구조적 제약을 분리</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">전환 설계</span></div><span class="flow-arrow" aria-hidden="true"></span><div class="flow-col"><span class="node">Java/Spring 전환 · 캐시 도입</span></div></div></div><figcaption>진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 520" role="img" aria-label="로그인 시스템 전환 구조도: 장애, 재기동 복구, 원인·제약 분석, 전환 설계, 전환·운영의 흐름과 함께, 런타임 버전이 고정되어 연동 기술을 붙이기 어렵던 .NET 서비스(Before)와 Caffeine 캐시, Oracle, Redis Cluster, MongoDB를 쓰는 Java/Spring 서비스(After)를 비교한다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  <rect x="30" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="115" y="50" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">장애</text>
+  <text x="115" y="70" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">전체 로그인 불가</text>
+  <path d="M200 57 L220 57" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="220" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="305" y="50" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">재기동 복구</text>
+  <text x="305" y="70" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">증상은 사라짐</text>
+  <path d="M390 57 L410 57" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="410" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text x="495" y="50" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">원인 · 제약 분석</text>
+  <text x="495" y="70" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">연결 단계 실패 · 런타임 고정</text>
+  <path d="M580 57 L600 57" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="600" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text x="685" y="50" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">전환 설계</text>
+  <text x="685" y="70" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Java/Spring으로</text>
+  <path d="M770 57 L790 57" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="790" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="875" y="50" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">전환 · 운영</text>
+  <text x="875" y="70" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">캐시 · 연동 기술 적용</text>
+  <text x="505" y="104" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제가 기여한 범위: 원인 분석과 전환 설계</text>
+  <text x="250" y="150" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">BEFORE</text>
+  <rect x="30" y="164" width="440" height="320" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="250" y="190" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">.NET 로그인 · 회원 서비스</text>
+  <rect x="52" y="210" width="396" height="52" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="250" y="229" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">런타임 버전 고정</text>
+  <text x="250" y="248" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사내 보안 라이브러리가 지원하는 버전에 묶여 업그레이드 불가</text>
+  <rect x="52" y="274" width="396" height="52" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="250" y="293" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">연동 기술 적용 제약</text>
+  <text x="250" y="312" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Redis Cluster · MongoDB 같은 기술을 붙이기 어려움</text>
+  <rect x="52" y="338" width="396" height="52" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="250" y="357" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">DB 연결 단계에서 장애</text>
+  <text x="250" y="376" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">재기동으로 복구했지만 원인을 다시 마주할 수 있는 상태</text>
+  
+  <path d="M180 412 a70 8 0 0 1 140 0 v44 a70 8 0 0 1 -140 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M180 412 a70 8 0 0 0 140 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="250" y="436" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Oracle</text>
+  
+  <path d="M250 390 L250 404" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="250" y="476" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제약 ≠ 장애의 직접 원인. 둘을 나눠서 봄</text>
+  <text x="730" y="150" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">AFTER</text>
+  
+  <rect x="510" y="164" width="440" height="320" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="730" y="188" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Java / Spring 로그인 · 회원 서비스</text>
+  <text x="730" y="208" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">조직이 지원하는 런타임에서 유지보수 · 연동 가능</text>
+  
+  <rect x="532" y="216" width="396" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="730" y="233" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Caffeine 로컬 캐시</text>
+  <text x="730" y="252" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">자주 조회되는 회원정보 — DB 부하 완화 (팀 작업)</text>
+  <text x="730" y="282" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">즉시성이 중요한 상태(차단 · 탈퇴)는 캐시 대상 · 만료를 따로 판단</text>
+  
+  <path d="M532 308 a60 8 0 0 1 120 0 v48 a60 8 0 0 1 -120 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M532 308 a60 8 0 0 0 120 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="592" y="334" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Oracle</text>
+  
+  
+  <path d="M670 308 a60 8 0 0 1 120 0 v48 a60 8 0 0 1 -120 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M670 308 a60 8 0 0 0 120 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="730" y="334" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Redis Cluster</text>
+  <text x="730" y="350" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">세션 · 캐시</text>
+  
+  <path d="M808 308 a60 8 0 0 1 120 0 v48 a60 8 0 0 1 -120 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M808 308 a60 8 0 0 0 120 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="868" y="334" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MongoDB</text>
+  
+  <path d="M592 266 L592 300" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M730 266 L730 300" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M868 266 L868 300" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="532" y="386" width="396" height="44" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="730" y="402" font-size="12" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">모니터링 · 배포 · 연동 기술을 표준 스택에서</text>
+  <text x="730" y="420" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">팀 공동 운영 서비스. 단독 성능 개선이나 규모를 주장하지 않음</text>
+  <text x="730" y="460" font-size="11.5" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">언어를 바꾼 것이 아니라, 제약을 푼 것</text>
+  <path d="M470 324 L510 324" stroke="var(--accent)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+</svg><figcaption>진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>장애 분석</strong><span>DB 연결 실패가 어느 단계에서 났는지 확인</span></li><li><strong>제약 검토</strong><span>런타임 버전 고정이 유지보수와 연동에 주는 영향</span></li><li><strong>전환 설계</strong><span>로그인 · 회원 기능의 Java/Spring 전환</span></li><li><strong>조회 캐시</strong><span>회원정보 조회에 Caffeine 로컬 캐시</span></li></ul>
           
         </section>

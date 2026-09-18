@@ -44,6 +44,7 @@ export const focus = [
 export const caseStudies = [
   {
     key: 'affiliate',
+    diagram: 'affiliate',
     featured: true,
     badge: '지마켓',
     title: '외부 파트너 제휴 연동 플랫폼',
@@ -159,6 +160,7 @@ export const caseStudies = [
   },
   {
     key: 'platform',
+    diagram: 'platform',
     badge: '지마켓',
     title: '회원 도메인 공통 모듈화',
     sub: '지마켓 · 옥션 통합 백엔드',
@@ -205,6 +207,7 @@ export const caseStudies = [
   },
   {
     key: 'login',
+    diagram: 'login',
     badge: '지마켓',
     title: '로그인 시스템 Java/Spring 전환',
     sub: '로그인 장애 이후의 근본 대응',
@@ -249,6 +252,7 @@ export const caseStudies = [
   },
   {
     key: 'fluxgate',
+    diagram: 'fluxgate',
     featured: true,
     badge: '오픈소스',
     title: 'OpenFluxGate',
