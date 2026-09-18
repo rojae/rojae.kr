@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { profile, focus, ways, caseStudies, experience, openSource, contributions, writing, education } from './content.mjs';
 import { diagrams } from './diagrams.mjs';
+import { wordmarkSvg } from './logo.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const byKey = Object.fromEntries(caseStudies.map(c => [c.key, c]));
@@ -39,7 +40,7 @@ ${script ? `  <script src="${prefix}script.js" defer></script>\n` : ''}</head>
   <a class="skip-link" href="#main">본문으로 이동</a>
   <header class="site-header">
     <div class="container">
-      <a class="logo" href="${prefix}index.html" aria-label="${profile.name} 홈"><svg class="logo-mark" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="9" fill="var(--text)"/><path d="M10 22V11.5M10 15.5c0-3 2.6-4.6 5.5-4.6 1.6 0 2.8.4 3.8 1.2" stroke="var(--bg)" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="20.5" cy="21" r="2.2" fill="var(--accent)"/></svg><span>${profile.handle}</span></a>
+      <a class="logo" href="${prefix}index.html" aria-label="${profile.name} 홈">${wordmarkSvg()}</a>
       <nav class="site-nav" aria-label="메인 메뉴">
         ${nav}
       </nav>
