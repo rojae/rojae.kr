@@ -62,8 +62,9 @@ const server = http.createServer((req, res) => {
     assert.equal(await page.locator('h1').textContent(), 'OpenFluxGate');
     await page.locator('.diagram-figure svg').click();
     assert(await page.locator('dialog.lightbox').evaluate(d => d.open), 'lightbox opens on diagram click');
+    const before = parseInt(await page.locator('.lightbox-level').textContent(), 10);
     await page.locator('[data-zoom="+"]').click();
-    assert.equal(await page.locator('.lightbox-level').textContent(), '125%');
+    assert.equal(parseInt(await page.locator('.lightbox-level').textContent(), 10), before + 25, 'zoom + adds 25%');
     await page.keyboard.press('Escape');
     assert(!(await page.locator('dialog.lightbox').evaluate(d => d.open)), 'lightbox closes on Escape');
     await page.getByRole('link', { name: /← 이전/ }).click();
