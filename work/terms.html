@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>약관 관리 서비스 — 오재성</title>
+  <meta name="description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:title" content="약관 관리 서비스 — 오재성">
+  <meta property="og:description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 이동</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="../index.html" aria-label="오재성 홈"><svg class="logo-word" viewBox="5.1 -64.5 191.3 93.6" aria-hidden="true"><path d="M11.9 -2.7Q11.0 -3.4000000000000004 9.95 -4.5Q8.9 -5.6000000000000005 9.200000000000001 -7.6000000000000005Q9.5 -10.4 10.0 -12.55Q10.5 -14.700000000000001 11.200000000000001 -17.5Q11.4 -18.7 12.22872340425532 -21.6Q13.05744680851064 -24.5 14.27872340425532 -27.9Q15.5 -31.3 16.8 -34.35Q18.1 -37.4 19.1 -38.900000000000006Q20.200000000000003 -39.900000000000006 22.35 -39.900000000000006Q24.5 -39.900000000000006 25.3 -39.1Q26.400000000000002 -38.2 26.0 -35.95Q25.6 -33.7 23.200000000000003 -29.0Q22.700000000000003 -27.8 21.950000000000003 -26.450000000000003Q21.200000000000003 -25.1 20.900000000000002 -24.25Q20.6 -23.400000000000002 21.1 -23.5Q21.700000000000003 -24.6 23.300000000000004 -26.05Q24.900000000000002 -27.5 26.700000000000003 -28.9Q28.5 -30.3 30.1 -31.4Q31.700000000000003 -32.5 32.300000000000004 -32.800000000000004Q33.1 -33.300000000000004 34.150000000000006 -33.650000000000006Q35.2 -34.0 35.6 -34.2Q37.9 -35.300000000000004 40.650000000000006 -35.050000000000004Q43.400000000000006 -34.800000000000004 44.0 -33.300000000000004Q44.1 -32.5 44.650000000000006 -32.1Q45.2 -31.700000000000003 45.2 -31.700000000000003Q45.6 -31.700000000000003 45.650000000000006 -31.400000000000002Q45.7 -31.1 45.7 -31.1Q45.7 -30.400000000000002 44.35 -29.1Q43.0 -27.8 41.400000000000006 -27.700000000000003Q40.1 -27.6 39.1 -27.200000000000003Q38.1 -26.8 36.7 -26.200000000000003Q32.9 -24.0 29.85 -22.3Q26.8 -20.6 23.6 -17.1Q22.900000000000002 -16.3 22.1 -15.600000000000001Q21.3 -14.9 20.5 -13.600000000000001Q20.0 -13.100000000000001 19.5 -11.400000000000002Q19.0 -9.700000000000001 18.65 -8.15Q18.3 -6.6000000000000005 18.3 -6.300000000000001Q18.3 -6.300000000000001 18.0 -5.3500000000000005Q17.7 -4.4 17.0 -3.5Q15.8 -1.9000000000000001 14.65 -1.5Q13.5 -1.1 11.9 -2.7Z M52.8 -0.7000000000000001Q51.5 -0.7000000000000001 50.75 -1.2000000000000002Q50.0 -1.7000000000000002 48.9 -2.6Q47.0 -4.6000000000000005 45.85 -6.9Q44.7 -9.200000000000001 45.0 -10.9Q45.3 -11.700000000000001 45.25 -12.450000000000001Q45.2 -13.200000000000001 45.2 -13.200000000000001Q44.7 -13.700000000000001 44.900000000000006 -13.850000000000001Q45.1 -14.0 45.3 -14.4Q45.9 -14.4 45.7 -15.5Q45.5 -16.3 46.35 -18.950000000000003Q47.2 -21.6 48.7 -24.0Q49.3 -25.0 50.5 -26.65Q51.7 -28.3 53.150000000000006 -29.950000000000003Q54.6 -31.6 55.8 -32.6Q58.3 -34.7 60.45 -36.0Q62.6 -37.300000000000004 64.8 -37.800000000000004Q67.0 -38.300000000000004 69.35 -38.300000000000004Q71.7 -38.300000000000004 73.2 -36.7Q75.5 -35.7 76.45 -34.0Q77.4 -32.300000000000004 77.7 -29.6Q78.0 -26.6 77.1 -22.25Q76.2 -17.900000000000002 72.2 -12.200000000000001Q69.7 -8.6 67.30000000000001 -6.6Q64.9 -4.6000000000000005 62.0 -2.9000000000000004Q59.900000000000006 -1.5 57.5 -1.2Q55.1 -0.9 52.8 -0.7000000000000001ZM63.0 -12.9Q65.2 -14.8 66.15 -17.1Q67.1 -19.400000000000002 68.2 -22.5Q68.6 -23.1 68.75 -24.5Q68.9 -25.900000000000002 68.80000000000001 -27.25Q68.7 -28.6 68.1 -28.8Q67.2 -29.5 66.30000000000001 -29.15Q65.4 -28.8 64.0 -27.8Q61.0 -25.3 58.45 -22.05Q55.900000000000006 -18.8 54.900000000000006 -14.100000000000001Q54.6 -11.600000000000001 55.45 -10.350000000000001Q56.3 -9.1 58.25 -9.65Q60.2 -10.200000000000001 63.0 -12.9Z M78.2 20.900000000000002Q76.0 23.1 72.55000000000001 23.05Q69.10000000000001 23.0 66.7 20.5Q64.4 17.3 63.550000000000004 14.350000000000001Q62.7 11.4 63.2 9.5Q63.7 7.6000000000000005 65.3 7.6000000000000005Q65.8 7.6000000000000005 66.75 8.0Q67.7 8.4 68.5 8.978947368421053Q69.3 9.557894736842107 69.3 10.4Q69.3 11.9 69.6 13.0Q69.9 14.100000000000001 71.2 14.3Q72.3 14.700000000000001 73.45 14.05Q74.60000000000001 13.4 75.7 11.600000000000001Q76.7 10.3 77.9 7.5Q79.10000000000001 4.7 80.30000000000001 1.65Q81.5 -1.4000000000000001 82.2 -3.3000000000000003Q83.4 -7.4 84.10000000000001 -11.65Q84.80000000000001 -15.9 85.80000000000001 -20.8Q86.2 -23.5 86.75 -25.450000000000003Q87.30000000000001 -27.400000000000002 87.30000000000001 -27.8Q87.30000000000001 -28.200000000000003 87.4 -29.450000000000003Q87.5 -30.700000000000003 88.0 -31.700000000000003Q88.0 -33.2 88.45 -35.1Q88.9 -37.0 88.9 -37.4Q89.2 -37.7 90.15 -37.45Q91.10000000000001 -37.2 92.15 -36.7Q93.2 -36.2 93.7 -35.7Q94.5 -34.9 95.1 -33.95Q95.7 -33.0 95.95 -30.950000000000003Q96.2 -28.900000000000002 95.7 -24.700000000000003Q95.7 -24.1 95.4 -22.25Q95.10000000000001 -20.400000000000002 94.60000000000001 -18.1Q94.10000000000001 -15.8 93.60000000000001 -13.65Q93.10000000000001 -11.5 92.80000000000001 -10.100000000000001Q92.4 -8.6 91.9 -6.8Q91.4 -5.0 91.30000000000001 -4.3Q91.2 -3.7 90.6 -1.9500000000000002Q90.0 -0.2 89.35 1.5Q88.7 3.2 88.60000000000001 3.9000000000000004Q88.5 4.3 88.05000000000001 5.800000000000001Q87.60000000000001 7.300000000000001 86.2 10.4Q85.7 11.600000000000001 84.1 13.850000000000001Q82.5 16.1 80.80000000000001 18.150000000000002Q79.10000000000001 20.200000000000003 78.2 20.900000000000002ZM93.0 -47.6Q91.9 -48.900000000000006 92.35000000000001 -51.800000000000004Q92.80000000000001 -54.7 94.4 -56.800000000000004Q95.7 -58.300000000000004 97.95 -58.5Q100.2 -58.7 101.5 -57.6Q102.60000000000001 -55.900000000000006 102.9 -54.2Q103.2 -52.5 102.10000000000001 -50.900000000000006Q99.60000000000001 -48.1 96.95000000000002 -47.3Q94.30000000000001 -46.5 93.0 -47.6Z M105.4 -2.1Q105.0 -2.9000000000000004 103.65 -3.7Q102.3 -4.5 102.3 -4.9Q102.3 -5.300000000000001 101.85 -6.15Q101.4 -7.0 101.0 -7.4Q100.5 -8.0 101.3 -10.350000000000001Q102.1 -12.700000000000001 103.69999999999999 -16.1Q105.3 -19.5 107.2 -23.0Q108.0 -23.8 108.8 -25.1Q109.6 -26.400000000000002 110.0 -26.8Q110.0 -27.200000000000003 110.3 -27.550000000000004Q110.6 -27.900000000000002 111.0 -27.900000000000002L111.8 -29.5Q112.0 -29.900000000000002 113.03085106382979 -31.1Q114.06170212765957 -32.300000000000004 115.58085106382978 -33.75Q117.1 -35.2 118.63749999999999 -36.509090909090915Q120.175 -37.81818181818182 121.2 -38.400000000000006Q123.3 -39.800000000000004 125.55000000000001 -39.7Q127.80000000000001 -39.6 129.4 -38.300000000000004Q129.7 -38.0 130.75 -37.1Q131.8 -36.2 133.15 -35.1Q134.5 -34.0 135.5 -33.1L139.2 -29.8L137.45806451612904 -24.8Q136.2 -20.8 136.825 -17.8Q137.45 -14.8 138.7 -12.600000000000001Q139.2 -11.5 140.05 -10.9Q140.9 -10.3 142.3 -10.100000000000001Q143.1 -10.0 143.8 -9.5Q144.5 -9.0 144.5 -7.9Q144.5 -5.5 143.65 -4.45Q142.8 -3.4000000000000004 141.8 -3.2Q138.5 -2.8000000000000003 135.5 -3.9000000000000004Q132.5 -5.0 130.1 -9.600000000000001Q129.7 -10.200000000000001 129.05 -11.850000000000001Q128.4 -13.5 128.3 -14.0Q127.9 -13.5 127.25 -12.75Q126.6 -12.0 126.0 -11.4Q118.9 -4.2 113.82518248175182 -2.0500000000000003Q108.75036496350364 0.1 105.4 -2.1ZM110.9 -10.4Q111.6 -10.3 113.1 -11.15Q114.6 -12.0 117.1 -14.0Q120.5 -16.900000000000002 122.7 -18.800000000000004Q124.9 -20.700000000000003 127.0 -23.700000000000003L129.2 -27.3Q128.2 -29.6 127.39999999999999 -30.3Q126.6 -31.0 125.80000000000001 -31.0Q124.5 -31.0 122.7 -29.35Q120.9 -27.700000000000003 118.65 -24.550000000000004Q116.4 -21.400000000000002 113.6 -16.7Q112.3 -14.5 111.6 -12.45Q110.9 -10.4 110.9 -10.4Z M166.9 -2.0Q163.9 -0.30000000000000004 160.55 -0.05000000000000002Q157.2 0.2 154.3 -0.9500000000000001Q151.4 -2.1 149.6 -4.4Q148.6 -5.7 147.7 -8.55Q146.79999999999998 -11.4 147.4 -16.3Q148.0 -20.900000000000002 150.25 -25.6Q152.5 -30.3 155.8 -33.9Q159.1 -37.5 163.0 -38.800000000000004Q164.4 -39.300000000000004 165.85000000000002 -39.550000000000004Q167.3 -39.800000000000004 169.7 -39.6Q172.0 -39.300000000000004 173.8 -38.45Q175.6 -37.6 176.4 -36.6Q178.0 -35.0 178.5 -33.5Q179.0 -32.0 178.9 -30.6Q178.4 -27.400000000000002 176.05 -23.700000000000003Q173.7 -20.0 169.5 -18.2Q167.8 -17.5 165.5 -17.3Q163.2 -17.1 159.2 -17.900000000000002Q156.8 -18.400000000000002 156.05 -17.400000000000002Q155.29999999999998 -16.400000000000002 155.4 -13.5Q155.6 -11.700000000000001 156.25 -10.350000000000001Q156.9 -9.0 158.7 -8.5Q161.0 -8.1 162.0 -8.45Q163.0 -8.8 164.5 -9.5Q165.3 -10.0 166.05 -10.600000000000001Q166.8 -11.200000000000001 167.55 -11.8Q168.3 -12.4 168.8 -12.700000000000001Q169.3 -13.100000000000001 169.8 -13.200000000000001Q170.3 -13.3 170.8 -13.3Q171.9 -13.200000000000001 172.9 -12.100000000000001Q173.9 -11.0 174.2 -10.0Q174.2 -9.200000000000001 173.2 -7.750000000000001Q172.2 -6.300000000000001 170.55 -4.75Q168.9 -3.2 166.9 -2.0ZM165.6 -24.3Q166.3 -24.6 167.65 -25.700000000000003Q169.0 -26.8 170.1 -28.05Q171.2 -29.3 171.2 -30.0Q171.2 -31.1 169.75 -31.900000000000002Q168.3 -32.7 166.0 -32.2Q165.2 -32.0 164.1 -31.1Q163.0 -30.200000000000003 161.9 -29.050000000000004Q160.8 -27.900000000000002 160.0 -26.85Q159.2 -25.8 158.9 -25.200000000000003Q159.3 -24.700000000000003 160.5 -24.400000000000002Q161.7 -24.1 163.14999999999998 -24.1Q164.6 -24.1 165.6 -24.3Z" fill="var(--text)"/><circle cx="186.9" cy="-5.5" r="5.5" fill="var(--accent)"/></svg></a>
+      <nav class="site-nav" aria-label="메인 메뉴">
+        <a class="nav-keep" href="../index.html#work" aria-current="page">프로젝트</a>
+        <a href="../index.html#experience">경력</a>
+        <a href="../index.html#opensource">오픈소스</a>
+        <a href="../index.html#writing">글</a>
+        <a class="nav-keep" href="../resume.html">이력서</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="page case">
+    <div class="container case-layout">
+      <aside class="toc" aria-label="목차">
+        <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">약관은 회원 데이터의 바닥공사</a></li><li><a href="#s1">약관을 세 가지로 나눠서 보기</a></li><li><a href="#s2">시행일자가 버전을 움직인다</a></li><li><a href="#s3">어드민 조회는 Querydsl로</a></li><li><a href="#s4">세 사이트를 한 서비스로</a></li><li><a href="#s5">남은 것</a></li><li><a href="#closing">돌아보면</a></li></ol>
+      </aside>
+      <article class="case-body">
+        <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
+        <header class="page-head">
+          <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 · ESMPLUS 통합 약관</span></div>
+          <h1>약관 관리 서비스</h1>
+          <p class="page-lead">지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.</p>
+        </header>
+        <dl class="facts">
+          <div><dt>기간</dt><dd>2024.06 — 2024.12</dd></div>
+          <div><dt>팀</dt><dd>4인 팀</dd></div>
+          <div><dt>역할</dt><dd>주요 개발 · 사내 리뷰 발표</dd></div>
+          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>JPA</li><li>Querydsl</li><li>Thymeleaf</li><li>Blob Storage</li><li>Oracle</li><li>MSSQL</li></ul></dd></div>
+        </dl>
+        <div class="page-links"><a class="btn" href="https://policy.gmarket.co.kr/terms-policy/privacy" target="_blank" rel="noopener noreferrer">지마켓 약관 <span aria-hidden="true">↗</span></a><a class="btn" href="https://policy.auction.co.kr/terms-policy/privacy" target="_blank" rel="noopener noreferrer">옥션 약관 <span aria-hidden="true">↗</span></a><a class="btn" href="https://policy.esmplus.com/terms-policy/privacy" target="_blank" rel="noopener noreferrer">ESMPLUS 약관 <span aria-hidden="true">↗</span></a></div>
+
+        <section id="scope" class="case-section">
+          <h2>만든 것</h2>
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 560" role="img" aria-label="약관 관리 서비스 구조도: 약관 어드민에서 등록·갱신·에디터·그룹 매핑을 다루고, 약관 서비스가 약관 코드·버전·시행일자, 약관그룹·매핑과 이력, 법령 대응 필드, 고지·동의 연동을 관리한다. 메타는 RDB에, 본문 HTML과 에디터 데이터는 Blob 저장소에 둔다. 공개 약관 페이지는 최신 버전을 자동 선택해 보여주며, 사이트 접두사는 네이밍 전략으로 처리해 지마켓·옥션·ESMPLUS 세 사이트를 한 서비스로 다룬다.">
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
+  
+  <rect x="300" y="20" width="380" height="314" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
+  <text x="490" y="44" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 서비스</text>
+  <text x="490" y="64" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 · 약관그룹 · 그룹 매핑</text>
+  <rect x="322" y="78" width="336" height="60" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="490" y="98" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 코드 · 버전 · 시행일자</text>
+  <text x="490" y="118" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">미래 시행일로 등록 → 시점이 되면 자동 노출 · 이전보다 과거 · 작은 버전 불가</text>
+  
+  <rect x="322" y="152" width="160" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="402" y="169" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관그룹 · 매핑</text>
+  <text x="402" y="188" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">화면 하나에 N개 약관 · 순서</text>
+  
+  <rect x="498" y="152" width="160" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="578" y="169" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">매핑 이력</text>
+  <text x="578" y="188" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">그룹 ID를 올리며 변경 추적</text>
+  
+  <rect x="322" y="216" width="160" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="402" y="233" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">법령 대응 필드</text>
+  <text x="402" y="252" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">재동의 · 선동의 · 대체동의</text>
+  
+  <rect x="498" y="216" width="160" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="578" y="233" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">고지 · 동의 연동</text>
+  <text x="578" y="252" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">갱신 시 고지 · 동의 코드</text>
+  <rect x="322" y="280" width="336" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="490" y="299" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Querydsl 동적 조회 · Hibernate 네이밍 전략으로 사이트 접두사 처리</text>
+  <text x="150" y="40" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">다루는 쪽</text>
+  <rect x="30" y="56" width="240" height="200" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="80" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 어드민</text>
+  <text x="150" y="98" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">운영자가 배포 없이 반영</text>
+  <rect x="46" y="112" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="126" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">목록 · 이력 · 상세</text>
+  <rect x="46" y="146" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="160" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">등록 · 갱신 · 외부 약관 링크</text>
+  <rect x="46" y="180" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="194" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HTML 에디터 (본문 + 편집 데이터)</text>
+  <rect x="46" y="214" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="228" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">그룹 매핑 추가 · 삭제 · 순서</text>
+  <path d="M270 156 L300 156" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="285" y="144" font-size="10" font-weight="500" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle"></text>
+  <text x="830" y="40" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">보여주는 쪽</text>
+  <rect x="710" y="56" width="240" height="200" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="80" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">공개 약관 페이지</text>
+  <text x="830" y="98" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관코드가 URL에 드러남</text>
+  <rect x="726" y="112" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="126" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">세 사이트 각각의 약관 페이지</text>
+  <rect x="726" y="146" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="160" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">최신 버전 자동 선택</text>
+  <rect x="726" y="180" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="194" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">본문 · 요약 · 팝업 / 폴딩</text>
+  <rect x="726" y="214" width="208" height="28" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="228" font-size="11" font-weight="600" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">HTTPS</text>
+  <path d="M710 156 L680 156" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="760" y="280" width="140" height="40" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="830" y="300" font-size="11" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">브라우저 · 회원가입 화면</text>
+  <path d="M830 280 L830 256" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  
+  <path d="M330 368 a75 8 0 0 1 150 0 v64 a75 8 0 0 1 -150 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M330 368 a75 8 0 0 0 150 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="405" y="402" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">RDB</text>
+  <text x="405" y="418" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">메타 · 버전 · 시행일자 · 매핑</text>
+  
+  <path d="M500 368 a75 8 0 0 1 150 0 v64 a75 8 0 0 1 -150 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <path d="M500 368 a75 8 0 0 0 150 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="575" y="402" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Blob Storage</text>
+  <text x="575" y="418" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">본문 HTML · 에디터 JSON</text>
+  <path d="M405 334 L405 360" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M575 334 L575 360" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="490" y="462" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">메타는 RDB에, 본문은 저장소에 · 최초 조회 후 캐시 — 저장소 장애 시 제공 중단 위험을 인지하고 설계</text>
+  <rect x="300" y="490" width="380" height="50" rx="10" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text x="490" y="508" font-size="12.5" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">지마켓 · 옥션 · ESMPLUS — 세 사이트를 한 서비스로 운영</text>
+  <text x="490" y="526" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사이트별 테이블 접두사는 네이밍 전략으로 — profile · config만 바꾸면 추가</text>
+  
+  <rect x="30" y="300" width="240" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="150" y="317" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 동의 서비스</text>
+  <text x="150" y="336" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">동의 코드로 연동 · 가입 · 전환 흐름 (후속)</text>
+  <path d="M270 325 L285 325 L285 241 L300 241" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+</svg><figcaption>약관을 다루는 쪽(어드민)과 보여주는 쪽(공개 페이지)이 같은 약관 서비스와 저장소를 쓴다는 것을 그린 개념도입니다.</figcaption></figure>
+          <ul class="feature-grid"><li><strong>약관 모델</strong><span>사이트 · 약관코드 · 버전 · 시행일자 · 필수 · 노출 여부</span></li><li><strong>약관그룹 · 매핑</strong><span>화면 하나에 묶이는 약관들과 순서, 매핑 변경 이력</span></li><li><strong>시행일자 버저닝</strong><span>미래 시행일로 미리 등록, 시점이 되면 자동 노출</span></li><li><strong>공개 약관 페이지</strong><span>세 사이트 각각의 약관 페이지, 약관코드로 URL이 정해짐</span></li><li><strong>어드민 · 에디터</strong><span>목록 · 이력 · 등록 · 갱신 · 외부 약관 링크 · 그룹 매핑</span></li><li><strong>법령 대응 필드</strong><span>재동의 · 선동의 · 대체동의 · 고지 · 동의 연동</span></li></ul>
+          
+        </section>
+
+        <section id="s0" class="case-section">
+          <h2>약관은 회원 데이터의 바닥공사</h2>
+          <p>지마켓과 옥션의 약관은 서로 다른 어드민에서 따로 관리되고 있었습니다. 본문 HTML을 DB에 그대로 넣거나 iframe으로 끼워 넣는 구조라 어떤 약관인지 URL로 알 수 없었고, 수정한 내용은 실시간이 아니라 다음 날 0시에 반영됐습니다. 버전과 시행일자를 관리하기 어렵다 보니 어떤 회원이 어떤 약관에 동의했는지도 믿기 어려운 상태였습니다. 실제로 화면에 보이지 않는 약관이 동의 기록에 남거나, 동의값이 비어 있는데 필수 약관이라 티가 나지 않는 경우가 있었습니다.</p>
+          <p>고지와 동의는 약관 위에 쌓입니다. 약관이 흔들리면 그 위의 회원 데이터도 믿을 수 없다는 뜻이라, 이 프로젝트를 "회원 데이터의 바닥공사"라고 불렀습니다. 4인 팀에서 백엔드와 어드민을 주로 개발했고, 완성 후 사내 리뷰에서 과거 · 현재 · 미래편으로 나눠 발표했습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>약관을 세 가지로 나눠서 보기</h2>
+          <p>먼저 용어부터 정했습니다. 약관은 약관코드 하나로 관리되는 본체이고, 약관그룹은 화면 하나에 함께 노출되는 약관들의 묶음이며, 그룹 매핑은 그 둘을 실제로 잇는 관계입니다. 예를 들어 지마켓 개인 구매회원 가입 화면 하나에 약관 여섯 개가 매핑되어 있는 식입니다.</p>
+          <p>약관 테이블은 식별 정보, 기본 정보(코드 · 이름 · 언어 · 버전 · 시행일자 · 필수 여부), 상태(노출 · 폐기), 링크(본문 · 요약 · 외부 약관), 법령 대응(재동의 · 대체동의 · 선동의), 고지와 동의 연동 정보로 영역을 나눠 설계했습니다. 그룹 매핑은 바뀔 때마다 이력이 남도록 그룹 ID를 올려 가며 기록해서, 나중에 "언제 누가 어떤 약관을 뺐는지" 추적할 수 있게 했습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>시행일자가 버전을 움직인다</h2>
+          <p>약관 갱신은 새 버전을 미래 시행일자로 미리 등록해 두면 그 시점부터 자동으로 노출되는 방식입니다. 이전 버전보다 과거의 시행일자나 더 작은 버전은 등록할 수 없게 막았고, 개발자 배포 없이 운영에서 바로 반영됩니다. 다음 날 0시 일괄 반영이던 것이 시행일자 기준 즉시 반영으로 바뀐 셈입니다.</p>
+          <p>본문은 HTML 에디터로 편집합니다. 에디터의 편집 데이터(JSON)와 생성된 HTML을 함께 Blob 저장소에 두고, 메타 정보만 RDB에 둡니다. 다른 사이트의 약관을 그대로 가져다 쓰는 "외부 약관 링크"도 지원해서, 예를 들어 판매자 사이트에서 지마켓 · 옥션 약관을 다시 만들지 않고 연결할 수 있습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>어드민 조회는 Querydsl로</h2>
+          <p>어드민은 사이트, 약관코드, 버전, 노출 여부 같은 조건을 조합해 조회하는 화면이 대부분입니다. JPQL 문자열로 분기하면 조건이 늘 때마다 무한히 갈라질 게 보여서 Querydsl로 동적 쿼리를 구성했습니다. 그룹에 매핑된 약관 목록 페이징처럼 조인이 섞인 조회도 같은 방식으로 다뤘습니다.</p>
+          <p>프론트는 Spring + Thymeleaf 위에 NPM으로 JS 모듈을 관리하는 구조를 잡았고, 공개 약관 페이지는 약관코드와 사이트 코드가 URL에 드러나 어떤 약관인지 바로 알 수 있게 했습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>세 사이트를 한 서비스로</h2>
+          <p>지마켓 · 옥션에 이어 ESMPLUS 약관까지 같은 서비스로 통합하면서, 사이트별로 테이블과 시퀀스 이름이 다른 문제를 만났습니다. 다행히 규칙이 있게 달라서, Hibernate 네이밍 전략으로 접두사를 바꾸고 profile · config만 나누면 코드 수정 없이 사이트를 추가할 수 있게 했습니다. Querydsl도 JPA 네이밍을 따르기 때문에 그대로 동작했습니다. 지금 지마켓 · 옥션 · ESMPLUS의 개인정보 처리방침과 이용약관 페이지는 모두 이 서비스에서 나갑니다.</p>
+        </section>
+        <section id="s5" class="case-section">
+          <h2>남은 것</h2>
+          <p>버전 번호 자동 증가는 등록 실수를 직접 고칠 수 있도록 일부러 수동으로 남겨 두었고, 노출 스타일(팝업 · 폴딩) 속성을 약관 테이블에 둘지 그룹 매핑에 둘지는 후속 과제로 남겼습니다. 약관 동의 API를 가입 · 전환 흐름에 붙이고 기존 동의 테이블을 정리하는 일도 다음 단계입니다. 대응 시간이 얼마나 줄었는지는 비교 집계가 없어 수치로 말하지 않습니다.</p>
+        </section>
+
+        <section id="closing" class="case-section">
+          <h2>돌아보면</h2>
+          <blockquote class="closing">약관은 눈에 잘 띄지 않지만 회원 데이터 전체가 그 위에 서 있습니다. 코드 · 버전 · 시행일자라는 단순한 규칙을 세우고, 그 규칙을 운영자가 배포 없이 다룰 수 있게 만드는 것이 이 프로젝트의 핵심이었습니다.</blockquote>
+        </section>
+
+        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <nav class="pager" aria-label="다른 프로젝트">
+          <a class="prev" href="auth.html"><span>← 이전</span><strong>통합인증 서비스</strong></a>
+          <a class="next" href="platform.html"><span>다음 →</span><strong>회원 도메인 공통 모듈화</strong></a>
+        </nav>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© <span data-year>2026</span> 오재성</span>
+      <nav aria-label="외부 링크">
+        <a href="https://github.com/rojae" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://rojae.github.io/" target="_blank" rel="noopener noreferrer">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

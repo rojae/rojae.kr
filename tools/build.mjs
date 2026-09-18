@@ -86,7 +86,7 @@ function renderIndex() {
   const featured = caseStudies.filter(c => c.featured);
   const more = caseStudies.filter(c => !c.featured);
   const projects = featured.map((c, i) => `
-        <article class="project-card${c.image ? ' has-media' : ''}${i === 0 ? ' is-featured' : ''}">
+        <article class="project-card${c.image ? ' has-media' : ''}${c.wide ? ' is-featured' : ''}">
           <div class="project-body">
             ${projectMeta(c)}
             <h3><a href="work/${c.key}.html">${c.title}</a></h3>

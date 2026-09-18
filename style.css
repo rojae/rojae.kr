@@ -120,6 +120,8 @@ ul { margin: 0; padding: 0; list-style: none; }
 .project-card.is-featured { grid-column: 1 / -1; }
 .project-card.is-featured .project-body { padding: 36px; }
 .project-card.is-featured h3 { font-size: 26px; }
+.project-card.is-featured.has-media { display: grid !important; grid-template-columns: 1.15fr 1fr; align-items: stretch; }
+.project-card.is-featured.has-media .project-media { order: 0; margin: 14px 14px 14px 0; aspect-ratio: auto; }
 .project-sub { font-size: 15px; color: var(--text-3); margin-top: -8px; }
 .project-card {
   position: relative; display: grid; grid-template-columns: 1fr; gap: 0;
@@ -397,6 +399,8 @@ ul { margin: 0; padding: 0; list-style: none; }
   .decision { padding: 20px 18px; }
   .decision dl div { grid-template-columns: 1fr; gap: 2px; }
   .project-card.is-featured .project-body { padding: 22px 20px; }
+  .project-card.is-featured.has-media { grid-template-columns: 1fr; }
+  .project-card.is-featured.has-media .project-media { order: -1; margin: 12px 12px 0; aspect-ratio: 16 / 8; }
   .flow { padding: 16px; overflow: visible; }
   .flow-row { flex-direction: column; align-items: stretch; min-width: 0; gap: 8px; }
   .flow-col { align-items: stretch; }

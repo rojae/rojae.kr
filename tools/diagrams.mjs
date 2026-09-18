@@ -280,4 +280,49 @@ export function fluxgateDiagram() {
   return wrap(W, H, 'OpenFluxGate 구조도: 클라이언트 요청이 Spring Boot 스타터로 붙은 FluxGate Filter에서 제한 키를 식별하고, RateLimitHandler가 멀티 밴드 규칙으로 판단한다. Redis 직접 접근 또는 HTTP API 모드로 Redis의 Lua 스크립트가 확인과 차감을 한 번에 처리한다. 규칙은 FluxGate Studio에서 MongoDB에 저장되어 재시작 없이 반영되고, Prometheus 메트릭과 구조화 로그로 관측한다.', p);
 }
 
-export const diagrams = { auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };
+export function termsDiagram() {
+  const W = 980, H = 560, p = [];
+  // 중앙 서비스
+  p.push(panel(300, 20, 380, 314, '약관 서비스', '약관 · 약관그룹 · 그룹 매핑'));
+  p.push(box(322, 78, 336, 60, { r: 8 }));
+  p.push(text(490, 98, '약관 코드 · 버전 · 시행일자', { size: 13, weight: 700 }));
+  p.push(text(490, 118, '미래 시행일로 등록 → 시점이 되면 자동 노출 · 이전보다 과거 · 작은 버전 불가', { size: 10.5, fill: 'var(--text-2)' }));
+  p.push(chip(322, 152, 160, 50, '약관그룹 · 매핑', '화면 하나에 N개 약관 · 순서'));
+  p.push(chip(498, 152, 160, 50, '매핑 이력', '그룹 ID를 올리며 변경 추적'));
+  p.push(chip(322, 216, 160, 50, '법령 대응 필드', '재동의 · 선동의 · 대체동의'));
+  p.push(chip(498, 216, 160, 50, '고지 · 동의 연동', '갱신 시 고지 · 동의 코드'));
+  p.push(box(322, 280, 336, 38, { r: 8, dash: '4 3' }));
+  p.push(text(490, 299, 'Querydsl 동적 조회 · Hibernate 네이밍 전략으로 사이트 접두사 처리', { size: 10.5, fill: 'var(--text-2)' }));
+  // 좌측 어드민
+  p.push(label(150, 40, '다루는 쪽'));
+  p.push(box(30, 56, 240, 200, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(150, 80, '약관 어드민', { size: 14, weight: 800 }));
+  p.push(text(150, 98, '운영자가 배포 없이 반영', { size: 10.5, fill: 'var(--text-3)' }));
+  ['목록 · 이력 · 상세', '등록 · 갱신 · 외부 약관 링크', 'HTML 에디터 (본문 + 편집 데이터)', '그룹 매핑 추가 · 삭제 · 순서'].forEach((t, i) => { p.push(box(46, 112 + i * 34, 208, 28, { r: 6 })); p.push(text(150, 126 + i * 34, t, { size: 11, weight: 600 })); });
+  p.push(arrow(270, 156, 300, 156));
+  p.push(text(285, 144, '', { size: 10 }));
+  // 우측 공개 페이지
+  p.push(label(830, 40, '보여주는 쪽'));
+  p.push(box(710, 56, 240, 200, { fill: 'var(--surface)', r: 12 }));
+  p.push(text(830, 80, '공개 약관 페이지', { size: 14, weight: 800 }));
+  p.push(text(830, 98, '약관코드가 URL에 드러남', { size: 10.5, fill: 'var(--text-3)' }));
+  ['세 사이트 각각의 약관 페이지', '최신 버전 자동 선택', '본문 · 요약 · 팝업 / 폴딩', 'HTTPS'].forEach((t, i) => { p.push(box(726, 112 + i * 34, 208, 28, { r: 6 })); p.push(text(830, 126 + i * 34, t, { size: 11, weight: 600 })); });
+  p.push(arrow(710, 156, 680, 156));
+  p.push(box(760, 280, 140, 40, { r: 10 })); p.push(text(830, 300, '브라우저 · 회원가입 화면', { size: 11, weight: 700 }));
+  p.push(arrow(830, 280, 830, 256));
+  // 저장소
+  p.push(store(330, 360, 150, 80, 'RDB', '메타 · 버전 · 시행일자 · 매핑'));
+  p.push(store(500, 360, 150, 80, 'Blob Storage', '본문 HTML · 에디터 JSON'));
+  p.push(arrow(405, 334, 405, 360)); p.push(arrow(575, 334, 575, 360));
+  p.push(text(490, 462, '메타는 RDB에, 본문은 저장소에 · 최초 조회 후 캐시 — 저장소 장애 시 제공 중단 위험을 인지하고 설계', { size: 10.5, fill: 'var(--text-3)' }));
+  // 사이트 확장
+  p.push(box(300, 490, 380, 50, { r: 10, stroke: 'var(--accent)', sw: 1.4 }));
+  p.push(text(490, 508, '지마켓 · 옥션 · ESMPLUS — 세 사이트를 한 서비스로 운영', { size: 12.5, weight: 700, fill: 'var(--accent)' }));
+  p.push(text(490, 526, '사이트별 테이블 접두사는 네이밍 전략으로 — profile · config만 바꾸면 추가', { size: 10.5, fill: 'var(--text-2)' }));
+  // 동의 서비스
+  p.push(chip(30, 300, 240, 50, '약관 동의 서비스', '동의 코드로 연동 · 가입 · 전환 흐름 (후속)'));
+  p.push(elbow(270, 325, 300, 241, { mx: 285, dash: '4 3' }));
+  return wrap(W, H, '약관 관리 서비스 구조도: 약관 어드민에서 등록·갱신·에디터·그룹 매핑을 다루고, 약관 서비스가 약관 코드·버전·시행일자, 약관그룹·매핑과 이력, 법령 대응 필드, 고지·동의 연동을 관리한다. 메타는 RDB에, 본문 HTML과 에디터 데이터는 Blob 저장소에 둔다. 공개 약관 페이지는 최신 버전을 자동 선택해 보여주며, 사이트 접두사는 네이밍 전략으로 처리해 지마켓·옥션·ESMPLUS 세 사이트를 한 서비스로 다룬다.', p);
+}
+
+export const diagrams = { terms: termsDiagram, auth: authDiagram, affiliate: affiliateDiagram, platform: platformDiagram, login: loginDiagram, fluxgate: fluxgateDiagram };
