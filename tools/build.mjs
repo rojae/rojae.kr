@@ -279,7 +279,12 @@ function renderCase(c, i) {
           <div><dt>역할</dt><dd>${c.role}</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd>${tags(c.stack)}</dd></div>
         </dl>
-${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<a class="btn" href="${h}" ${ext}>${l} <span aria-hidden="true">↗</span></a>`).join('')}</div>\n` : ''}
+${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<a class="btn" href="${h}" ${ext}>${l} <span aria-hidden="true">↗</span></a>`).join('')}</div>\n` : ''}${c.previews ? `        <div class="link-previews">
+          <p class="link-previews-title">지금 운영 중인 약관 페이지</p>
+          <div class="preview-grid">${c.previews.map(v => `
+            <a class="preview" href="${v.href}" ${ext}><img src="../assets/${v.image}" width="720" height="450" alt="${v.title} 페이지 미리보기" loading="lazy"><span class="preview-body"><strong>${v.title}</strong><span>${v.host} <span aria-hidden="true">↗</span></span></span></a>`).join('')}
+          </div>
+        </div>\n` : ''}
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
           ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}

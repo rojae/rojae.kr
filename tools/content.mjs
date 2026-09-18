@@ -210,7 +210,12 @@ export const caseStudies = [
       ] },
     ],
     closing: '약관은 눈에 잘 띄지 않지만 회원 데이터 전체가 그 위에 서 있습니다. 코드 · 버전 · 시행일자라는 단순한 규칙을 세우고, 그 규칙을 운영자가 배포 없이 다룰 수 있게 만드는 것이 이 프로젝트의 핵심이었습니다.',
-    links: [['지마켓 약관', 'https://policy.gmarket.co.kr/terms-policy/privacy'], ['옥션 약관', 'https://policy.auction.co.kr/terms-policy/privacy'], ['ESMPLUS 약관', 'https://policy.esmplus.com/terms-policy/privacy']],
+    links: [],
+    previews: [
+      { title: 'G마켓 - 개인정보 처리방침', host: 'policy.gmarket.co.kr', href: 'https://policy.gmarket.co.kr/terms-policy/privacy', image: 'policy-gmarket.jpg' },
+      { title: '옥션 - 개인정보 처리방침', host: 'policy.auction.co.kr', href: 'https://policy.auction.co.kr/terms-policy/privacy', image: 'policy-auction.jpg' },
+      { title: 'ESM PLUS - 개인정보 처리방침', host: 'policy.esmplus.com', href: 'https://policy.esmplus.com/terms-policy/privacy', image: 'policy-esmplus.jpg' },
+    ],
     internal: true,
   },
   {

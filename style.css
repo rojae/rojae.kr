@@ -270,6 +270,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 .facts .tags { margin-top: 6px; }
 .facts .tags li { background: var(--bg); font-weight: 500; }
 .page-links { margin-top: 20px !important; }
+.link-previews { margin-top: 28px; }
+.link-previews-title { font-size: 13px; font-weight: 700; color: var(--text-3); letter-spacing: .04em; margin-bottom: 10px; }
+.preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.preview { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--bg); transition: border-color .2s, transform .2s; }
+.preview:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); transform: translateY(-2px); }
+.preview img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+.preview-body { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px 12px; }
+.preview-body strong { font-size: 14px; line-height: 1.4; }
+.preview-body > span { font-size: 12px; color: var(--text-3); }
 .case-section { margin-top: 56px; }
 .case-section > h2 { font-size: 23px; font-weight: 800; margin-bottom: 14px; }
 .case-section > p { color: var(--text-2); font-size: 17px; line-height: 1.85; }
@@ -396,6 +405,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   .year-head { flex-direction: column; gap: 0; }
   .post { grid-template-columns: 1fr; gap: 4px; }
   .facts { grid-template-columns: 1fr; }
+  .preview-grid { grid-template-columns: 1fr; }
   .decision { padding: 20px 18px; }
   .decision dl div { grid-template-columns: 1fr; gap: 2px; }
   .project-card.is-featured .project-body { padding: 22px 20px; }
