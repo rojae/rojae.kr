@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>약관 관리 서비스 — 오재성</title>
-  <meta name="description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.">
+  <meta name="description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고, 뒤이어 약관 동의 서비스로 확장해 지금도 운영 중입니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="약관 관리 서비스 — 오재성">
-  <meta property="og:description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.">
+  <meta property="og:description" content="지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고, 뒤이어 약관 동의 서비스로 확장해 지금도 운영 중입니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -32,14 +32,14 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">약관은 회원 데이터의 바닥공사</a></li><li><a href="#s1">약관을 세 가지로 나눠서 보기</a></li><li><a href="#s2">시행일자가 버전을 움직인다</a></li><li><a href="#s3">어드민 조회는 Querydsl로</a></li><li><a href="#s4">세 사이트를 한 서비스로</a></li><li><a href="#s5">남은 것</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">약관은 회원 데이터의 바닥공사</a></li><li><a href="#s1">약관을 세 가지로 나눠서 보기</a></li><li><a href="#s2">시행일자가 버전을 움직인다</a></li><li><a href="#s3">어드민 조회는 Querydsl로</a></li><li><a href="#s4">세 사이트를 한 서비스로</a></li><li><a href="#s5">한 번에 끝나지 않은 과제</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
         <header class="page-head">
           <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 · ESMPLUS 통합 약관</span></div>
           <h1>약관 관리 서비스</h1>
-          <p class="page-lead">지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고 지금도 운영 중입니다.</p>
+          <p class="page-lead">지마켓 · 옥션 · ESMPLUS 세 사이트에 따로 흩어져 있던 약관을 한 서비스에서 관리하게 만든 프로젝트입니다. 약관을 코드 · 버전 · 시행일자로 다루는 모델부터, 세 사이트의 공개 약관 페이지, HTML 에디터가 붙은 어드민까지 한 묶음으로 만들었고, 뒤이어 약관 동의 서비스로 확장해 지금도 운영 중입니다.</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2024.06 — 2024.12</dd></div>
@@ -133,11 +133,12 @@
   <text x="490" y="526" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사이트별 테이블 접두사는 네이밍 전략으로 — profile · config만 바꾸면 추가</text>
   
   <rect x="30" y="300" width="240" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
-  <text x="150" y="317" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 동의 서비스</text>
-  <text x="150" y="336" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">동의 코드로 연동 · 가입 · 전환 흐름 (후속)</text>
-  <path d="M270 325 L285 325 L285 241 L300 241" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
+  <text x="150" y="317" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">약관 동의 서비스 · 운영 중</text>
+  <text x="150" y="336" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">회원별 동의 내역 · 가입 · 전환 시 동의 API</text>
+  <path d="M270 325 L285 325 L285 241 L300 241" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="150" y="366" font-size="9.5" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">미래편으로 제시 → 이어서 개발</text>
 </svg><figcaption>약관을 다루는 쪽(어드민)과 보여주는 쪽(공개 페이지)이 같은 약관 서비스와 저장소를 쓴다는 것을 그린 개념도입니다.</figcaption></figure>
-          <ul class="feature-grid"><li><strong>약관 모델</strong><span>사이트 · 약관코드 · 버전 · 시행일자 · 필수 · 노출 여부</span></li><li><strong>약관그룹 · 매핑</strong><span>화면 하나에 묶이는 약관들과 순서, 매핑 변경 이력</span></li><li><strong>시행일자 버저닝</strong><span>미래 시행일로 미리 등록, 시점이 되면 자동 노출</span></li><li><strong>공개 약관 페이지</strong><span>세 사이트 각각의 약관 페이지, 약관코드로 URL이 정해짐</span></li><li><strong>어드민 · 에디터</strong><span>목록 · 이력 · 등록 · 갱신 · 외부 약관 링크 · 그룹 매핑</span></li><li><strong>법령 대응 필드</strong><span>재동의 · 선동의 · 대체동의 · 고지 · 동의 연동</span></li></ul>
+          <ul class="feature-grid"><li><strong>약관 모델</strong><span>사이트 · 약관코드 · 버전 · 시행일자 · 필수 · 노출 여부</span></li><li><strong>약관그룹 · 매핑</strong><span>화면 하나에 묶이는 약관들과 순서, 매핑 변경 이력</span></li><li><strong>시행일자 버저닝</strong><span>미래 시행일로 미리 등록, 시점이 되면 자동 노출</span></li><li><strong>공개 약관 페이지</strong><span>세 사이트 각각의 약관 페이지, 약관코드로 URL이 정해짐</span></li><li><strong>어드민 · 에디터</strong><span>목록 · 이력 · 등록 · 갱신 · 외부 약관 링크 · 그룹 매핑</span></li><li><strong>약관 동의 서비스</strong><span>회원별 동의 내역 · 가입 · 전환 시 동의 API — 후속 과제로 개발해 운영 중</span></li></ul>
           
         </section>
 
@@ -166,8 +167,10 @@
           <p>지마켓 · 옥션에 이어 ESMPLUS 약관까지 같은 서비스로 통합하면서, 사이트별로 테이블과 시퀀스 이름이 다른 문제를 만났습니다. 다행히 규칙이 있게 달라서, Hibernate 네이밍 전략으로 접두사를 바꾸고 profile · config만 나누면 코드 수정 없이 사이트를 추가할 수 있게 했습니다. Querydsl도 JPA 네이밍을 따르기 때문에 그대로 동작했습니다. 지금 지마켓 · 옥션 · ESMPLUS의 개인정보 처리방침과 이용약관 페이지는 모두 이 서비스에서 나갑니다.</p>
         </section>
         <section id="s5" class="case-section">
-          <h2>남은 것</h2>
-          <p>버전 번호 자동 증가는 등록 실수를 직접 고칠 수 있도록 일부러 수동으로 남겨 두었고, 노출 스타일(팝업 · 폴딩) 속성을 약관 테이블에 둘지 그룹 매핑에 둘지는 후속 과제로 남겼습니다. 약관 동의 API를 가입 · 전환 흐름에 붙이고 기존 동의 테이블을 정리하는 일도 다음 단계입니다. 대응 시간이 얼마나 줄었는지는 비교 집계가 없어 수치로 말하지 않습니다.</p>
+          <h2>한 번에 끝나지 않은 과제</h2>
+          <p>완성 후 사내 리뷰에서 이 프로젝트를 과거 · 현재 · 미래편으로 나눠 발표했습니다. 과거편은 두 어드민에 흩어져 있던 시절, 현재편은 위의 모델과 구조, 미래편은 다음 단계였습니다. 그 미래편의 핵심이 약관 동의 서비스입니다. 약관을 관리하는 것과 "이 회원이 어떤 버전의 약관에 언제 동의했는가"를 관리하는 것은 다른 문제라서, 회원가입 · 전환 흐름에 동의 API를 붙이고 사이트별로 따로 있던 동의 테이블을 정리하는 일을 다음 과제로 잡았습니다.</p>
+          <p>이 약관 동의 서비스는 이후 개발을 이어 가 지금 운영 중입니다. 약관 관리 → 약관 동의로 이어지는 연속 과제였고, 그래서 처음 모델을 설계할 때 동의 코드와 재동의 · 선동의 · 대체동의 필드를 미리 둔 것이 뒤에 그대로 쓰였습니다. 발표 자료는 사내용이라 공개하지 않습니다.</p>
+          <p>남아 있는 것도 있습니다. 버전 번호 자동 증가는 등록 실수를 직접 고칠 수 있도록 일부러 수동으로 두었고, 노출 스타일(팝업 · 폴딩) 속성을 약관 테이블에 둘지 그룹 매핑에 둘지는 정리 중입니다. 대응 시간이 얼마나 줄었는지는 비교 집계가 없어 수치로 말하지 않습니다.</p>
         </section>
 
         <section id="closing" class="case-section">
