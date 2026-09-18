@@ -312,6 +312,8 @@ export const caseStudies = [
   },
   {
     key: 'edoc',
+    featured: true,
+    wide: true,
     diagram: 'edoc',
     badge: '더존비즈온',
     title: '전자문서 유통 서비스',
@@ -320,11 +322,11 @@ export const caseStudies = [
     team: '2인 팀 (팀장 + 본인)',
     role: '설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당',
     stack: ['Java 8', 'Spring', 'MyBatis', 'Tomcat', 'Redis Sentinel', 'MariaDB Galera', 'MaxScale', 'HAProxy · keepalived', 'Nginx', 'Node.js · PM2', 'GitLab · Nexus · Jenkins'],
-    summary: '법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 새로 만들었습니다. 서버 22대의 인프라 구성부터 API · 관리자 · 배치 서비스, KISA 인증 심사와 가오픈까지, 2인 팀에서 거의 모든 부분을 직접 만들었습니다.',
+    summary: '법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 처음부터 만들었습니다. 서버 22대의 이중화 인프라, API · 관리자 · 배치 세 서비스, CI/CD와 무중단 배포, 그리고 KISA 인증 심사 적합과 가오픈까지 — 입사 만 1년 차에 2인 팀에서 거의 전부를 직접 했습니다.',
     cardPoints: [
       'HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 이중화 인프라 구성',
       'API · 관리자 · 배치 서비스와 KISA 연동, 키 서버 개발',
-      'KISA 전자문서유통중계자 인증 심사 적합 (2022.07) · 가오픈 (2022.09)',
+      'KISA 전자문서유통중계자 인증 심사 적합 (1차 부적합 → 2차 적합) · 2022.09 가오픈',
     ],
     features: [
       ['이중화 인프라', 'HAProxy + keepalived VIP 4쌍, WEB 3 · WAS 2 · AUTH 2 · KEY 2 · DB 3'],
