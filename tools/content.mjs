@@ -318,7 +318,7 @@ export const caseStudies = [
     badge: '더존비즈온',
     title: '전자문서 유통 서비스',
     sub: 'KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지',
-    period: '2021.09 — 2022.09',
+    period: '2021.09 — 2022.08',
     team: '2인 팀 (팀장 + 본인)',
     role: '설계 · 인프라 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당',
     stack: ['Java 8', 'Spring', 'MyBatis', 'Tomcat', 'Redis Sentinel', 'MariaDB Galera', 'MaxScale', 'HAProxy · keepalived', 'Nginx', 'Node.js · PM2', 'GitLab · Nexus · Jenkins'],
@@ -552,7 +552,7 @@ export const experience = [
     team: '전자금융서비스 Unit',
     period: '2020.07 — 2022.09',
     projects: [
-      { ref: 'edoc', period: '2021.09 — 2022.09',
+      { ref: 'edoc', period: '2021.09 — 2022.08',
         points: [
           'HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성',
           'API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈',
