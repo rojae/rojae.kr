@@ -151,7 +151,7 @@ export function affiliateDiagram() {
   p.push(elbow(800, 239, 730, 188, { mx: 760 })); p.push(elbow(730, 261, 800, 307, { mx: 765 }));
   // 신뢰 경계
   p.push(box(238, 8, 504, 414, { dash: '5 4', stroke: 'var(--text-3)', fill: 'none', r: 18 }));
-  p.push(text(250, 434, '- - 게이트웨이 신뢰 경계 · 우회 접근 차단은 인프라 요구사항', { size: 10, fill: 'var(--text-3)', anchor: 'start' }));
+  p.push(text(250, 434, '업무 흐름 개념도 · 실제 네트워크와 배포 구성은 생략', { size: 10, fill: 'var(--text-3)', anchor: 'start' }));
   // 어드민
   p.push(box(250, 470, 480, 150, { fill: 'var(--surface)', r: 14 }));
   p.push(text(490, 494, '운영 어드민 (Next.js)', { size: 14, weight: 800 }));

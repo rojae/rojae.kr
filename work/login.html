@@ -124,7 +124,7 @@
   <text x="730" y="420" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">팀 공동 운영 서비스. 단독 성능 개선이나 규모를 주장하지 않음</text>
   <text x="730" y="460" font-size="11.5" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">언어를 바꾼 것이 아니라, 제약을 푼 것</text>
   <path d="M470 324 L510 324" stroke="var(--accent)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
-</svg><figcaption><span class="diagram-tip">↔ 옆으로 밀어서 보기 · 탭하면 크게</span><br class="diagram-tip">진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
+</svg><figcaption>진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>장애 분석</strong><span>DB 연결 실패가 어느 단계에서 났는지 확인</span></li><li><strong>제약 검토</strong><span>런타임 버전 고정이 유지보수와 연동에 주는 영향</span></li><li><strong>전환 설계</strong><span>로그인 · 회원 기능의 Java/Spring 전환</span></li><li><strong>조회 캐시</strong><span>회원정보 조회에 Caffeine 로컬 캐시</span></li></ul>
           
         </section>
@@ -141,15 +141,15 @@
         </section>
         <section id="s2" class="case-section">
           <h2>내 역할의 범위</h2>
-          <p>복구와 전체 전환은 팀 작업이고, 제 역할은 원인 분석과 전환 설계에 기여한 범위입니다. 팀이 함께 운영하는 로그인 서비스의 규모를 제가 혼자 감당했다거나 성능을 끌어올렸다고 말하지 않습니다.</p>
+          <p>팀이 복구와 전체 전환을 함께 진행했고, 저는 DB 연결 문제 분석, 전환 설계와 회원정보 조회 캐시 도입에 참여했습니다.</p>
         </section>
 
         <section id="closing" class="case-section">
           <h2>돌아보면</h2>
-          <blockquote class="closing">장애 대응에서 무엇이 증상을 없앴는지와 무엇이 원인인지를 구분하게 됐습니다. 그리고 언어 자체보다, 조직이 지원할 수 있는 런타임과 라이브러리 조건이 유지보수 가능성을 좌우한다는 것도요.</blockquote>
+          <blockquote class="closing">재기동에 의한 복구와 런타임 전환은 별도 과제로 다뤘습니다. 전환 설계에서는 언어 교체보다 보안 라이브러리 지원과 외부 연동 제약을 먼저 확인했습니다.</blockquote>
         </section>
 
-        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>
         <nav class="pager" aria-label="다른 프로젝트">
           <a class="prev" href="platform.html"><span>← 이전</span><strong>회원 도메인 공통 모듈화</strong></a>
           <a class="next" href="edoc.html"><span>다음 →</span><strong>전자문서 유통 서비스</strong></a>

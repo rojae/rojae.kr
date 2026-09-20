@@ -1,67 +1,107 @@
-// node tools/publish.mjs [-m "커밋 메시지"] [--no-pdf] [--no-verify] [--no-push]
-// 문구 수정 후 이 한 번으로: HTML 생성 → 이력서 PDF 4종 생성 → 레이아웃 검증 → 커밋 → 푸시(rojae.kr 반영)
+// Build and verify before committing only the reviewed public-site file set.
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const args = process.argv.slice(2);
-const flag = f => args.includes(f);
-const HELP = `
-rojae.kr 사용법
-────────────────────────────────────────────────────────────
-문구 고치기      tools/content.mjs  (프로필 · 프로젝트 · 경력 · 오픈소스 · 글 · 이력서 요약)
-다이어그램       tools/diagrams.mjs (프로젝트별 SVG)
-디자인           style.css
-로고 바꾸기      python3 tools/make-logo.py "Caveat" 700   (서체 이름, 굵기)  → 이어서 publish
+const allowed = new Set([
+  'index.html', 'resume.html', '404.html', 'style.css', 'script.js', 'resume.pdf',
+  'README.md', '.gitignore', '.nojekyll', 'CNAME', 'verify.cjs',
+  ...['affiliate', 'auth', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].map(k => `work/${k}.html`),
+  ...['compact', 'simple', 'modern', 'classic'].map(k => `resume/${k}.pdf`),
+  ...['avatar.png', 'fluxgate-repository.png', 'mark.svg'].map(k => `assets/${k}`),
+  ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs'].map(k => `tools/${k}`),
+  'tests/content.test.mjs', 'tests/publish.test.mjs',
+]);
 
-한 번에 반영     node tools/publish.mjs -m "무엇을 바꿨는지"
-                 = build → pdf → verify → commit → push  (1~2분 뒤 https://rojae.kr 반영)
-
-따로 실행        node tools/build.mjs            HTML만 생성
-                 node tools/make-resume-pdf.mjs  이력서 PDF 4종 (resume.pdf + resume/*.pdf)
-                 PLAYWRIGHT_MODULE=<playwright 경로> node verify.cjs   레이아웃 · 링크 검증
-
-옵션             --no-pdf     PDF 생성 건너뛰기
-                 --no-verify  검증 건너뛰기
-                 --no-push    커밋까지만 (푸시 안 함)
-                 -m "메시지"  커밋 메시지 (기본: "Update site")
-
-전제             ../resume-builder 에 npm install 되어 있어야 PDF 생성 가능
-                 검증은 PLAYWRIGHT_MODULE 환경변수가 없으면 자동으로 찾아봅니다
-────────────────────────────────────────────────────────────`;
-if (flag('--help') || flag('-h')) { console.log(HELP); process.exit(0); }
-
-const run = (label, cmd, cmdArgs, opts = {}) => {
-  console.log(`\n▶ ${label}`);
-  const r = spawnSync(cmd, cmdArgs, { cwd: root, stdio: 'inherit', ...opts });
-  if (r.status !== 0) { console.error(`✗ ${label} 실패`); process.exit(r.status || 1); }
-};
-
-run('HTML 생성', 'node', ['tools/build.mjs']);
-if (!flag('--no-pdf')) run('이력서 PDF 4종 생성', 'node', ['tools/make-resume-pdf.mjs']);
-if (!flag('--no-verify')) {
-  let mod = process.env.PLAYWRIGHT_MODULE;
-  if (!mod) {
-    const candidates = ['/Users/jaeseoh/.npm/_npx', path.join(process.env.HOME || '', '.npm/_npx')];
-    for (const base of candidates) {
-      if (!fs.existsSync(base)) continue;
-      for (const d of fs.readdirSync(base)) {
-        const p = path.join(base, d, 'node_modules', 'playwright');
-        if (fs.existsSync(p)) { mod = p; break; }
-      }
-      if (mod) break;
-    }
+export function parseStatus(raw) {
+  const files = [];
+  let staged = false;
+  for (const row of raw.split('\0').filter(Boolean)) {
+    const state = row.slice(0, 2);
+    if (/[RCU]/.test(state) || state === 'AA' || state === 'DD') throw new Error('Resolve renames or conflicts before publishing.');
+    staged ||= state[0] !== ' ' && state[0] !== '?';
+    files.push(row.slice(3));
   }
-  if (mod) run('레이아웃 · 링크 검증', 'node', ['verify.cjs'], { env: { ...process.env, PLAYWRIGHT_MODULE: mod } });
-  else console.log('\n⚠ playwright를 찾지 못해 검증을 건너뜁니다 (PLAYWRIGHT_MODULE 지정 가능)');
+  return { files, staged };
 }
-const mi = args.indexOf('-m');
-const msg = mi >= 0 && args[mi + 1] ? args[mi + 1] : 'Update site';
-const status = execFileSync('git', ['status', '--porcelain'], { cwd: root }).toString().trim();
-if (!status) { console.log('\n변경 사항이 없습니다.'); process.exit(0); }
-run('커밋', 'git', ['add', '-A']);
-run('커밋', 'git', ['-c', 'user.name=rojae', '-c', 'user.email=rojae@kakao.com', 'commit', '-q', '-m', msg]);
-if (!flag('--no-push')) { run('푸시', 'git', ['push', '-q', 'origin', 'main']); console.log('\n✓ 푸시 완료 — 1~2분 뒤 https://rojae.kr 에 반영됩니다.'); }
-else console.log('\n✓ 커밋 완료 (푸시는 하지 않음)');
+
+export function validatePublish({ branch, remote, files, staged, playwright, args }) {
+  if (branch !== 'main') throw new Error('Publish must run on main.');
+  if (!['https://github.com/rojae/rojae.kr.git', 'git@github.com:rojae/rojae.kr.git'].includes(remote)) throw new Error('Unexpected origin remote.');
+  if (staged) throw new Error('Existing staged changes found. Review or commit them separately.');
+  const unrelated = files.filter(file => !allowed.has(file));
+  if (unrelated.length) throw new Error(`Files outside the public-site allowlist: ${unrelated.join(', ')}`);
+  if (!args.includes('--no-push') && (args.includes('--no-verify') || args.includes('--no-pdf'))) throw new Error('Skipping PDF generation or verification is local-only (--no-push).');
+  if (!args.includes('--no-verify') && !playwright) throw new Error('Playwright unavailable. Set PLAYWRIGHT_MODULE; publication has stopped.');
+}
+
+function findPlaywright() {
+  const require = createRequire(import.meta.url);
+  const home = process.env.HOME || '';
+  const candidates = process.env.PLAYWRIGHT_MODULE ? [process.env.PLAYWRIGHT_MODULE] : [
+    'playwright', path.join(home, '.agents/skills/gstack/node_modules/playwright'),
+  ];
+  if (!process.env.PLAYWRIGHT_MODULE) {
+    const cache = path.join(home, '.npm/_npx');
+    if (fs.existsSync(cache)) for (const dir of fs.readdirSync(cache)) candidates.push(path.join(cache, dir, 'node_modules/playwright'));
+  }
+  for (const candidate of candidates) {
+    try { if (require(candidate).chromium) return candidate; } catch { /* Try the next existing installation. */ }
+  }
+  return null;
+}
+
+function main(args) {
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(`node tools/publish.mjs [-m "변경 이유"] [--no-push] [--no-pdf] [--no-verify]
+
+HTML → PDF 4종 → 회귀·브라우저 검증 → 지정 파일 커밋 → origin/main 푸시
+--no-push: 로컬 커밋까지만 수행. --no-pdf, --no-verify는 이 모드에서만 허용.
+main 브랜치, 지정 origin, 비어 있는 스테이징 영역이 필요합니다.
+검증 도구가 없거나 공개 파일 목록 밖의 변경이 있으면 중단합니다.
+PLAYWRIGHT_MODULE로 기존 Playwright 설치 경로를 지정할 수 있습니다.`);
+    return;
+  }
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '-m') {
+      if (!args[++i] || args[i].startsWith('--')) throw new Error('-m requires a message.');
+    } else if (!['--no-push', '--no-pdf', '--no-verify'].includes(args[i])) throw new Error(`Unknown argument: ${args[i]}`);
+  }
+  const git = (...argv) => execFileSync('git', argv, { cwd: root, encoding: 'utf8' });
+  const run = (command, argv, env = process.env) => {
+    const result = spawnSync(command, argv, { cwd: root, env, stdio: 'inherit' });
+    if (result.status !== 0) throw new Error(`${command} ${argv.join(' ')} failed (${result.error?.message || result.status}).`);
+  };
+  const playwright = findPlaywright();
+  const preflight = () => {
+    const state = parseStatus(git('status', '--porcelain=v1', '-z', '--untracked-files=all'));
+    validatePublish({ ...state, branch: git('branch', '--show-current').trim(), remote: git('remote', 'get-url', 'origin').trim(), playwright, args });
+    return state.files;
+  };
+  preflight();
+  run(process.execPath, ['tools/build.mjs']);
+  if (!args.includes('--no-pdf')) run(process.execPath, ['tools/make-resume-pdf.mjs']);
+  run(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/publish.test.mjs']);
+  if (!args.includes('--no-verify')) run(process.execPath, ['verify.cjs'], { ...process.env, PLAYWRIGHT_MODULE: playwright });
+  const files = preflight();
+  if (files.length) {
+    const index = args.indexOf('-m');
+    const message = index >= 0 ? args[index + 1] : 'Keep the public profile and resume consistent';
+    const checks = args.includes('--no-verify') ? 'content and publication unit tests; browser checks skipped' : 'content and publication unit tests; Playwright responsive checks';
+    run('git', ['add', '--', ...files]);
+    run('git', ['commit', '-m', `${message}\n\nTested: ${checks}\nScope-risk: narrow\nDirective: Publish only after content and PDF verification`]);
+  }
+  if (!args.includes('--no-push')) {
+    // A clean tree may still contain previously verified, unpushed commits.
+    run('git', ['push', 'origin', 'HEAD:refs/heads/main']);
+    console.log('Pushed. Check GitHub Pages deployment before claiming rojae.kr is updated.');
+  } else console.log('Local-only run completed; nothing was pushed.');
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try { main(process.argv.slice(2)); }
+  catch (error) { console.error(error.message); process.exitCode = 1; }
+}

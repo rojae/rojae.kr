@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>전자문서 유통 서비스 — 오재성</title>
-  <meta name="description" content="법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 처음부터 만들었습니다. 서버 22대의 이중화 인프라, API · 관리자 · 배치 세 서비스, CI/CD와 무중단 배포, 그리고 KISA 인증 심사 적합과 가오픈까지 — 입사 만 1년 차에 2인 팀에서 거의 전부를 직접 했습니다.">
+  <meta name="description" content="2인 팀에서 전자문서 유통 서비스의 인프라 설계와 API·관리자·배치 개발을 담당했습니다. 서버 22대의 이중화 환경을 구성하고 인증 심사 보완에 대응해 KISA 심사 적합 판정과 가오픈까지 진행했습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="전자문서 유통 서비스 — 오재성">
-  <meta property="og:description" content="법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 처음부터 만들었습니다. 서버 22대의 이중화 인프라, API · 관리자 · 배치 세 서비스, CI/CD와 무중단 배포, 그리고 KISA 인증 심사 적합과 가오픈까지 — 입사 만 1년 차에 2인 팀에서 거의 전부를 직접 했습니다.">
+  <meta property="og:description" content="2인 팀에서 전자문서 유통 서비스의 인프라 설계와 API·관리자·배치 개발을 담당했습니다. 서버 22대의 이중화 환경을 구성하고 인증 심사 보완에 대응해 KISA 심사 적합 판정과 가오픈까지 진행했습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -39,12 +39,12 @@
         <header class="page-head">
           <div class="project-meta"><span class="badge">더존비즈온</span><span>KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지</span></div>
           <h1>전자문서 유통 서비스</h1>
-          <p class="page-lead">법적 효력을 갖는 전자문서를 주고받는 유통중계자 서비스를 처음부터 만들었습니다. 서버 22대의 이중화 인프라, API · 관리자 · 배치 세 서비스, CI/CD와 무중단 배포, 그리고 KISA 인증 심사 적합과 가오픈까지 — 입사 만 1년 차에 2인 팀에서 거의 전부를 직접 했습니다.</p>
+          <p class="page-lead">2인 팀에서 전자문서 유통 서비스의 인프라 설계와 API·관리자·배치 개발을 담당했습니다. 서버 22대의 이중화 환경을 구성하고 인증 심사 보완에 대응해 KISA 심사 적합 판정과 가오픈까지 진행했습니다.</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2021.09 — 2022.08</dd></div>
           <div><dt>팀</dt><dd>2인 팀 (팀장 + 본인)</dd></div>
-          <div><dt>역할</dt><dd>인프라 구조 결정 · API · 관리자 · 배치 — 거의 전 영역을 직접 담당</dd></div>
+          <div><dt>역할</dt><dd>인프라 설계 · API · 관리자 · 배치 개발</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li><li>MariaDB Galera</li><li>MaxScale</li><li>HAProxy · keepalived</li><li>Nginx</li><li>Node.js · PM2</li><li>GitLab · Nexus · Jenkins</li></ul></dd></div>
         </dl>
         <div class="page-links"><a class="btn" href="https://www.newswire.co.kr/newsRead.php?no=949401" target="_blank" rel="noopener noreferrer">보도자료 <span aria-hidden="true">↗</span></a></div>
@@ -122,7 +122,7 @@
   <text x="775" y="510" font-size="10" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">프론트: 소스 전달 → pm2 reload</text>
   <text x="775" y="536" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">심사 직후 서버별 설정 파일 보존 · 포트 · 로그 · SSL 갱신 절차 문서화</text>
   <text x="490" y="596" font-size="11" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">운영 서버 22대 — HA 8 · WEB 3 · WAS 2 · AUTH 2 · KEY 2 · MaxScale 2 · DB 3</text>
-</svg><figcaption><span class="diagram-tip">↔ 옆으로 밀어서 보기 · 탭하면 크게</span><br class="diagram-tip">운영 환경 서버 구성을 노트 기준으로 다시 그린 것입니다. 서버 이름과 주소는 뺐습니다.</figcaption></figure>
+</svg><figcaption>계층별 역할과 이중화 구성을 나타낸 개념도입니다. 서버 이름과 주소는 생략했습니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>이중화 인프라</strong><span>HAProxy + keepalived VIP 4쌍, WEB 3 · WAS 2 · AUTH 2 · KEY 2 · DB 3</span></li><li><strong>API 서비스</strong><span>전자문서 등록 · 열람 · 유통정보 전달, KISA VPN 연동</span></li><li><strong>인증 · 키 서버</strong><span>Redis 토큰 인증 서버(Sentinel 이중화), JKS 기반 키 서버</span></li><li><strong>관리자 서비스</strong><span>권한 분리 로그인, 이용자 · 공인전자주소 · 송수신 모니터링 · 유통 증명서</span></li><li><strong>배치 서비스</strong><span>만료 문서 삭제, 등록 · 열람 · 탈퇴 재처리, 재암호화, 로그 정리</span></li><li><strong>배포</strong><span>GitLab · Nexus · Jenkins, Node 프론트는 PM2 무중단 + Nginx 로드밸런싱</span></li></ul>
           
         </section>
@@ -130,7 +130,7 @@
         <section id="s0" class="case-section">
           <h2>둘이서 시작한 신규 서비스</h2>
           <p>전자문서유통중계자는 KISA 주관으로, 문서 자체가 법적 효력을 갖도록 유통정보와 열람 일시를 KISA에 전달하는 서비스입니다. 종이 문서를 전자화하는 전자고지 성격이라 개인 플랫폼은 이미 큰 회사들이 차지하고 있었고, 회사는 법인 간 유통에 집중하기로 했습니다. 다만 법인 유통 사례가 거의 없어 KISA도 명확한 답을 주지 못하는 구간이 있었습니다.</p>
-          <p>담당 개발자도 팀도 없는 상태에서 시작해, 결국 팀장님과 저 두 명이 남았습니다. 팀장님은 CS 개발 출신이라 설계와 인프라, 서비스 개발은 거의 전부 제가 맡게 됐습니다. 입사 만 1년을 갓 넘긴 때였습니다.</p>
+          <p>팀장과 함께한 2인 프로젝트에서 인프라 설계와 서비스 개발을 맡았습니다. API뿐 아니라 배치, 관리자 화면, 배포와 심사 대응까지 준비해야 했습니다.</p>
         </section>
         <section id="s1" class="case-section">
           <h2>인프라를 직접 세우다</h2>
@@ -154,10 +154,10 @@
 
         <section id="closing" class="case-section">
           <h2>돌아보면</h2>
-          <blockquote class="closing">만 1년 남짓의 개발자에게 인프라부터 심사까지 맡긴 건 무리한 일이었지만, 덕분에 숲을 보는 눈이 생겼습니다. 서비스가 동작하려면 코드 바깥에 무엇이 있어야 하는지, 그리고 그것을 다음 사람에게 넘기려면 무엇을 적어 둬야 하는지를 이때 배웠습니다. 퇴사 전 남긴 인수인계 문서가 50개가 넘습니다.</blockquote>
+          <blockquote class="closing">개발과 함께 서버 설정, 인증서 갱신, 배포·재처리 절차를 문서화했습니다. 퇴사 전에는 50개 이상의 인수인계 문서로 개발·운영 절차를 전달했습니다.</blockquote>
         </section>
 
-        <p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>
+        <p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>
         <nav class="pager" aria-label="다른 프로젝트">
           <a class="prev" href="login.html"><span>← 이전</span><strong>로그인 시스템 Java/Spring 전환</strong></a>
           <a class="next" href="waf.html"><span>다음 →</span><strong>WAF 플랫폼</strong></a>

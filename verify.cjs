@@ -28,6 +28,7 @@ const server = http.createServer((req, res) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     let checks = 0;
+    const homeMeasurements = [];
     for (const width of [320, 375, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       for (const url of ['/index.html', '/work/affiliate.html', '/work/auth.html', '/work/terms.html', '/work/platform.html', '/work/login.html', '/work/edoc.html', '/work/waf.html', '/work/fluxgate.html', '/resume.html', '/missing-page']) {
@@ -48,6 +49,21 @@ const server = http.createServer((req, res) => {
         assert.equal(layout.scroll, width, `${url}: scroll at ${width}`);
         assert.deepEqual(layout.overflow, [], `${url}: geometry at ${width}`);
         assert(layout.images, `${url}: images loaded`);
+        for (const diagram of await page.locator('.diagram-figure > svg').all()) {
+          assert(await diagram.evaluate(el => {
+            const r = el.getBoundingClientRect(), parent = el.parentElement.getBoundingClientRect();
+            return r.left >= parent.left && r.right <= parent.right;
+          }), `${url}: diagram clipped inside its container at ${width}`);
+        }
+        if (url === '/index.html') {
+          const home = await page.evaluate(() => {
+            const work = document.querySelector('#work');
+            return { width: innerWidth, workTop: Math.round(work.getBoundingClientRect().top + scrollY), height: document.documentElement.scrollHeight };
+          });
+          assert(home.workTop < 900, `projects should appear in the first screen at ${width}`);
+          homeMeasurements.push(home);
+          assert.equal(await page.locator('.project-card').count(), 3);
+        }
         checks++;
       }
     }
@@ -58,6 +74,9 @@ const server = http.createServer((req, res) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.screenshot({ path: path.join(output, 'mobile.png'), fullPage: true });
     await page.screenshot({ path: path.join(output, 'mobile-first-screen.png') });
+    await page.setViewportSize({ width: 320, height: 740 });
+    await page.screenshot({ path: path.join(output, 'narrow-first-screen.png') });
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.getByRole('link', { name: 'OpenFluxGate', exact: true }).click();
     assert.equal(await page.locator('h1').textContent(), 'OpenFluxGate');
     await page.locator('.diagram-figure svg').click();
@@ -69,6 +88,12 @@ const server = http.createServer((req, res) => {
     const before = parseInt(await page.locator('.lightbox-level').textContent(), 10);
     await page.locator('[data-zoom="+"]').click();
     assert.equal(parseInt(await page.locator('.lightbox-level').textContent(), 10), before + 25, 'zoom + adds 25%');
+    await page.locator('[data-zoom="0"]').click();
+    assert.equal(await page.locator('.lightbox-level').textContent(), '100%', 'fit resets to the full diagram on mobile');
+    assert(await page.locator('.lightbox-content').evaluate(el => {
+      const r = el.getBoundingClientRect(), stage = el.parentElement.getBoundingClientRect();
+      return r.left >= stage.left && r.right <= stage.right + 1 && r.top >= stage.top && r.bottom <= stage.bottom + 1;
+    }), 'fit keeps the whole diagram in the viewer');
     await page.keyboard.press('Escape');
     assert(!(await page.locator('dialog.lightbox').evaluate(d => d.open)), 'lightbox closes on Escape');
     await page.getByRole('link', { name: /← 이전/ }).click();
@@ -117,7 +142,7 @@ const server = http.createServer((req, res) => {
     await darkPage.screenshot({ path: path.join(output, 'desktop-dark-first-screen.png') });
     await dark.close();
     assert.deepEqual(errors, []);
-    console.log(JSON.stringify({ layoutChecks: checks, widths: [320,375,390,768,1024,1440], assertions: ['images', 'project navigation', '404 recovery', 'print trigger', 'clipboard success and denial', 'keyboard skip link', 'local links', 'no-JS home', 'file URL assets', 'dark mode screenshot', 'lightbox zoom', 'no page errors'], output }, null, 2));
+    console.log(JSON.stringify({ layoutChecks: checks, homeMeasurements, widths: [320,375,390,768,1024,1440], assertions: ['images', 'project navigation', '404 recovery', 'print trigger', 'clipboard success and denial', 'keyboard skip link', 'local links', 'no-JS home', 'file URL assets', 'dark mode screenshot', 'lightbox zoom', 'no page errors'], output }, null, 2));
   } finally {
     await browser.close();
     await new Promise(resolve => server.close(resolve));

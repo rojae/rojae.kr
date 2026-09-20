@@ -2,9 +2,9 @@
 // 사이트 본문과 이력서 PDF가 같은 문구 · 수치를 쓰도록 하기 위한 스크립트입니다.
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { profile, caseStudies, experience, openSource, contributions, resume } from './content.mjs';
+import { createRequire } from 'node:module';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { profile, caseStudies, experience, openSource, contributions, resume, affiliateMetrics } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const builder = path.resolve(root, '..', 'resume-builder');
@@ -14,7 +14,7 @@ const strip = s => s.replace(/<[^>]+>/g, '');
 
 // 프로젝트별 '성과' 한 줄 (compact 템플릿은 성과가 있으면 성과를, 없으면 intro를 보여줌)
 const impact = {
-  affiliate: '실시간 동의 · 일배치 정합 · 월배치 파일 · 탈회 · 리워드와 운영 어드민을 프로덕션 운영 중. 오픈 첫 달 동의 약 1만 명(일 평균 200명, 최대 500명). 인증 커밋 이후 동의 저장을 별도 트랜잭션으로, 배치 묶음 집계는 비관적 락으로 구조를 결정.',
+  affiliate: `실시간 동의·배치·탈회·리워드와 운영 어드민을 개발, 동의 ${affiliateMetrics.daily} 규모 운영. 인증 커밋 이후 동의 저장은 별도 트랜잭션으로 분리하고, 배치 중복 판정과 집계에는 유니크 제약·비관적 락을 적용.`,
   auth: '지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증을 한 서비스의 모듈로 통합하고, 도메인별 연동과 인증업체 비율을 어드민에서 조정하는 구조를 결정 · 구현. 월 인증 비용 약 1/3 절감, 인증 관련 CS 문의 90% 이상 감소.',
   terms: '약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝을 설계하고 HTML 에디터 어드민 · 공개 약관 페이지를 개발. 지마켓 · 옥션 · ESMPLUS 약관 페이지를 한 서비스에서 운영 중이며, 후속 약관 동의 서비스로 확장.',
   platform: '공통 · 사이트별 모듈을 조합해 배포하는 구조(팀 공동) 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부를 분산. 프로덕션 운영 중.',
@@ -30,16 +30,16 @@ const companies = experience.map((co, i) => ({
   projects: [
     ...co.projects.map((p, n) => {
       const c = p.ref ? byKey[p.ref] : null;
-      const title = c ? `${c.title} (${c.sub})` : `${p.title} (${p.sub})`;
+      const title = c ? c.title : p.title;
       const role = c ? `${c.team} — ${c.role}` : `${p.team} — ${p.role}`;
       const sections = [{ label: '내용', items: p.points }];
       if (c && impact[c.key]) sections.push({ label: '성과', text: impact[c.key] });
       return { id: p.ref || `p${i}${n}`, order: n + 1, title, period: p.period.replace('—', '~'), role, intro: c ? strip(c.summary) : p.points[0], sections, tech: (c ? c.stack : p.tags).join(', ') };
     }),
     ...(co.yearly.length ? [{
-      id: `ops${i}`, order: 99, title: '회원 · 인증 운영 개선 (상시)', period: co.period.replace('—', '~'), role: '직접 담당',
+      id: `ops${i}`, order: 99, title: `${co.name} 회원·인증 운영 개선`, period: co.period.replace('—', '~'), role: '직접 담당',
       intro: co.yearly.flatMap(y => y.items.map(([t]) => t)).join(' · '),
-      sections: [{ label: '성과', text: co.yearly.flatMap(y => y.items.map(([t, d]) => `${t}: ${d}`)).slice(0, 5).join(' / ') }],
+      sections: [{ label: '성과', text: 'NICE 통합인증 API 전환과 배포 절차 정리, 회원 CI 저장·조회 경로 암호화 적용. Kafka·InfluxDB·Grafana로 메시지 발송과 로그인 이벤트를 관측하고 메일 발송 지연 장애 대응. 관심상품·관심매장 API 연동과 서비스 간 명세 변경 협의.' }],
     }] : []),
   ],
 }));
@@ -51,20 +51,50 @@ const data = {
   highlights: resume.highlights,
   skills: resume.skills,
   openSource: [
-    ...openSource.slice(0, 3).map(o => ({ name: o.title, tagline: o.text, url: o.href.startsWith('http') ? o.href : `${site}/${o.href}` })),
+    ...openSource.filter(o => ['OpenFluxGate', 'IssueLinker'].includes(o.title)).map(o => ({ name: o.title, tagline: o.text, url: o.href.startsWith('http') ? o.href : `${site}/${o.href}` })),
     { name: 'OpenFeign', tagline: `코어 라이브러리 개선 ${contributions.length}건 기여 · 병합 (${contributions.map(c => `#${c.number}`).join(', ')})`, url: contributions[0].href },
   ],
   experience: companies,
   education: resume.education,
   awards: resume.awards,
 };
-fs.writeFileSync(path.join(builder, 'data', 'site.json'), JSON.stringify(data, null, 2));
-// 템플릿 4종을 한 번에 생성. resume.pdf는 compact, 나머지는 resume/ 아래에 둡니다.
+// Reuse the existing builder without changing its source data or templates.
+const output = path.join(root, 'output', 'resume');
+fs.mkdirSync(output, { recursive: true });
+fs.writeFileSync(path.join(output, 'site.json'), JSON.stringify(data, null, 2));
+const require = createRequire(path.join(builder, 'package.json'));
+const puppeteer = require('puppeteer');
+const theme = fs.readFileSync(path.join(builder, 'styles/theme.css'), 'utf8');
+const printCss = fs.readFileSync(path.join(root, 'tools/resume-print.css'), 'utf8');
 const templates = ['compact', 'simple', 'modern', 'classic'];
 fs.mkdirSync(path.join(root, 'resume'), { recursive: true });
-for (const t of templates) {
-  execFileSync('node', ['build.mjs', 'site', t], { cwd: builder, stdio: 'inherit' });
-  fs.copyFileSync(path.join(builder, 'out', `site-${t}.pdf`), path.join(root, 'resume', `${t}.pdf`));
+const browser = await puppeteer.launch({ headless: true });
+try {
+  for (const t of templates) {
+    const mod = await import(pathToFileURL(path.join(builder, 'templates', `${t}.mjs`)).href);
+    const templateData = structuredClone(data);
+    if (t !== 'compact') for (const company of templateData.experience) for (const project of company.projects) {
+      project.intro = byKey[project.id]?.sub || '';
+      if (project.sections.some(section => section.label === '내용')) project.sections = project.sections.filter(section => section.label === '내용');
+    }
+    const page = await browser.newPage();
+    await page.setContent(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${profile.name} 이력서</title><style>${theme}\n${mod.css}\n${printCss}</style></head><body class="template-${t}"><div class="page">${mod.render(templateData)}</div></body></html>`);
+    // Put work before skill lists, preserving every section.
+    await page.evaluate(() => {
+      const summary = document.querySelector('.summary');
+      const work = [...document.querySelectorAll('section.block')].find(el => el.querySelector('.company'));
+      summary.after(work);
+    });
+    await page.evaluate(() => document.fonts.ready);
+    fs.writeFileSync(path.join(output, `${t}.html`), await page.content());
+    await page.pdf({ path: path.join(root, 'resume', `${t}.pdf`), format: 'A4', printBackground: true, preferCSSPageSize: true,
+      displayHeaderFooter: true, headerTemplate: '<span></span>',
+      footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#666">rojae.kr &nbsp; <span class="pageNumber"></span> / <span class="totalPages"></span></div>' });
+    await page.close();
+    console.log(`resume/${t}.pdf`);
+  }
+} finally {
+  await browser.close();
 }
 fs.copyFileSync(path.join(root, 'resume', 'compact.pdf'), path.join(root, 'resume.pdf'));
 console.log(`resume.pdf (compact) + resume/{${templates.join(',')}}.pdf updated from resume-builder`);

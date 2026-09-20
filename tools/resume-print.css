@@ -1,0 +1,22 @@
+@page { size: A4; margin: 13mm 14mm 15mm; }
+body { background: white; }
+.page { width: auto; min-height: 0; padding: 0; }
+* { letter-spacing: 0 !important; }
+.pj, .project, .os-item, .os-line, .edu, .edu-item, .skill-row, .skills-row, .skill-block { break-inside: avoid; }
+.company-head, .pj-line1, .project-head { break-after: avoid; }
+p, li { orphans: 3; widows: 3; }
+.template-compact .page { font-size: 10pt; line-height: 1.6; }
+.template-compact .pj { margin-bottom: 10px; }
+.template-compact .pj-desc { font-size: 9.6pt; line-height: 1.6; }
+.template-compact .pj-title { font-size: 10pt; }
+.template-compact .pj-line1 { display: block; }
+.template-compact .pj-period { display: block; }
+.template-compact .hl-label { font-size: 7.5pt; }
+.template-compact .company-head { background: #f3f5f7; }
+.template-compact section.block { margin-top: 15px; }
+.template-modern .m-body { padding: 5mm 0 0; }
+.template-modern .m-header { padding: 6mm 8mm; background: #234f73; }
+.template-modern .skill-block { display: grid; grid-template-columns: 100px 1fr; gap: 8px; margin-bottom: 5px; }
+.template-modern .pill { border: 0; background: none; padding: 0; margin: 0 8px 2px 0; }
+.template-modern .project { margin-top: 10px; }
+.template-modern .summary p { margin-bottom: 5px; line-height: 1.55; }

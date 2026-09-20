@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { profile, focus, ways, caseStudies, experience, openSource, contributions, writing, education } from './content.mjs';
+import { profile, ways, caseStudies, experience, openSource, contributions, writing, education } from './content.mjs';
 import { diagrams } from './diagrams.mjs';
 import { wordmarkSvg } from './logo.mjs';
 
@@ -75,31 +75,24 @@ function projectMeta(c, period = c.period) {
 
 // ---------- index ----------
 function renderIndex() {
-  const focusHtml = ''; const _unused = focus.map((f, i) => `
-          <article class="focus-card">
-            <span class="focus-num">0${i + 1}</span>
-            <h3>${f.title}</h3>
-            <p>${f.text}</p>
-            ${f.ref.length ? `<p class="focus-links">${f.ref.map(k => `<a class="link" href="work/${k}.html">${byKey[k].title} <span class="arrow" aria-hidden="true">→</span></a>`).join('')}</p>` : ''}
-          </article>`).join('');
-
-  const featured = caseStudies.filter(c => c.featured);
-  const more = caseStudies.filter(c => !c.featured);
+  const featured = ['auth', 'affiliate', 'fluxgate'].map(key => byKey[key]);
+  const more = caseStudies.filter(c => !featured.includes(c));
   const projects = featured.map((c, i) => `
-        <article class="project-card${c.image ? ' has-media' : ''}${c.wide ? ' is-featured' : ''}">
+        <article class="project-card${c.image ? ' has-media' : ''}${i === 0 ? ' is-featured' : ''}">
           <div class="project-body">
             ${projectMeta(c)}
             <h3><a href="work/${c.key}.html">${c.title}</a></h3>
             <p class="project-sub">${c.sub}</p>
+            <p class="project-outcome">${c.cardPoints[c.cardPoints.length - 1]}</p>
             <p class="project-summary">${c.summary}</p>
-            ${list(c.cardPoints)}
-            ${tags(c.stack.slice(0, 6))}
+            ${list(c.cardPoints.slice(0, -1))}
+            ${tags(c.stack.slice(0, 4))}
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
           ${c.image ? `<div class="project-media"><img src="assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"></div>` : ''}
         </article>`).join('');
 
-  const osHtml = openSource.slice(0, 3).map(o => `
+  const osHtml = openSource.filter(o => ['FluxMirror', 'IssueLinker'].includes(o.title)).map(o => `
         <a class="os-card" href="${o.href}"${linkAttrs(o.href)}>
           <div class="os-top"><h3>${o.title}</h3><span class="os-role">${o.role}</span></div>
           <p>${o.text}</p>
@@ -114,7 +107,7 @@ function renderIndex() {
             <span class="arrow" aria-hidden="true">↗</span>
           </a>`).join('');
 
-  const writingHtml = writing.slice(0, 4).map(w => `
+  const writingHtml = [writing[0], writing[2], writing[1]].map(w => `
         <article class="post">
           <span class="post-type">${w.type}</span>
           <div>
@@ -125,7 +118,7 @@ function renderIndex() {
         </article>`).join('');
 
   const body = `
-  <main id="main">
+  <main id="main" class="home">
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-grid">
         <div>
@@ -136,8 +129,6 @@ function renderIndex() {
           <div class="hero-actions">
             <a class="btn btn-primary" href="#work">프로젝트 보기</a>
             <a class="btn" href="resume.html">이력서</a>
-            <a class="btn" href="${profile.github}" ${ext}>GitHub <span aria-hidden="true">↗</span></a>
-            <a class="btn" href="${profile.blog}" ${ext}>기술 블로그 <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <img class="avatar" src="assets/avatar.png" width="148" height="148" alt="${profile.name} 프로필 사진">
@@ -147,20 +138,10 @@ function renderIndex() {
       </dl>
     </section>
 
-    <section id="ways" class="section container" aria-labelledby="ways-title">
-      <div class="section-head">
-        <h2 id="ways-title">일하는 방식</h2>
-        <p>기록으로 확인할 수 있는 것만 적었습니다</p>
-      </div>
-      <div class="ways-grid">${ways.map(w => `
-        <article class="way"><h3>${w.title}</h3><p>${w.text}</p></article>`).join('')}
-      </div>
-    </section>
-
     <section id="work" class="section container" aria-labelledby="work-title">
       <div class="section-head">
         <h2 id="work-title">대표 프로젝트</h2>
-        <p>무엇을, 왜, 어디까지 만들었는지</p>
+        <p>인증 운영 개선 · 제휴 데이터 정합성 · 분산 요청 제한</p>
       </div>
       <div class="projects">${projects}
       </div>
@@ -174,7 +155,13 @@ function renderIndex() {
         <h2 id="experience-title">경력</h2>
         <a class="link" href="resume.html">전체 이력서 <span class="arrow" aria-hidden="true">→</span></a>
       </div>
-${renderExperience('', { headingLevel: 3, compact: true })}
+      <div class="career-overview">${experience.map(co => `
+        <article class="career-row">
+          <p class="period">${co.period}</p>
+          <div><h3>${co.name} <span>${co.team}</span></h3>
+          <p>${co.name === '지마켓' ? '회원·인증·제휴 서비스를 설계하고 운영합니다. 통합인증 프로젝트 리딩, 약관 공통화, 레거시 전환과 개인정보 보호 업무를 담당했습니다.' : 'PG 결제 서비스를 개발·운영했습니다. 전자문서 유통 프로젝트에서는 인프라와 API·배치·관리자를 개발하고 KISA 인증 심사 대응에 참여했습니다.'}</p></div>
+        </article>`).join('')}
+      </div>
     </section>
 
     <section id="opensource" class="section container" aria-labelledby="opensource-title">
@@ -195,6 +182,13 @@ ${renderExperience('', { headingLevel: 3, compact: true })}
         <a class="link" href="${profile.blog}" ${ext}>블로그 전체 <span aria-hidden="true">↗</span></a>
       </div>
       <div class="posts">${writingHtml}
+      </div>
+    </section>
+
+    <section id="ways" class="section container" aria-labelledby="ways-title">
+      <div class="section-head"><h2 id="ways-title">일하는 방식</h2></div>
+      <div class="ways-grid">${[ways[1], ways[2], ways[3], ways[4]].map(w => `
+        <article class="way"><h3>${w.title}</h3><p>${w.text}</p></article>`).join('')}
       </div>
     </section>
 
@@ -288,7 +282,7 @@ ${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<
         </div>\n` : ''}
         <section id="scope" class="case-section">
           <h2>만든 것</h2>
-          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption><span class="diagram-tip">↔ 옆으로 밀어서 보기 · 탭하면 크게</span><br class="diagram-tip">${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
+          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
           <ul class="feature-grid">${c.features.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
           ${c.image ? `<figure class="shot"><img src="../assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"><figcaption>공개 저장소 README</figcaption></figure>` : ''}
         </section>
@@ -303,7 +297,7 @@ ${c.story.map((st, n) => `
           <blockquote class="closing">${c.closing}</blockquote>
         </section>
 
-        ${c.internal ? '<p class="note">회사 업무는 공개 가능한 수준으로만 적었습니다. 내부 코드, 시스템 이름, 고객 정보와 운영 수치는 넣지 않았고, 팀이 함께 한 일과 제가 한 일을 구분했습니다.</p>' : ''}
+        ${c.internal ? '<p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>' : ''}
         <nav class="pager" aria-label="다른 프로젝트">
           ${prev ? `<a class="prev" href="${prev.key}.html"><span>← 이전</span><strong>${prev.title}</strong></a>` : ''}
           ${next ? `<a class="next" href="${next.key}.html"><span>다음 →</span><strong>${next.title}</strong></a>` : ''}

@@ -27,13 +27,12 @@
   if (!targets.length || !('HTMLDialogElement' in window)) return;
   const dialog = document.createElement('dialog');
   dialog.className = 'lightbox';
-  dialog.innerHTML = '<div class="lightbox-bar"><span class="lightbox-title"></span><span class="lightbox-tools"><button type="button" data-zoom="-" aria-label="축소">−</button><span class="lightbox-level">100%</span><button type="button" data-zoom="+" aria-label="확대">+</button><button type="button" data-zoom="0" aria-label="화면에 맞춤">맞춤</button><button type="button" data-close aria-label="닫기">✕</button></span></div><div class="lightbox-stage"><div class="lightbox-content"></div></div><p class="lightbox-hint">드래그로 이동 · 휠 / 두 손가락으로 확대</p>';
+  dialog.innerHTML = '<div class="lightbox-bar"><span class="lightbox-title"></span><span class="lightbox-tools"><button type="button" data-zoom="-" aria-label="축소" title="축소">−</button><span class="lightbox-level">100%</span><button type="button" data-zoom="+" aria-label="확대" title="확대">+</button><button type="button" data-zoom="0" aria-label="화면에 맞춤" title="화면에 맞춤">맞춤</button><button type="button" data-close aria-label="닫기" title="닫기">✕</button></span></div><div class="lightbox-stage"><div class="lightbox-content"></div></div>';
   document.body.append(dialog);
   const stage = dialog.querySelector('.lightbox-stage');
   const content = dialog.querySelector('.lightbox-content');
   const level = dialog.querySelector('.lightbox-level');
   const title = dialog.querySelector('.lightbox-title');
-  const hint = dialog.querySelector('.lightbox-hint');
   const MIN = 0.5, MAX = 5;
   let scale = 1, x = 0, y = 0, base = 1; // base: 패널에 맞는 배율, scale: 사용자 배율
   const render = () => {
@@ -45,8 +44,7 @@
   const fit = () => {
     const { w, h, sw, sh } = size();
     base = Math.min((sw - 32) / w, (sh - 32) / h, 1);
-    // 좁은 화면에서는 읽히도록 처음부터 조금 키워서 연다 (드래그로 이동 가능)
-    scale = sw < 700 ? Math.min(2, Math.round((760 / (w * base)) * 4) / 4) : 1;
+    scale = 1;
     center(); render();
   };
   const zoomAt = (next, cx, cy) => {
@@ -61,7 +59,6 @@
     const fig = el.closest('figure');
     title.textContent = (fig && fig.querySelector('figcaption')?.textContent) || el.getAttribute('alt') || el.getAttribute('aria-label') || '';
     dialog.showModal();
-    hint.classList.remove('is-hidden');
     requestAnimationFrame(() => { content.style.width = '1200px'; fit(); });
   };
   targets.forEach(el => {
@@ -69,6 +66,13 @@
     el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
     el.addEventListener('click', () => open(el));
     el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(el); } });
+    if (el.matches('.diagram-figure svg')) {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'diagram-open';
+      button.textContent = '구조도 확대';
+      button.addEventListener('click', () => open(el));
+      el.after(button);
+    }
   });
   // 버튼
   dialog.addEventListener('click', e => {
@@ -106,7 +110,7 @@
     if (e.target.closest('button')) return;
     stage.setPointerCapture(e.pointerId);
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pointers.size === 1) { last = { x: e.clientX, y: e.clientY }; stage.classList.add('is-dragging'); hint.classList.add('is-hidden'); }
+    if (pointers.size === 1) { last = { x: e.clientX, y: e.clientY }; stage.classList.add('is-dragging'); }
     if (pointers.size === 2) {
       const [a, b] = [...pointers.values()];
       pinch = { dist: Math.hypot(a.x - b.x, a.y - b.y), scale };

@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WAF 플랫폼 — 오재성</title>
-  <meta name="description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 코칭을 받으며 설계와 구현을 혼자 끝까지 했습니다.">
+  <meta name="description" content="차단된 요청의 실시간 관측과 사후 분석을 분리한 WAF 스터디 프로젝트입니다. 현업 보안 개발자의 코칭을 받으며 로그 파이프라인·대시보드·규칙 관리와 Kubernetes 배포를 설계하고 구현했습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="WAF 플랫폼 — 오재성">
-  <meta property="og:description" content="ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 코칭을 받으며 설계와 구현을 혼자 끝까지 했습니다.">
+  <meta property="og:description" content="차단된 요청의 실시간 관측과 사후 분석을 분리한 WAF 스터디 프로젝트입니다. 현업 보안 개발자의 코칭을 받으며 로그 파이프라인·대시보드·규칙 관리와 Kubernetes 배포를 설계하고 구현했습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -32,19 +32,19 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">지금 볼 것과 나중에 볼 것</a></li><li><a href="#s2">룰을 화면에서 고치면 Nginx에 반영되기까지</a></li><li><a href="#s3">검증한 것</a></li><li><a href="#s4">직접 분석해 보고 남기는 아쉬운 점</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">지금 볼 것과 나중에 볼 것</a></li><li><a href="#s2">룰을 화면에서 고치면 Nginx에 반영되기까지</a></li><li><a href="#s3">검증한 것</a></li><li><a href="#s4">검증 범위와 후속 과제</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
         <header class="page-head">
           <div class="project-meta"><span class="badge">오픈소스</span><span>Nginx + ModSecurity 위에 얹은 이중 트랙 로그 파이프라인</span></div>
           <h1>WAF 플랫폼</h1>
-          <p class="page-lead">ModSecurity가 막은 요청을 "지금 봐야 할 것"과 "나중에 분석할 것"으로 나눠 흘려보내는 웹 방화벽 플랫폼입니다. 차단 엔진부터 Kafka 기반 파이프라인, 실시간 처리기, 대시보드와 규칙 관리 화면, Kubernetes 배포까지, 외부 개발자 스터디에서 코칭을 받으며 설계와 구현을 혼자 끝까지 했습니다.</p>
+          <p class="page-lead">차단된 요청의 실시간 관측과 사후 분석을 분리한 WAF 스터디 프로젝트입니다. 현업 보안 개발자의 코칭을 받으며 로그 파이프라인·대시보드·규칙 관리와 Kubernetes 배포를 설계하고 구현했습니다.</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2025.08 — 2025.12</dd></div>
           <div><dt>팀</dt><dd>외부 개발자 스터디</dd></div>
-          <div><dt>역할</dt><dd>설계 · 구현 전부 담당 · 보안 회사 이사급 개발자 코칭</dd></div>
+          <div><dt>역할</dt><dd>설계 · 구현 담당 · 현업 보안 개발자 코칭</dd></div>
           <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Nginx</li><li>ModSecurity · OWASP CRS</li><li>Fluent Bit · Lua</li><li>Kafka</li><li>ksqlDB</li><li>Go</li><li>InfluxDB</li><li>Logstash</li><li>Elasticsearch</li><li>Spring Boot 3.2</li><li>Next.js 15</li><li>Kubernetes</li></ul></dd></div>
         </dl>
         <div class="page-links"><a class="btn" href="https://github.com/rojae/waf" target="_blank" rel="noopener noreferrer">GitHub 저장소 <span aria-hidden="true">↗</span></a></div>
@@ -150,15 +150,15 @@
   <text x="100" y="356" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">사후 조사</text>
   <path d="M200 407 L185 407 L185 276 L170 276" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
   <path d="M576 352 L540 352 L540 484 L185 484 L185 342 L170 342" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="4 3" marker-end="url(#ah)"/>
-</svg><figcaption><span class="diagram-tip">↔ 옆으로 밀어서 보기 · 탭하면 크게</span><br class="diagram-tip">실제 저장소의 설정과 코드를 읽고 그린 구조도입니다. 점선은 코드에 자리만 있고 아직 연결되지 않은 경로입니다.</figcaption></figure>
+</svg><figcaption>실제 저장소의 설정과 코드를 읽고 그린 구조도입니다. 점선은 코드에 자리만 있고 아직 연결되지 않은 경로입니다.</figcaption></figure>
           <ul class="feature-grid"><li><strong>차단 엔진</strong><span>Nginx + ModSecurity + OWASP CRS, 정적 자원 화이트리스트</span></li><li><strong>분류기</strong><span>Fluent Bit Lua — 룰 ID · 이상 점수로 트랙 결정</span></li><li><strong>실시간 트랙</strong><span>Go 처리기 → 심각도 산정 · GeoIP → InfluxDB → Grafana</span></li><li><strong>분석 트랙</strong><span>ksqlDB 윈도우 집계 · Logstash → Elasticsearch → Kibana</span></li><li><strong>대시보드 · 룰 관리</strong><span>Spring Boot API(SSE) + Next.js, 커스텀 룰 CRUD · 화이트리스트</span></li><li><strong>배포</strong><span>Docker Compose와 Kubernetes 매니페스트 (dev · staging · prod)</span></li></ul>
           
         </section>
 
         <section id="s0" class="case-section">
           <h2>왜 만들었나</h2>
-          <p>회사 밖 개발자들과 함께한 스터디 프로젝트입니다. 보안 회사에서 이사급으로 일하는 개발자가 코칭을 맡아 방향을 잡아 주었고, 설계와 구현은 제가 혼자 했습니다. 유량제어(OpenFluxGate)를 만들면서 그 앞단, 즉 애플리케이션에 닿기 전에 요청을 걸러내는 계층이 궁금하던 참이었습니다. ModSecurity와 OWASP CRS를 붙이는 것 자체는 어렵지 않은데, 막은 뒤가 문제였습니다. 스캐너가 뿌리는 수천 건의 노이즈와 진짜 위험한 SQL 인젝션 시도가 같은 로그에 섞여 들어오면, 아무도 그 로그를 보지 않게 됩니다.</p>
-          <p>그래서 "막는 것"보다 "막은 뒤 어떻게 보여줄 것인가"를 중심에 두고, 로그 파이프라인과 대시보드까지 포함한 플랫폼으로 만들었습니다. 2025년 8월부터 12월까지 코칭을 받으며 64개 커밋을 혼자 쌓았습니다.</p>
+          <p>외부 개발자 스터디에서 현업 보안 개발자의 코칭을 받으며 설계와 구현을 맡았습니다. 애플리케이션 앞단에서 요청을 차단하는 것뿐 아니라, 차단 이후 운영자가 어떤 신호를 확인해야 하는지 살펴보고 싶었습니다.</p>
+          <p>스캐너 탐지 로그와 SQL 인젝션 같은 공격 이벤트를 같은 방식으로 처리하면 중요한 신호를 찾기 어렵습니다. 이벤트를 분류해 실시간 관측과 사후 분석으로 나누는 파이프라인을 2025년 8월부터 12월까지 구현했습니다.</p>
         </section>
         <section id="s1" class="case-section">
           <h2>지금 볼 것과 나중에 볼 것</h2>
@@ -175,15 +175,14 @@
           <p>Kubernetes에 올린 상태에서 SQL 인젝션, XSS, 경로 조작, 명령어 주입 요청이 403 또는 연결 차단으로 막히고 정상 요청은 통과하는 것을 curl로 확인해 결과를 문서로 남겼습니다. 국가별 IP를 흉내 낸 공격 시뮬레이션 스크립트로 파이프라인 끝까지 이벤트가 흐르는 것도 확인했습니다. 배포는 네임스페이스 4개, Deployment 13개, StatefulSet 3개, NetworkPolicy와 PodMonitor를 포함한 매니페스트로 dev · staging · prod 환경을 나눴습니다.</p>
         </section>
         <section id="s4" class="case-section">
-          <h2>직접 분석해 보고 남기는 아쉬운 점</h2>
-          <p>이 페이지를 쓰기 위해 저장소를 다시 읽으면서 README와 코드 사이의 간격을 몇 개 찾았습니다. README의 "production-ready", "초당 10,000+ 요청", "Helm 차트 · 오퍼레이터", "RBAC · 컴플라이언스"는 코드로 뒷받침되지 않습니다. 부하 테스트 기록이 없고, Helm 차트는 없으며(매니페스트와 셸 스크립트만 있음), 권한은 Google 로그인 여부만 확인할 뿐 역할 구분이 없습니다.</p>
-          <p>알림은 콘솔 출력에서 멈춰 있습니다. Slack · PagerDuty 전송은 주석 처리된 자리만 있고, 위험 IP 목록은 Go 코드에 하드코딩되어 있습니다. ClickHouse는 테이블 스키마와 컨테이너 정의까지 있지만 실제로 데이터를 쓰는 경로가 없어 OLAP 트랙은 이름만 있는 상태입니다. 자동화된 테스트와 CI가 없고, 테스트용 컨트롤러가 운영 코드에 함께 들어 있으며, 기본 토큰이 코드에 남아 있습니다.</p>
-          <p>그래서 이 프로젝트는 "엔터프라이즈 WAF"가 아니라, 현업 보안 개발자의 코칭을 받으며 차단 엔진 뒤의 이벤트 파이프라인을 끝까지 한 번 이어 본 스터디 프로젝트로 소개하는 게 정확합니다. README 문구는 그에 맞게 고칠 계획입니다.</p>
+          <h2>검증 범위와 후속 과제</h2>
+          <p>실제 서비스에 적용한 WAF가 아닌 스터디 결과물입니다. 검증한 범위는 테스트 요청 차단과 이벤트 파이프라인 동작이며, 운영 부하에서의 처리량이나 가용성은 측정하지 않았습니다.</p>
+          <p>운영 적용 전에는 자동화 테스트와 CI, 역할별 권한 관리, 외부 알림 전송을 보완해야 합니다. ClickHouse 분석 경로는 미연결 상태이며, 배포는 Helm이 아닌 Kubernetes 매니페스트와 스크립트를 사용합니다.</p>
         </section>
 
         <section id="closing" class="case-section">
           <h2>돌아보면</h2>
-          <blockquote class="closing">WAF에서 어려운 건 막는 규칙이 아니라, 막은 뒤에 남는 신호를 사람이 볼 수 있는 크기로 줄이는 일이었습니다. 그리고 문서가 코드보다 앞서가면 그 간격이 곧 신뢰의 문제가 된다는 것도, 이번에 제 프로젝트를 남의 눈으로 다시 읽으며 배웠습니다.</blockquote>
+          <blockquote class="closing">즉시 확인할 이벤트와 사후 분석할 로그를 나누면서 처리 지연과 조회 목적이 서로 다른 저장소·파이프라인을 구성했습니다.</blockquote>
         </section>
 
         
