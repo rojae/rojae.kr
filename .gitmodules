@@ -1,0 +1,3 @@
+[submodule "resume-builder"]
+	path = resume-builder
+	url = https://github.com/rojae/resume-builder.git

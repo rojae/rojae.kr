@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">DB가 하나라고 개발이 한 번은 아니었다</a></li><li><a href="#s1">내가 맡은 자리</a></li><li><a href="#s2">지금 상태</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">DB가 하나라고 개발이 한 번은 아니었다</a></li><li><a href="#s1">내가 맡은 자리</a></li><li><a href="#s2">지금 상태</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -40,16 +40,32 @@
           <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 통합 백엔드</span></div>
           <h1>회원 도메인 공통 모듈화</h1>
           <p class="page-lead">DB는 이미 하나였지만 API는 사이트마다 따로 개발하던 구조를, 공통 모듈과 사이트별 모듈을 조합해 배포하는 구조로 바꾼 팀 프로젝트입니다. 그 위에서 제휴 · 인증 모듈을 개발하고, 팀이 쓰는 Gravitee API 게이트웨이로 서비스별 호출부를 분산했습니다.</p>
+          <p class="case-outcome">API 게이트웨이로 인증 · 권한 검증과 라우팅을 한곳에</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2025 — 현재</dd></div>
           <div><dt>팀</dt><dd>팀 공동 설계</dd></div>
           <div><dt>역할</dt><dd>제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</dd></div>
-          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul></dd></div>
         </dl>
 
+
+        <section id="s0" class="case-section">
+          <h2>DB가 하나라고 개발이 한 번은 아니었다</h2>
+          <p>지마켓과 옥션은 통합 DB를 쓰고 있었지만 API 계층은 나뉘어 있었습니다. 구조가 같은 기능도 사이트마다 두 번 만들고 두 번 검증해야 했습니다. 팀에서 회원정보 · 로그인 · 캐싱 API를 공통 모듈과 사이트별 모듈로 나누고, 필요한 모듈을 조합해 사이트별 서비스로 배포하는 구조를 함께 설계했습니다.</p>
+          <p>공통화의 기준은 코드가 비슷한가가 아니라 업무 의미와 변경 이유가 같은가로 잡았습니다. 그래야 나중에 한쪽만 바뀌어야 할 때 공통 모듈이 발목을 잡지 않습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>내가 맡은 자리</h2>
+          <p>이 구조 위에서 제휴 · 인증 모듈을 주로 개발했습니다. 전체 아키텍처는 팀 공동 작업이고, 제 판단이 들어간 범위는 제휴와 인증 모듈 안에서 어떤 기능을 공유하고 어떤 정책을 사이트별로 남길지 정한 부분입니다.</p>
+          <p>서비스가 분화되면서 호출자 인증 · 권한 검증을 서비스마다 반복하기 어려워져, 팀이 이미 쓰고 있던 Gravitee API 게이트웨이에 서비스별 라우팅을 구성해 호출부를 분산했습니다. 호출자 인증을 게이트웨이로 모으더라도 특정 회원 데이터에 접근해도 되는지 같은 도메인 권한은 애플리케이션이 따로 판단해야 한다는 경계를 의식했습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>지금 상태</h2>
+          <p>프로덕션에 배포되어 운영 중이고, 새 연동을 붙일 때 공통 모듈을 재사용하는 기반이 생겼습니다. 공수를 얼마나 줄였는지 측정한 수치는 없어서, 그 부분은 재사용된 사례로만 설명합니다. 공통 모듈의 결함은 두 사이트에 함께 번질 수 있어서 배포 순서와 버전 관리가 더 중요해졌습니다.</p>
+        </section>
+
         <section id="scope" class="case-section">
-          <h2>만든 것</h2>
+          <h2>구조와 구현</h2>
           <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 560" role="img" aria-label="회원 도메인 공통 모듈화 구조도: 지마켓·옥션 앱과 내부 서비스 요청이 Gravitee API 게이트웨이에서 인증·권한 검증과 라우팅을 거쳐 사이트별 회원 서비스로 간다. 각 서비스는 공통 모듈, 사이트 모듈, 통합 모듈, 제휴·인증 모듈을 조합해 배포하며 통합 Oracle을 공유한다.">
   <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
   <rect x="30" y="40" width="130" height="44" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
@@ -120,23 +136,11 @@
   <text x="135" y="480" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">데이터는 이미 하나였다.</text>
   <text x="135" y="495" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">나뉘어 있던 건 API 계층.</text>
 </svg><figcaption>코드 재사용과 조합을 그린 그림입니다. 실제 인스턴스와 네트워크 구성은 다릅니다.</figcaption></figure>
-          <ul class="feature-grid"><li><strong>공통 모듈</strong><span>사이트와 무관하게 같은 의미를 갖는 회원 · 인증 기능</span></li><li><strong>사이트별 모듈</strong><span>지마켓 · 옥션 각각의 정책</span></li><li><strong>통합 모듈</strong><span>두 사이트를 함께 다루는 기능</span></li><li><strong>조합 배포</strong><span>필요한 모듈을 묶어 사이트별 서비스로</span></li><li><strong>API 게이트웨이</strong><span>인증 · 권한 검증, 멀티테넌시 라우팅, 모니터링</span></li></ul>
-          
-        </section>
-
-        <section id="s0" class="case-section">
-          <h2>DB가 하나라고 개발이 한 번은 아니었다</h2>
-          <p>지마켓과 옥션은 통합 DB를 쓰고 있었지만 API 계층은 나뉘어 있었습니다. 구조가 같은 기능도 사이트마다 두 번 만들고 두 번 검증해야 했습니다. 팀에서 회원정보 · 로그인 · 캐싱 API를 공통 모듈과 사이트별 모듈로 나누고, 필요한 모듈을 조합해 사이트별 서비스로 배포하는 구조를 함께 설계했습니다.</p>
-          <p>공통화의 기준은 코드가 비슷한가가 아니라 업무 의미와 변경 이유가 같은가로 잡았습니다. 그래야 나중에 한쪽만 바뀌어야 할 때 공통 모듈이 발목을 잡지 않습니다.</p>
-        </section>
-        <section id="s1" class="case-section">
-          <h2>내가 맡은 자리</h2>
-          <p>이 구조 위에서 제휴 · 인증 모듈을 주로 개발했습니다. 전체 아키텍처는 팀 공동 작업이고, 제 판단이 들어간 범위는 제휴와 인증 모듈 안에서 어떤 기능을 공유하고 어떤 정책을 사이트별로 남길지 정한 부분입니다.</p>
-          <p>서비스가 분화되면서 호출자 인증 · 권한 검증을 서비스마다 반복하기 어려워져, 팀이 이미 쓰고 있던 Gravitee API 게이트웨이에 서비스별 라우팅을 구성해 호출부를 분산했습니다. 호출자 인증을 게이트웨이로 모으더라도 특정 회원 데이터에 접근해도 되는지 같은 도메인 권한은 애플리케이션이 따로 판단해야 한다는 경계를 의식했습니다.</p>
-        </section>
-        <section id="s2" class="case-section">
-          <h2>지금 상태</h2>
-          <p>프로덕션에 배포되어 운영 중이고, 새 연동을 붙일 때 공통 모듈을 재사용하는 기반이 생겼습니다. 공수를 얼마나 줄였는지 측정한 수치는 없어서, 그 부분은 재사용된 사례로만 설명합니다. 공통 모듈의 결함은 두 사이트에 함께 번질 수 있어서 배포 순서와 버전 관리가 더 중요해졌습니다.</p>
+          <details class="implementation-details">
+            <summary>구현 범위 · 사용 기술</summary>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul>
+            <ul class="feature-grid"><li><strong>공통 모듈</strong><span>사이트와 무관하게 같은 의미를 갖는 회원 · 인증 기능</span></li><li><strong>사이트별 모듈</strong><span>지마켓 · 옥션 각각의 정책</span></li><li><strong>통합 모듈</strong><span>두 사이트를 함께 다루는 기능</span></li><li><strong>조합 배포</strong><span>필요한 모듈을 묶어 사이트별 서비스로</span></li><li><strong>API 게이트웨이</strong><span>인증 · 권한 검증, 멀티테넌시 라우팅, 모니터링</span></li></ul>
+          </details>
         </section>
 
         <section id="closing" class="case-section">

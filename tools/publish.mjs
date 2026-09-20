@@ -8,12 +8,12 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const allowed = new Set([
   'index.html', 'resume.html', '404.html', 'style.css', 'script.js', 'resume.pdf',
-  'README.md', '.gitignore', '.nojekyll', 'CNAME', 'verify.cjs',
+  'README.md', 'DESIGN.md', '.gitignore', '.gitmodules', '.nojekyll', 'CNAME', 'verify.cjs', 'resume-builder',
   ...['affiliate', 'auth', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].map(k => `work/${k}.html`),
   ...['compact', 'simple', 'modern', 'classic'].map(k => `resume/${k}.pdf`),
   ...['avatar.png', 'fluxgate-repository.png', 'mark.svg'].map(k => `assets/${k}`),
   ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs'].map(k => `tools/${k}`),
-  'tests/content.test.mjs', 'tests/publish.test.mjs',
+  'tests/content.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs',
 ]);
 
 export function parseStatus(raw) {
@@ -36,6 +36,22 @@ export function validatePublish({ branch, remote, files, staged, playwright, arg
   if (unrelated.length) throw new Error(`Files outside the public-site allowlist: ${unrelated.join(', ')}`);
   if (!args.includes('--no-push') && (args.includes('--no-verify') || args.includes('--no-pdf'))) throw new Error('Skipping PDF generation or verification is local-only (--no-push).');
   if (!args.includes('--no-verify') && !playwright) throw new Error('Playwright unavailable. Set PLAYWRIGHT_MODULE; publication has stopped.');
+}
+
+export function validateResumeBuilder(siteRoot) {
+  const git = (...args) => execFileSync('git', args, { cwd: siteRoot, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+  if (!git('ls-files', '--stage', '--', 'resume-builder').startsWith('160000 ')) {
+    throw new Error('resume-builder must be registered as a Git submodule.');
+  }
+  if (!fs.existsSync(path.join(siteRoot, 'resume-builder', '.git'))) {
+    throw new Error('Initialize resume-builder: git submodule update --init --recursive');
+  }
+  if (git('config', '-f', '.gitmodules', '--get', 'submodule.resume-builder.url') !== 'https://github.com/rojae/resume-builder.git') {
+    throw new Error('Unexpected resume-builder repository in .gitmodules.');
+  }
+  if (git('-C', 'resume-builder', 'status', '--porcelain=v1', '--untracked-files=all')) {
+    throw new Error('resume-builder has uncommitted changes. Commit and push them in its own repository first.');
+  }
 }
 
 function findPlaywright() {
@@ -61,6 +77,7 @@ function main(args) {
 HTML → PDF 4종 → 회귀·브라우저 검증 → 지정 파일 커밋 → origin/main 푸시
 --no-push: 로컬 커밋까지만 수행. --no-pdf, --no-verify는 이 모드에서만 허용.
 main 브랜치, 지정 origin, 비어 있는 스테이징 영역이 필요합니다.
+resume-builder는 초기화되어 있고 미커밋 변경이 없어야 합니다.
 검증 도구가 없거나 공개 파일 목록 밖의 변경이 있으면 중단합니다.
 PLAYWRIGHT_MODULE로 기존 Playwright 설치 경로를 지정할 수 있습니다.`);
     return;
@@ -79,12 +96,13 @@ PLAYWRIGHT_MODULE로 기존 Playwright 설치 경로를 지정할 수 있습니�
   const preflight = () => {
     const state = parseStatus(git('status', '--porcelain=v1', '-z', '--untracked-files=all'));
     validatePublish({ ...state, branch: git('branch', '--show-current').trim(), remote: git('remote', 'get-url', 'origin').trim(), playwright, args });
+    validateResumeBuilder(root);
     return state.files;
   };
   preflight();
   run(process.execPath, ['tools/build.mjs']);
   if (!args.includes('--no-pdf')) run(process.execPath, ['tools/make-resume-pdf.mjs']);
-  run(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/publish.test.mjs']);
+  run(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs']);
   if (!args.includes('--no-verify')) run(process.execPath, ['verify.cjs'], { ...process.env, PLAYWRIGHT_MODULE: playwright });
   const files = preflight();
   if (files.length) {
@@ -96,7 +114,7 @@ PLAYWRIGHT_MODULE로 기존 Playwright 설치 경로를 지정할 수 있습니�
   }
   if (!args.includes('--no-push')) {
     // A clean tree may still contain previously verified, unpushed commits.
-    run('git', ['push', 'origin', 'HEAD:refs/heads/main']);
+    run('git', ['push', '--recurse-submodules=check', 'origin', 'HEAD:refs/heads/main']);
     console.log('Pushed. Check GitHub Pages deployment before claiming rojae.kr is updated.');
   } else console.log('Local-only run completed; nothing was pushed.');
 }

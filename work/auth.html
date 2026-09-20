@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">토큰과 세션</a></li><li><a href="#s4">담당 구현과 후속 운영</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">토큰과 세션</a></li><li><a href="#s4">담당 구현과 후속 운영</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -40,16 +40,42 @@
           <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 · ESMPLUS 공통 인증</span></div>
           <h1>통합인증 서비스</h1>
           <p class="page-lead">3인 팀의 프로젝트 리딩과 핵심 구현을 맡아 사이트별 인증을 공통 서비스로 통합했습니다. 운영자가 업체별 요청 비율을 조정해 장애에 대응하고 인증 비용을 관리할 수 있게 했습니다.</p>
+          <p class="case-outcome">월 인증 비용 약 1/3 절감 · 인증 관련 CS 문의 90% 이상 감소</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2024.01 — 2024.12</dd></div>
           <div><dt>팀</dt><dd>3인 팀</dd></div>
           <div><dt>역할</dt><dd>프로젝트 리딩 · 설계 결정 · 핵심 구현</dd></div>
-          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul></dd></div>
         </dl>
 
+
+        <section id="s0" class="case-section">
+          <h2>어떤 상황이었나</h2>
+          <p>지마켓과 옥션의 인증 기능이 서비스마다 따로 있었습니다. 인증 로직 하나를 고치려면 여러 곳을 같이 손봐야 했고, 인증업체는 한 곳에 의존하고 있어서 그 업체에 문제가 생기면 할 수 있는 일이 별로 없었습니다. 비용을 조정할 여지도 없었습니다.</p>
+          <p>다뤄야 할 인증 유형도 많았습니다. 지식인증, 소셜인증, 소유인증, 본인인증, 계좌인증, 기업인증. 3인 팀에서 프로젝트를 리딩하며 구조와 인증업체 라우팅 방식을 결정하고 핵심 구현을 맡았습니다. 오픈 직전 명세가 바뀌는 일을 겪으며 회의록과 설계 문서, 진행 공유를 먼저 챙기게 됐고, 그 과정은 따로 글로 남겼습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>인증을 모듈로, 설정은 어드민으로</h2>
+          <p>인증 유형별 기능을 한 서비스 안의 모듈로 정리하고, 어떤 도메인이 어떤 인증을 어떤 설정으로 쓰는지는 코드가 아니라 어드민 설정으로 뺐습니다. 새 서비스가 인증을 붙일 때 코드를 고치는 대신 설정을 추가하면 되는 구조를 목표로 했습니다.</p>
+          <p>외부 인증업체와의 통신도 윈도우 설치형 모듈에서 API 토큰 방식으로 바꾸고, On-Premise ASP.NET에 있던 인증 기능을 Spring Boot로 옮겼습니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>운영자가 손댈 수 있는 인증</h2>
+          <p>인증업체별 트래픽 비율은 어드민에서 바로 조정할 수 있게 했습니다. 한 업체에 장애가 나면 신규 요청을 다른 업체로 돌리고, 평소에는 같은 기능으로 업체 간 비용을 조정합니다. 서비스 개편과 업체 비율 조정 이후 월 인증 비용은 약 3분의 1, 인증 관련 CS 문의는 90% 이상 줄었습니다. CS 감소에는 인증 흐름을 정리한 영향도 있다고 보고 있습니다.</p>
+          <p>자동으로 장애를 감지해서 전환하는 방식은 아닙니다. 사람이 판단하고 조정하는 방식이고, 이미 진행 중인 인증은 비율 변경과 별개로 처리됩니다. 그 대신 언제 어떤 비율로 바꿨는지가 남고, 운영자가 즉시 쓸 수 있는 대응 수단이 생겼습니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>토큰과 세션</h2>
+          <p>도메인마다 쿠키로 들고 있던 인증 결과를 인증 서비스가 발급하는 토큰으로 바꿨습니다. 토큰 검증만으로 다음 단계에 필요한 인증 내역까지 확인할 수는 없어서, 전자쿠폰 인증 내역은 서버 세션에 따로 유지했습니다. 토큰 확인과 서버 상태 조회가 필요한 흐름을 구분했습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>담당 구현과 후속 운영</h2>
+          <p>휴대폰 본인확인(PASS) 연동, 계좌점유인증의 유입 경로별 은행 정보 API와 연동 가이드, 전자쿠폰 인증 내역을 다음 단계까지 유지하는 세션 관리를 직접 구현했습니다.</p>
+          <p>2026년에는 기존 휴대폰 본인확인 모듈이 종료되면서 NICE 통합인증 API로 전환하는 작업을 맡았고, 지마켓 · 옥션 본인확인 서비스의 운영 반영과 배포 절차 문서까지 정리했습니다.</p>
+        </section>
+
         <section id="scope" class="case-section">
-          <h2>만든 것</h2>
+          <h2>구조와 구현</h2>
           <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 600" role="img" aria-label="통합인증 서비스 구조도: 지마켓·옥션·ESMPLUS가 통합인증 진입점을 거쳐 여섯 가지 인증 모듈 중 하나를 사용하고, 인증업체 라우터가 설정된 비율로 외부 인증업체를 고른다. 결과는 토큰과 세션으로 전달되고, 어드민에서 도메인별 연동과 업체 비율을 조정한다.">
   <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
   <rect x="250" y="20" width="480" height="400" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
@@ -137,33 +163,11 @@
   <path d="M275 377 L215 377 L215 320 L105 320" stroke="var(--text-3)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
   <text x="105" y="335" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">토큰으로 결과 회신</text>
 </svg><figcaption>연동 서비스가 통합인증 진입점을 거치면 도메인 설정에 따라 인증 모듈이 정해지고, 외부 업체가 필요한 인증은 어드민에서 정한 비율로 업체가 선택됩니다. 비율 수치는 예시입니다.</figcaption></figure>
-          <ul class="feature-grid"><li><strong>인증 모듈</strong><span>지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>업체별 트래픽 비율을 운영 중에 변경</span></li><li><strong>인증 서비스 토큰</strong><span>도메인별 쿠키 대신 서비스가 발급한 토큰으로</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
-          
-        </section>
-
-        <section id="s0" class="case-section">
-          <h2>어떤 상황이었나</h2>
-          <p>지마켓과 옥션의 인증 기능이 서비스마다 따로 있었습니다. 인증 로직 하나를 고치려면 여러 곳을 같이 손봐야 했고, 인증업체는 한 곳에 의존하고 있어서 그 업체에 문제가 생기면 할 수 있는 일이 별로 없었습니다. 비용을 조정할 여지도 없었습니다.</p>
-          <p>다뤄야 할 인증 유형도 많았습니다. 지식인증, 소셜인증, 소유인증, 본인인증, 계좌인증, 기업인증. 3인 팀에서 프로젝트를 리딩하며 구조와 인증업체 라우팅 방식을 결정하고 핵심 구현을 맡았습니다. 오픈 직전 명세가 바뀌는 일을 겪으며 회의록과 설계 문서, 진행 공유를 먼저 챙기게 됐고, 그 과정은 따로 글로 남겼습니다.</p>
-        </section>
-        <section id="s1" class="case-section">
-          <h2>인증을 모듈로, 설정은 어드민으로</h2>
-          <p>인증 유형별 기능을 한 서비스 안의 모듈로 정리하고, 어떤 도메인이 어떤 인증을 어떤 설정으로 쓰는지는 코드가 아니라 어드민 설정으로 뺐습니다. 새 서비스가 인증을 붙일 때 코드를 고치는 대신 설정을 추가하면 되는 구조를 목표로 했습니다.</p>
-          <p>외부 인증업체와의 통신도 윈도우 설치형 모듈에서 API 토큰 방식으로 바꾸고, On-Premise ASP.NET에 있던 인증 기능을 Spring Boot로 옮겼습니다.</p>
-        </section>
-        <section id="s2" class="case-section">
-          <h2>운영자가 손댈 수 있는 인증</h2>
-          <p>가장 신경 쓴 건 인증업체별 트래픽 비율을 어드민에서 바로 조정하는 기능입니다. 한 업체에 장애가 나면 배포 없이 비율을 옮겨서 신규 요청을 다른 업체로 돌릴 수 있고, 평소에는 같은 기능으로 업체 간 비용을 조정할 수 있습니다. 실제로 비율을 조정해 월 인증 비용을 약 3분의 1 줄였고, 인증 관련 CS 문의는 90% 이상 줄었습니다. 줄어든 문의의 대부분은 정상 동작인데도 들어오던 민원이라, 인증 흐름 자체가 명확해진 결과로 보고 있습니다.</p>
-          <p>자동으로 장애를 감지해서 전환하는 방식은 아닙니다. 사람이 판단하고 조정하는 방식이고, 이미 진행 중인 인증은 비율 변경과 별개로 처리됩니다. 그 대신 언제 어떤 비율로 바꿨는지가 남고, 운영자가 즉시 쓸 수 있는 대응 수단이 생겼습니다.</p>
-        </section>
-        <section id="s3" class="case-section">
-          <h2>토큰과 세션</h2>
-          <p>도메인마다 쿠키로 들고 있던 인증 결과를 인증 서비스가 발급하는 토큰으로 바꿨습니다. 토큰이 진짜인지 확인하는 것과 지금 이 인증 내역이 아직 유효한지 확인하는 것은 다른 질문이라서, 전자쿠폰 인증처럼 다음 단계에서 다시 확인해야 하는 내역은 서버 세션에 따로 유지했습니다. 어떤 요청에서 서버 상태를 조회하느냐에 따라 세션 저장소 장애의 영향이 달라지기 때문에, 그 경계를 의식하면서 설계했습니다.</p>
-        </section>
-        <section id="s4" class="case-section">
-          <h2>담당 구현과 후속 운영</h2>
-          <p>휴대폰 본인확인(PASS) 연동, 계좌점유인증의 유입 경로별 은행 정보 API와 연동 가이드, 전자쿠폰 인증 내역을 다음 단계까지 유지하는 세션 관리를 직접 구현했습니다.</p>
-          <p>2026년에는 기존 휴대폰 본인확인 모듈이 종료되면서 NICE 통합인증 API로 전환하는 작업을 맡았고, 지마켓 · 옥션 본인확인 서비스의 운영 반영과 배포 절차 문서까지 정리했습니다.</p>
+          <details class="implementation-details">
+            <summary>구현 범위 · 사용 기술</summary>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
+            <ul class="feature-grid"><li><strong>인증 모듈</strong><span>지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>업체별 트래픽 비율을 운영 중에 변경</span></li><li><strong>인증 서비스 토큰</strong><span>도메인별 쿠키 대신 서비스가 발급한 토큰으로</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
+          </details>
         </section>
 
         <section id="closing" class="case-section">

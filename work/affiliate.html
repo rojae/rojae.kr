@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">동의 하나에도 순서가 있다</a></li><li><a href="#s2">묶음으로 오는 배치</a></li><li><a href="#s3">실패를 어디까지 책임질 것인가</a></li><li><a href="#s4">만들고 끝이 아니라 운영까지</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">동의 하나에도 순서가 있다</a></li><li><a href="#s2">묶음으로 오는 배치</a></li><li><a href="#s3">실패를 어디까지 책임질 것인가</a></li><li><a href="#s4">만들고 끝이 아니라 운영까지</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -40,16 +40,44 @@
           <div class="project-meta"><span class="badge">지마켓</span><span>삼성카드 첫 적용</span></div>
           <h1>외부 파트너 제휴 연동 플랫폼</h1>
           <p class="page-lead">삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 트랜잭션과 배치 집계 구조를 결정하고 운영 어드민까지 개발했습니다.</p>
+          <p class="case-outcome">동의 일 평균 약 500명 · 조회·배치 모니터링 어드민 운영</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2026.01 — 2026.06 개발, 이후 운영</dd></div>
           <div><dt>팀</dt><dd>2인 팀</dd></div>
           <div><dt>역할</dt><dd>설계 · 구현 · 운영 — 구조 결정 담당</dd></div>
-          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li><li>OpenShift · ArgoCD</li></ul></dd></div>
         </dl>
 
+
+        <section id="s0" class="case-section">
+          <h2>어떤 상황이었나</h2>
+          <p>카드사 같은 외부 제휴사와 회원 데이터를 주고받는 표준 채널이 없었습니다. 제휴가 하나 생길 때마다 연동 방식을 처음부터 다시 설계해야 했고, 이번에는 첫 제휴사를 붙이면서 다음 제휴사도 같은 구조로 붙일 수 있게 만드는 것이 목표였습니다.</p>
+          <p>까다로운 점은 동의가 한 곳에서 나오지 않는다는 것이었습니다. 지마켓 앱의 안내 화면에서도, 제휴사 앱에서도 동의가 발생합니다. 한 방향으로 API를 호출하는 것만으로는 두 시스템의 동의 상태가 맞지 않고, 외부 연동이 실패했다고 회원 탈퇴 같은 핵심 처리가 막혀서도 안 됐습니다. 2인 팀에서 구조를 제가 결정하고, 설계와 구현, 이후 운영까지 맡았습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>동의 하나에도 순서가 있다</h2>
+          <p>본인 인증이 끝난 뒤 동의를 저장하는 흐름은 두 트랜잭션으로 나누기로 결정했습니다. 인증 성공 이벤트를 커밋 이후에 받아서, 동의와 동의 이력은 새 트랜잭션으로 저장합니다. 동의 저장이 실패해도 이미 끝난 인증을 되돌리지 않고, 두 실패를 따로 다루기 위해서였습니다. 같은 항목에 이미 동의가 있으면 성공으로 분류해서, 같은 요청이 두 번 와도 결과가 달라지지 않게 했습니다.</p>
+          <p>이 분리는 인증과 동의 저장의 실패 영향을 나누기 위한 선택입니다. 이벤트의 영속 전달이나 프로세스 종료 후 자동 복구까지 보장하는 구조는 아닙니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>묶음으로 오는 배치</h2>
+          <p>일배치는 하루치 데이터가 여러 묶음으로 나뉘어 들어오고, 묶음들이 거의 동시에 도착하기도 합니다. 처음 마스터 행을 만드는 경합과 이미 있는 행에 누적하는 경합은 실패하는 방식이 달라서 따로 처리하기로 했습니다. 마스터 생성은 별도 트랜잭션에서 유니크 경합을 받아내고, 누적 갱신은 마스터 행에 비관적 락을 걸어 순서대로 반영합니다. 같은 묶음 번호가 다시 오면 누적하지 않고, 마지막 묶음이 들어오면 빠진 번호와 건수를 비교합니다.</p>
+          <p>검증 범위는 수신 묶음의 누락과 건수 일치입니다. 동의·철회의 선후관계와 회원 상태 일치는 별도의 업무 규칙으로 다뤄야 합니다.</p>
+        </section>
+        <section id="s3" class="case-section">
+          <h2>실패를 어디까지 책임질 것인가</h2>
+          <p>리워드 응모는 외부 시스템을 호출합니다. 호출이 실패하면 MongoDB에 기록해 두고, 제휴사 · 회원 · 이벤트 조합에 유니크 인덱스를 걸어 같은 실패가 두 번 쌓이지 않게 했습니다. 사용자 흐름을 막지 않으면서 나중에 확인하고 재처리할 근거를 남기는 구조입니다.</p>
+          <p>유니크 인덱스가 방지하는 것은 실패 기록의 중복입니다. 외부 지급의 중복 방지와 전달 보장은 별도 문제이며, 이 구조는 Transactional Outbox가 아닌 실패 이력 저장 방식입니다.</p>
+          <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
+        </section>
+        <section id="s4" class="case-section">
+          <h2>만들고 끝이 아니라 운영까지</h2>
+          <p>동의 규모는 일 평균 약 500명입니다. 앞선 집계에서 누적 약 1만 명가 동의했습니다. 운영팀이 개별 문의와 배치 결과를 확인할 수 있도록 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 Next.js 어드민으로 만들었습니다.</p>
+          <p>연동 이력과 개인정보 조회 감사 기록을 분리하고 목적에 따라 보관 기간을 달리했습니다. 운영자가 처리 상태와 조회 이력을 각각 확인할 수 있도록 구성했습니다.</p>
+        </section>
+
         <section id="scope" class="case-section">
-          <h2>만든 것</h2>
+          <h2>구조와 구현</h2>
           <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 640" role="img" aria-label="제휴 연동 서비스 구조도: 지마켓 앱과 제휴사 앱 양쪽에서 발생한 동의를 제휴 연동 서비스가 실시간 동의, 일배치 정합, 월배치 파일, 탈회, 리워드로 처리하고 Oracle과 MongoDB에 저장한다. 제휴사 시스템과는 동의 API, 일배치, SFTP, 리워드 API로 연동하며, 운영 어드민에서 제휴사 관리, 동의 조회, 배치 모니터링, 접근 감사를 제공한다.">
   <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
   
@@ -140,35 +168,11 @@
   <path d="M490 470 L490 424" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
   <text x="575" y="452" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">상태 확인 · 재처리 근거</text>
 </svg><figcaption>기능 사이의 책임을 그린 개념도입니다. 실제 네트워크와 배포 구조는 다릅니다.</figcaption></figure>
-          <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li></ul>
-          
-        </section>
-
-        <section id="s0" class="case-section">
-          <h2>어떤 상황이었나</h2>
-          <p>카드사 같은 외부 제휴사와 회원 데이터를 주고받는 표준 채널이 없었습니다. 제휴가 하나 생길 때마다 연동 방식을 처음부터 다시 설계해야 했고, 이번에는 첫 제휴사를 붙이면서 다음 제휴사도 같은 구조로 붙일 수 있게 만드는 것이 목표였습니다.</p>
-          <p>까다로운 점은 동의가 한 곳에서 나오지 않는다는 것이었습니다. 지마켓 앱의 안내 화면에서도, 제휴사 앱에서도 동의가 발생합니다. 한 방향으로 API를 호출하는 것만으로는 두 시스템의 동의 상태가 맞지 않고, 외부 연동이 실패했다고 회원 탈퇴 같은 핵심 처리가 막혀서도 안 됐습니다. 2인 팀에서 구조를 제가 결정하고, 설계와 구현, 이후 운영까지 맡았습니다.</p>
-        </section>
-        <section id="s1" class="case-section">
-          <h2>동의 하나에도 순서가 있다</h2>
-          <p>본인 인증이 끝난 뒤 동의를 저장하는 흐름은 두 트랜잭션으로 나누기로 결정했습니다. 인증 성공 이벤트를 커밋 이후에 받아서, 동의와 동의 이력은 새 트랜잭션으로 저장합니다. 동의 저장이 실패해도 이미 끝난 인증을 되돌리지 않고, 두 실패를 따로 다루기 위해서였습니다. 같은 항목에 이미 동의가 있으면 성공으로 분류해서, 같은 요청이 두 번 와도 결과가 달라지지 않게 했습니다.</p>
-          <p>이 분리는 인증과 동의 저장의 실패 영향을 나누기 위한 선택입니다. 이벤트의 영속 전달이나 프로세스 종료 후 자동 복구까지 보장하는 구조는 아닙니다.</p>
-        </section>
-        <section id="s2" class="case-section">
-          <h2>묶음으로 오는 배치</h2>
-          <p>일배치는 하루치 데이터가 여러 묶음으로 나뉘어 들어오고, 묶음들이 거의 동시에 도착하기도 합니다. 처음 마스터 행을 만드는 경합과 이미 있는 행에 누적하는 경합은 실패하는 방식이 달라서 따로 처리하기로 했습니다. 마스터 생성은 별도 트랜잭션에서 유니크 경합을 받아내고, 누적 갱신은 마스터 행에 비관적 락을 걸어 순서대로 반영합니다. 같은 묶음 번호가 다시 오면 누적하지 않고, 마지막 묶음이 들어오면 빠진 번호와 건수를 비교합니다.</p>
-          <p>검증 범위는 수신 묶음의 누락과 건수 일치입니다. 동의·철회의 선후관계와 회원 상태 일치는 별도의 업무 규칙으로 다뤄야 합니다.</p>
-        </section>
-        <section id="s3" class="case-section">
-          <h2>실패를 어디까지 책임질 것인가</h2>
-          <p>리워드 응모는 외부 시스템을 호출합니다. 호출이 실패하면 MongoDB에 기록해 두고, 제휴사 · 회원 · 이벤트 조합에 유니크 인덱스를 걸어 같은 실패가 두 번 쌓이지 않게 했습니다. 사용자 흐름을 막지 않으면서 나중에 확인하고 재처리할 근거를 남기는 구조입니다.</p>
-          <p>유니크 인덱스가 방지하는 것은 실패 기록의 중복입니다. 외부 지급의 중복 방지와 전달 보장은 별도 문제이며, 이 구조는 Transactional Outbox가 아닌 실패 이력 저장 방식입니다.</p>
-          <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
-        </section>
-        <section id="s4" class="case-section">
-          <h2>만들고 끝이 아니라 운영까지</h2>
-          <p>동의 규모는 일 평균 약 500명입니다. 앞선 집계에서 누적 약 1만 명가 동의했습니다. 운영팀이 개별 문의와 배치 결과를 확인할 수 있도록 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 Next.js 어드민으로 만들었습니다.</p>
-          <p>연동 이력과 개인정보 조회 감사 기록을 분리하고 목적에 따라 보관 기간을 달리했습니다. 운영자가 처리 상태와 조회 이력을 각각 확인할 수 있도록 구성했습니다.</p>
+          <details class="implementation-details">
+            <summary>구현 범위 · 사용 기술</summary>
+            <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li><li>OpenShift · ArgoCD</li></ul>
+            <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li></ul>
+          </details>
         </section>
 
         <section id="closing" class="case-section">

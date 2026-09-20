@@ -21,3 +21,33 @@ test('homepage leads with projects and keeps detailed career history on the resu
   assert(!html.includes('class="year-items"'));
   assert.equal((html.match(/class="project-card/g) || []).length, 3);
 });
+
+test('homepage cards omit repeated summaries and miniature README imagery', () => {
+  const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert(!html.includes('fluxgate-repository.png'));
+  assert(!html.includes('class="project-summary"'));
+  assert.equal((html.match(/class="project-role"/g) || []).length, 3);
+});
+
+test('case studies lead with the problem while retaining all section anchors', () => {
+  for (const c of caseStudies) {
+    const html = fs.readFileSync(new URL(`../work/${c.key}.html`, import.meta.url), 'utf8');
+    assert(html.indexOf('id="s0"') < html.indexOf('id="scope"'), c.key);
+    for (const [index] of c.story.entries()) assert(html.includes(`id="s${index}"`), c.key);
+    assert(html.includes('id="closing"'), c.key);
+  }
+});
+
+test('web resume retains operational history in an accessible disclosure', () => {
+  const html = fs.readFileSync(new URL('../resume.html', import.meta.url), 'utf8');
+  assert.match(html, /<details class="career-details">/);
+  assert.match(html, /<summary>추가 운영 이력<\/summary>/);
+  assert(html.includes('NICE 통합인증 API'));
+  for (const format of ['compact', 'simple', 'modern', 'classic']) assert(html.includes(`resume/${format}.pdf`));
+});
+
+test('selected resume projects explain decisions and preserve guarantee boundaries', () => {
+  assert.match(JSON.stringify(resume.projectDetails?.auth), /신규 요청|진행 중/);
+  assert.match(JSON.stringify(resume.projectDetails?.affiliate), /영속 전달|자동 복구/);
+  assert.equal(resume.highlights.length, 3);
+});

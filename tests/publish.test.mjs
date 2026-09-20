@@ -14,6 +14,15 @@ test('publishing cannot include unrelated or already staged files', () => {
     assert.throws(() => validatePublish({ ...valid, ...override }));
   }
 });
+test('publishing accepts the design contract and print regression tests', () => {
+  assert.doesNotThrow(() => validatePublish({ ...valid, files: ['DESIGN.md', 'tests/print.test.mjs'] }));
+});
+test('publishing accepts only the submodule reference, never nested source or private data', () => {
+  assert.doesNotThrow(() => validatePublish({ ...valid, files: ['.gitmodules', 'resume-builder', 'tests/submodule.test.mjs'] }));
+  for (const file of ['resume-builder/data/base.json', 'resume-builder/templates/compact.mjs']) {
+    assert.throws(() => validatePublish({ ...valid, files: [file] }));
+  }
+});
 test('explicit local-only mode may skip expensive checks', () => {
   assert.doesNotThrow(() => validatePublish({ ...valid, playwright: false, args: ['--no-push', '--no-verify', '--no-pdf'] }));
 });

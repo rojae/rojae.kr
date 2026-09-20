@@ -39,7 +39,7 @@
           </div>
           <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
-        <p class="page-lead">지마켓에서 회원·인증 서비스를 개발하고 운영합니다. 인증업체를 배포 없이 전환하는 구조, 중복 수신을 처리하는 제휴 배치처럼 운영에 필요한 기능을 설계해 왔습니다.</p>
+        <p class="page-lead">PG와 커머스에서 6년 이상 Java/Spring 백엔드를 개발·운영했습니다. 현재 지마켓 Member Engineering에서 회원·인증과 외부 파트너 연동을 담당합니다.</p>
         <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (2쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
         <div class="resume-contact">
           <a href="mailto:rojae@kakao.com">rojae@kakao.com</a>
@@ -57,8 +57,7 @@
           <div>
             <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 설계 · 구현 · 운영 — 구조 결정 담당</p>
-            <ul class="points"><li>실시간 동의·배치·탈회·리워드 연동 설계·개발, 동의 일 평균 약 500명 규모 운영</li><li>인증 커밋 이후 동의를 별도 트랜잭션으로 저장하고, 일배치 묶음 집계는 비관적 락으로 순서 보장</li><li>외부 리워드 응모 실패를 MongoDB에 보관, 개인정보 연동 이력과 조회 감사 기록 분리</li><li>제휴사 관리 · 동의 조회 · 배치 모니터링 운영 어드민(Next.js) 구축</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li><li>OpenShift · ArgoCD</li></ul>
+            <ul class="points"><li>양쪽 앱의 동의·배치·탈회·리워드와 운영 어드민을 개발했습니다. 삼성카드를 첫 제휴사로 적용해 동의 일 평균 약 500명 규모로 운영합니다.</li><li>인증 커밋 이후 동의와 이력을 새 트랜잭션으로 저장해 실패 영향을 분리했습니다. 이 분리는 이벤트의 영속 전달이나 프로세스 종료 후 자동 복구를 보장하지 않습니다.</li><li>일배치 마스터 생성은 유니크 제약으로 경합을 처리하고, 누적 갱신은 비관적 락으로 직렬화했습니다. 같은 묶음의 재수신은 집계에서 제외하고 누락 번호와 건수를 검증합니다.</li></ul>
             
           </div>
         </article>
@@ -68,7 +67,6 @@
             <h4><a href="work/platform.html">회원 도메인 공통 모듈화 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</p>
             <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부 분산</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Gravitee API Gateway</li><li>Oracle</li><li>MongoDB</li><li>Redis</li></ul>
             
           </div>
         </article>
@@ -77,8 +75,7 @@
           <div>
             <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 프로젝트 리딩 · 설계 결정 · 핵심 구현</p>
-            <ul class="points"><li>여러 인증 기능을 모듈화하고, 도메인별 연동과 인증업체별 트래픽 비율을 어드민에서 조정하는 구조 결정 · 구현 — 월 인증 비용 약 1/3 절감, 관련 CS 90% 이상 감소</li><li>도메인별 쿠키 중심의 인증 상태 관리를 인증 서비스 토큰 방식으로 전환</li><li>휴대폰 본인확인(PASS) 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션 관리</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
+            <ul class="points"><li>사이트별 인증 로직과 단일 업체 의존을 줄이기 위해 6개 인증 유형을 공통 서비스로 통합. 도메인 설정과 업체별 트래픽 비율을 어드민에서 관리하도록 설계·구현했습니다.</li><li>비율 변경은 신규 요청에 적용하고 진행 중인 인증은 별도로 처리합니다. 자동 장애 전환이 아니라 운영자가 판단해 배포 없이 조정하는 방식입니다.</li><li>서비스 개편과 업체 비율 조정 이후 월 인증 비용 약 1/3 절감, 인증 관련 CS 문의 90% 이상 감소. PASS 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션을 직접 구현했습니다.</li></ul>
             
           </div>
         </article>
@@ -88,7 +85,6 @@
             <h4><a href="work/terms.html">약관 관리 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 약관 모델 · 구조 결정, 주요 개발 · 사내 리뷰 발표</p>
             <ul class="points"><li>지마켓 · 옥션 · ESMPLUS 약관을 약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝으로 통합 관리</li><li>HTML 에디터가 붙은 어드민, 공개 약관 페이지, Querydsl 동적 조회, 사이트 확장 구조</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>JPA</li><li>Querydsl</li><li>Thymeleaf</li><li>Blob Storage</li><li>Oracle</li><li>MSSQL</li></ul>
             
           </div>
         </article>
@@ -98,7 +94,6 @@
             <h4><a href="work/login.html">로그인 시스템 Java/Spring 전환 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">로그인 장애 이후의 근본 대응 · 팀 프로젝트 · 원인 분석 · 전환 설계 기여</p>
             <ul class="points"><li>로그인이 불가능했던 장애 이후 DB 연결 문제 분석과 Java/Spring 전환 설계에 참여</li><li>기존 런타임 제약이 연동 기술 적용을 막던 구조를 검토하고, 회원정보 조회 캐시(Caffeine) 도입에 참여</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>Oracle</li><li>Redis Cluster</li><li>MongoDB</li><li>Caffeine</li></ul>
             
           </div>
         </article>
@@ -108,12 +103,11 @@
             <h4>판매자 통합가입 서비스</h4>
             <p class="job-sub">지마켓 · 옥션 판매자 가입 통합 · 4~5인 팀 · 개발 · 운영 담당</p>
             <ul class="points"><li>분리되어 있던 지마켓 · 옥션 판매자 가입을 통합하고, 서류 검토 · 승인 프로세스 개발</li><li>판매자 정보 암호화와 비동기 메시지 큐 기반 처리 적용</li></ul>
-            <ul class="tags" aria-label="기술"><li>Spring Security</li><li>JPA</li><li>WebFlux</li><li>Redis</li><li>Oracle</li><li>MSSQL</li></ul>
             
           </div>
         </article>
-        <div class="others">
-          <h4 class="sub-title">연도별로 맡은 일</h4>
+        <details class="career-details">
+          <summary>추가 운영 이력</summary>
           <ol class="years">
             <li class="year">
               <div class="year-head"><span class="year-num">2026</span><span class="year-theme">개인정보 암호화와 본인확인 전환</span></div>
@@ -140,7 +134,7 @@
               <ul class="year-items"><li><strong>분리보관 · ISMS-P</strong><span>탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명. 불안정하던 .NET 배치를 Spring Cloud Data Flow로 전환</span></li><li><strong>배포 · 운영 환경</strong><span>OpenShift(Kubernetes) 위에서 ArgoCD 기반 GitOps로 회원 서비스 배포 · 운영</span></li></ul>
             </li>
           </ol>
-        </div>
+        </details>
       </div>
       <div class="company">
         <div class="company-head"><h3>더존비즈온 <span>전자금융서비스 Unit</span></h3><p class="period">2020.07 — 2022.09</p></div>
@@ -150,7 +144,6 @@
             <h4><a href="work/edoc.html">전자문서 유통 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 인프라 설계 · API · 관리자 · 배치 개발</p>
             <ul class="points"><li>HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성</li><li>API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java 8</li><li>Spring</li><li>MyBatis</li><li>Tomcat</li><li>Redis Sentinel</li><li>MariaDB Galera</li><li>MaxScale</li><li>HAProxy · keepalived</li><li>Nginx</li><li>Node.js · PM2</li><li>GitLab · Nexus · Jenkins</li></ul>
             
           </div>
         </article>
@@ -160,7 +153,6 @@
             <h4>PG 결제 서비스 개발 · 운영</h4>
             <p class="job-sub">상점 관리자 개편 · 2~3인 팀 · 개발 · 운영</p>
             <ul class="points"><li>카드 · 계좌이체 · 가상계좌 · 휴대폰 결제를 다루는 PG 서비스 개발 · 운영</li><li>상점 관리자를 JSP 기반에서 Spring JPA · QueryDSL 기반으로 개편</li></ul>
-            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>MyBatis</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li></ul>
             
           </div>
         </article>
@@ -180,18 +172,6 @@
             <div><h3><a class="link" href="work/fluxgate.html">OpenFluxGate</a></h3><p class="team">Redis 기반 분산 Rate Limiting 라이브러리와 규칙 관리 어드민. Maven Central 배포.</p></div>
           </div>
           <div class="timeline-item">
-            <p class="period">스터디 프로젝트</p>
-            <div><h3><a class="link" href="work/waf.html">WAF 플랫폼</a></h3><p class="team">Nginx + ModSecurity + OWASP CRS 기반 웹 방화벽. 막은 요청을 실시간 트랙(Go · InfluxDB)과 분석 트랙(Kafka · ksqlDB · Elasticsearch)으로 나눠 처리하고, 대시보드에서 룰을 고치면 Nginx에 무중단 반영.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">Owner</p>
-            <div><h3><a class="link" href="https://github.com/rojae/auth-server-be">Auth Server</a></h3><p class="team">Spring Authorization Server 기반 회원 · 인증 서비스. 코어 · OAuth2 · 소셜 로그인 · 통합 API 모듈로 나누고 Prometheus 모니터링을 붙인 개인 프로젝트. 현재는 서비스를 내린 상태.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">Owner</p>
-            <div><h3><a class="link" href="https://github.com/OpenFluxGate/fluxmirror">FluxMirror</a></h3><p class="team">Claude Code · Gemini CLI · Qwen Code의 도구 호출을 SQLite에 기록하고 일간 · 주간 리포트로 보여주는 활동 감사 도구.</p></div>
-          </div>
-          <div class="timeline-item">
             <p class="period">Owner</p>
             <div><h3><a class="link" href="https://plugins.jetbrains.com/plugin/30083-issuelinker">IssueLinker</a></h3><p class="team">Git 브랜치 이름에서 이슈 키를 찾아 Jira · GitHub · GitLab 이슈를 바로 여는 IntelliJ 플러그인. JetBrains Marketplace 배포.</p></div>
           </div>
@@ -202,32 +182,6 @@
           <div class="timeline-item">
             <p class="period">Contributor</p>
             <div><h3><a class="link" href="https://github.com/OpenFeign/feign/pull/2874">OpenFeign/feign #2874</a></h3><p class="team">Add hint message for missing annotation param value — 파라미터 선언 오류를 바로 찾을 수 있게 예외 메시지 개선</p></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="resume-block">
-        <h2>글</h2>
-        <div class="timeline">
-          <div class="timeline-item">
-            <p class="period">장애 분석</p>
-            <div><h3><a class="link" href="https://rojae.github.io/posts/jvm-dns-caching-meets-connection-pools/">JVM DNS 캐싱과 커넥션 풀이 만날 때</a></h3><p class="team">라우팅 IP 변경 후 발생한 프로덕션 504를 JVM DNS 캐시와 커넥션 유지 관점에서 분석했습니다. 재현 코드와 영문판, 세미나 자료를 함께 공개했습니다.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">시리즈 · 4편</p>
-            <div><h3><a class="link" href="https://rojae.github.io/posts/spring-batch-intro/">Spring Batch 실전</a></h3><p class="team">개념과 환경 설정부터 Reader · Processor · Writer, 이메일 발송 배치 구현, 멀티스레드와 파티셔닝을 이용한 성능 최적화까지.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">회고</p>
-            <div><h3><a class="link" href="https://rojae.github.io/posts/the-sorrows-of-young-rojae/">젊은 로재씨의 슬픔 — 우당탕탕 PL 데뷔기</a></h3><p class="team">통합인증 프로젝트를 리딩하며 겪은 일과, 그 뒤로 문서화와 공유를 먼저 챙기게 된 이유. 리더와 보스의 차이에 대한 생각.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">시리즈 · 5편</p>
-            <div><h3><a class="link" href="https://rojae.github.io/posts/design-pattern-intro/">서비스가 커질수록 필요한 설계 패턴</a></h3><p class="team">메시징 시스템을 예제로 Factory · Strategy · Template Method · Chain of Responsibility 패턴이 필요한 순간을 정리했습니다.</p></div>
-          </div>
-          <div class="timeline-item">
-            <p class="period">에세이</p>
-            <div><h3><a class="link" href="https://rojae.github.io/posts/tech-without-business-wont-go/">비즈니스 없는 기술은 나아갈 수 없다</a></h3><p class="team">설계와 패턴 이야기를 하며 받은 질문에서 출발해, 기술 선택을 비즈니스 맥락과 연결하는 이유를 적었습니다.</p></div>
           </div>
         </div>
       </section>

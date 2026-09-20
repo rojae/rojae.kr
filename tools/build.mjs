@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { profile, ways, caseStudies, experience, openSource, contributions, writing, education } from './content.mjs';
+import { profile, ways, caseStudies, experience, openSource, contributions, writing, education, resume } from './content.mjs';
 import { diagrams } from './diagrams.mjs';
 import { wordmarkSvg } from './logo.mjs';
 
@@ -78,18 +78,17 @@ function renderIndex() {
   const featured = ['auth', 'affiliate', 'fluxgate'].map(key => byKey[key]);
   const more = caseStudies.filter(c => !featured.includes(c));
   const projects = featured.map((c, i) => `
-        <article class="project-card${c.image ? ' has-media' : ''}${i === 0 ? ' is-featured' : ''}">
+        <article class="project-card${i === 0 ? ' is-featured' : ''}">
           <div class="project-body">
             ${projectMeta(c)}
             <h3><a href="work/${c.key}.html">${c.title}</a></h3>
             <p class="project-sub">${c.sub}</p>
             <p class="project-outcome">${c.cardPoints[c.cardPoints.length - 1]}</p>
-            <p class="project-summary">${c.summary}</p>
+            <p class="project-role">${c.role}</p>
             ${list(c.cardPoints.slice(0, -1))}
             ${tags(c.stack.slice(0, 4))}
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
-          ${c.image ? `<div class="project-media"><img src="assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"></div>` : ''}
         </article>`).join('');
 
   const osHtml = openSource.filter(o => ['FluxMirror', 'IssueLinker'].includes(o.title)).map(o => `
@@ -146,7 +145,7 @@ function renderIndex() {
       <div class="projects">${projects}
       </div>
       <ul class="more-projects">${more.map(c => `
-        <li><a href="work/${c.key}.html"><span class="project-meta"><span class="badge">${c.badge}</span><span>${c.period}</span></span><strong>${c.title}</strong><span class="more-sub">${c.sub} · ${c.role}</span><span class="arrow" aria-hidden="true">→</span></a></li>`).join('')}
+        <li><a href="work/${c.key}.html"><span class="project-meta"><span class="badge">${c.badge}</span><span>${c.period}</span></span><strong>${c.title}</strong><span class="more-sub">${c.sub}</span><span class="arrow" aria-hidden="true">→</span></a></li>`).join('')}
       </ul>
     </section>
 
@@ -187,7 +186,7 @@ function renderIndex() {
 
     <section id="ways" class="section container" aria-labelledby="ways-title">
       <div class="section-head"><h2 id="ways-title">일하는 방식</h2></div>
-      <div class="ways-grid">${[ways[1], ways[2], ways[3], ways[4]].map(w => `
+      <div class="ways-grid">${[ways[1], ways[2]].map(w => `
         <article class="way"><h3>${w.title}</h3><p>${w.text}</p></article>`).join('')}
       </div>
     </section>
@@ -220,28 +219,28 @@ function renderExperience(prefix, { headingLevel = 3, compact = false } = {}) {
       const titleHtml = c ? `<a href="${prefix}work/${c.key}.html">${title} <span class="arrow" aria-hidden="true">→</span></a>` : title;
       const subline = c ? `${c.sub} · ${c.team} · ${c.role}` : `${p.sub} · ${p.team} · ${p.role}`;
       const tagList = c ? c.stack : p.tags;
+      const points = compact ? (resume.projectDetails[p.ref] || p.points.slice(0, 2)) : p.points;
       return `
         <article class="job">
           <p class="period">${p.period}</p>
           <div>
             <${sub}>${titleHtml}</${sub}>
             <p class="job-sub">${subline}</p>
-            ${list(compact ? p.points.slice(0, 2) : p.points)}
-            ${tags(compact ? tagList.slice(0, 5) : tagList)}
+            ${list(points)}${compact ? '' : `\n            ${tags(tagList)}`}
             ${p.link ? `<p class="job-link"><a class="link" href="${p.link[1]}" ${ext}>${p.link[0]} <span aria-hidden="true">↗</span></a></p>` : ''}
           </div>
         </article>`;
     }).join('');
-    const others = co.yearly.length && !compact ? `
-        <div class="others">
-          <${sub} class="sub-title">연도별로 맡은 일</${sub}>
+    const others = co.yearly.length ? `
+        <details class="career-details">
+          <summary>추가 운영 이력</summary>
           <ol class="years">${co.yearly.map(y => `
             <li class="year">
               <div class="year-head"><span class="year-num">${y.year}</span><span class="year-theme">${y.theme}</span></div>
               <ul class="year-items">${y.items.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
             </li>`).join('')}
           </ol>
-        </div>` : '';
+        </details>` : '';
     return `      <div class="company">
         <div class="company-head"><${h}>${co.name} <span>${co.team}</span></${h}><p class="period">${co.period}</p></div>${jobs}${others}
       </div>`;
@@ -253,7 +252,7 @@ function renderCase(c, i) {
   const prev = caseStudies[i - 1];
   const next = caseStudies[i + 1];
   const slug = (n) => `s${n}`;
-  const toc = [['scope', '만든 것'], ...c.story.map((st, n) => [slug(n), st.heading]), ['closing', '돌아보면']];
+  const toc = [...c.story.map((st, n) => [slug(n), st.heading]), ['scope', '구조와 구현'], ['closing', '돌아보면']];
   const body = `
   <main id="main" class="page case">
     <div class="container case-layout">
@@ -267,12 +266,12 @@ function renderCase(c, i) {
           <div class="project-meta"><span class="badge">${c.badge}</span><span>${c.sub}</span></div>
           <h1>${c.title}</h1>
           <p class="page-lead">${c.summary}</p>
+          <p class="case-outcome">${c.cardPoints[c.cardPoints.length - 1]}</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>${c.period}</dd></div>
           <div><dt>팀</dt><dd>${c.team}</dd></div>
           <div><dt>역할</dt><dd>${c.role}</dd></div>
-          <div class="facts-wide"><dt>기술</dt><dd>${tags(c.stack)}</dd></div>
         </dl>
 ${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<a class="btn" href="${h}" ${ext}>${l} <span aria-hidden="true">↗</span></a>`).join('')}</div>\n` : ''}${c.previews ? `        <div class="link-previews">
           <p class="link-previews-title">지금 운영 중인 약관 페이지</p>
@@ -280,17 +279,21 @@ ${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<
             <a class="preview" href="${v.href}" ${ext}><img src="../assets/${v.image}" width="720" height="450" alt="${v.title} 페이지 미리보기" loading="lazy"><span class="preview-body"><strong>${v.title}</strong><span>${v.host} <span aria-hidden="true">↗</span></span></span></a>`).join('')}
           </div>
         </div>\n` : ''}
-        <section id="scope" class="case-section">
-          <h2>만든 것</h2>
-          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
-          <ul class="feature-grid">${c.features.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
-          ${c.image ? `<figure class="shot"><img src="../assets/fluxgate-repository.png" width="1280" height="850" alt="OpenFluxGate GitHub 저장소 README 화면" loading="lazy"><figcaption>공개 저장소 README</figcaption></figure>` : ''}
-        </section>
 ${c.story.map((st, n) => `
         <section id="${slug(n)}" class="case-section">
           <h2>${st.heading}</h2>
           ${st.paragraphs.map(p => `<p>${p}</p>`).join('\n          ')}
         </section>`).join('')}
+
+        <section id="scope" class="case-section">
+          <h2>구조와 구현</h2>
+          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
+          <details class="implementation-details">
+            <summary>구현 범위 · 사용 기술</summary>
+            ${tags(c.stack)}
+            <ul class="feature-grid">${c.features.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
+          </details>
+        </section>
 
         <section id="closing" class="case-section">
           <h2>돌아보면</h2>
@@ -323,7 +326,7 @@ function renderResume() {
           </div>
           <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
-        <p class="page-lead">${profile.lead}</p>
+        <p class="page-lead">${resume.summary[0]}</p>
         <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (2쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
         <div class="resume-contact">
           <a href="mailto:${profile.email}">${profile.email}</a>
@@ -334,7 +337,7 @@ function renderResume() {
 
       <section class="resume-block">
         <h2>경력</h2>
-${renderExperience('', { headingLevel: 3 })}
+${renderExperience('', { headingLevel: 3, compact: true })}
       </section>
 
       <section class="resume-block">
@@ -344,7 +347,7 @@ ${renderExperience('', { headingLevel: 3 })}
 
       <section class="resume-block">
         <h2>오픈소스</h2>
-        <div class="timeline">${openSource.map(o => `
+        <div class="timeline">${openSource.filter(o => ['OpenFluxGate', 'IssueLinker'].includes(o.title)).map(o => `
           <div class="timeline-item">
             <p class="period">${o.role}</p>
             <div><h3><a class="link" href="${o.href}">${o.title}</a></h3><p class="team">${o.text}</p></div>
@@ -352,16 +355,6 @@ ${renderExperience('', { headingLevel: 3 })}
           <div class="timeline-item">
             <p class="period">Contributor</p>
             <div><h3><a class="link" href="${c.href}">${c.repo} #${c.number}</a></h3><p class="team">${c.title} — ${c.text}</p></div>
-          </div>`).join('')}
-        </div>
-      </section>
-
-      <section class="resume-block">
-        <h2>글</h2>
-        <div class="timeline">${writing.map(w => `
-          <div class="timeline-item">
-            <p class="period">${w.type}</p>
-            <div><h3><a class="link" href="${w.href}">${w.title}</a></h3><p class="team">${w.text}</p></div>
           </div>`).join('')}
         </div>
       </section>

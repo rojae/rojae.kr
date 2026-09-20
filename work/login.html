@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#scope">만든 것</a></li><li><a href="#s0">재기동으로 끝내지 않았다</a></li><li><a href="#s1">언어를 바꾼 게 아니라 제약을 푼 것</a></li><li><a href="#s2">내 역할의 범위</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">재기동으로 끝내지 않았다</a></li><li><a href="#s1">언어를 바꾼 게 아니라 제약을 푼 것</a></li><li><a href="#s2">내 역할의 범위</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -40,16 +40,32 @@
           <div class="project-meta"><span class="badge">지마켓</span><span>로그인 장애 이후의 근본 대응</span></div>
           <h1>로그인 시스템 Java/Spring 전환</h1>
           <p class="page-lead">전체 로그인이 멈췄던 장애를 계기로 기존 플랫폼의 제약을 검토하고, 로그인 · 회원 기능을 Java/Spring으로 옮기는 작업에 참여했습니다.</p>
+          <p class="case-outcome">회원정보 조회에 Caffeine 로컬 캐시 도입 (팀 작업)</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2023 — 2024</dd></div>
           <div><dt>팀</dt><dd>팀 프로젝트</dd></div>
           <div><dt>역할</dt><dd>원인 분석 · 전환 설계 기여</dd></div>
-          <div class="facts-wide"><dt>기술</dt><dd><ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>Oracle</li><li>Redis Cluster</li><li>MongoDB</li><li>Caffeine</li></ul></dd></div>
         </dl>
 
+
+        <section id="s0" class="case-section">
+          <h2>재기동으로 끝내지 않았다</h2>
+          <p>DB 연결을 맺는 단계에서 문제가 생겨 전체 로그인이 불가능한 장애가 있었습니다. 서버와 DB를 재기동해서 복구했지만, 재기동은 증상을 없앤 것이지 원인을 없앤 것은 아니었습니다.</p>
+          <p>살펴보니 당시 사내 보안 라이브러리 지원 문제로 기존 .NET 런타임 버전이 고정되어 있었고, 이 제약 때문에 Redis Cluster나 MongoDB 같은 연동 기술을 붙이기도 어려운 상태였습니다. 이 제약이 곧 장애의 직접 원인이라고 말할 수는 없지만, 같은 문제를 다시 마주했을 때 손쓸 수 있는 폭을 좁히고 있는 건 분명했습니다.</p>
+        </section>
+        <section id="s1" class="case-section">
+          <h2>언어를 바꾼 게 아니라 제약을 푼 것</h2>
+          <p>그래서 재발 방지 패치가 아니라 로그인 · 회원 기능을 Java/Spring으로 옮기는 방향으로 설계에 참여했습니다. .NET이 나빠서가 아니라, 조직이 지원할 수 있는 런타임과 라이브러리 조건에서 유지보수와 연동이 가능한 쪽으로 옮긴 것입니다.</p>
+          <p>전환 과정에서 자주 조회되는 회원정보에 Caffeine 로컬 캐시를 두는 팀 작업에도 참여했습니다. 인스턴스별 캐시는 갱신이 늦을 수 있어서, 차단이나 탈퇴처럼 즉시 반영되어야 하는 상태는 캐시 대상과 만료 정책을 따로 봐야 합니다.</p>
+        </section>
+        <section id="s2" class="case-section">
+          <h2>내 역할의 범위</h2>
+          <p>팀이 복구와 전체 전환을 함께 진행했고, 저는 DB 연결 문제 분석, 전환 설계와 회원정보 조회 캐시 도입에 참여했습니다.</p>
+        </section>
+
         <section id="scope" class="case-section">
-          <h2>만든 것</h2>
+          <h2>구조와 구현</h2>
           <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 520" role="img" aria-label="로그인 시스템 전환 구조도: 장애, 재기동 복구, 원인·제약 분석, 전환 설계, 전환·운영의 흐름과 함께, 런타임 버전이 고정되어 연동 기술을 붙이기 어렵던 .NET 서비스(Before)와 Caffeine 캐시, Oracle, Redis Cluster, MongoDB를 쓰는 Java/Spring 서비스(After)를 비교한다.">
   <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
   <rect x="30" y="30" width="170" height="54" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
@@ -125,23 +141,11 @@
   <text x="730" y="460" font-size="11.5" font-weight="700" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">언어를 바꾼 것이 아니라, 제약을 푼 것</text>
   <path d="M470 324 L510 324" stroke="var(--accent)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
 </svg><figcaption>진행 흐름을 단순하게 그린 그림입니다.</figcaption></figure>
-          <ul class="feature-grid"><li><strong>장애 분석</strong><span>DB 연결 실패가 어느 단계에서 났는지 확인</span></li><li><strong>제약 검토</strong><span>런타임 버전 고정이 유지보수와 연동에 주는 영향</span></li><li><strong>전환 설계</strong><span>로그인 · 회원 기능의 Java/Spring 전환</span></li><li><strong>조회 캐시</strong><span>회원정보 조회에 Caffeine 로컬 캐시</span></li></ul>
-          
-        </section>
-
-        <section id="s0" class="case-section">
-          <h2>재기동으로 끝내지 않았다</h2>
-          <p>DB 연결을 맺는 단계에서 문제가 생겨 전체 로그인이 불가능한 장애가 있었습니다. 서버와 DB를 재기동해서 복구했지만, 재기동은 증상을 없앤 것이지 원인을 없앤 것은 아니었습니다.</p>
-          <p>살펴보니 당시 사내 보안 라이브러리 지원 문제로 기존 .NET 런타임 버전이 고정되어 있었고, 이 제약 때문에 Redis Cluster나 MongoDB 같은 연동 기술을 붙이기도 어려운 상태였습니다. 이 제약이 곧 장애의 직접 원인이라고 말할 수는 없지만, 같은 문제를 다시 마주했을 때 손쓸 수 있는 폭을 좁히고 있는 건 분명했습니다.</p>
-        </section>
-        <section id="s1" class="case-section">
-          <h2>언어를 바꾼 게 아니라 제약을 푼 것</h2>
-          <p>그래서 재발 방지 패치가 아니라 로그인 · 회원 기능을 Java/Spring으로 옮기는 방향으로 설계에 참여했습니다. .NET이 나빠서가 아니라, 조직이 지원할 수 있는 런타임과 라이브러리 조건에서 유지보수와 연동이 가능한 쪽으로 옮긴 것입니다.</p>
-          <p>전환 과정에서 자주 조회되는 회원정보에 Caffeine 로컬 캐시를 두는 팀 작업에도 참여했습니다. 인스턴스별 캐시는 갱신이 늦을 수 있어서, 차단이나 탈퇴처럼 즉시 반영되어야 하는 상태는 캐시 대상과 만료 정책을 따로 봐야 합니다.</p>
-        </section>
-        <section id="s2" class="case-section">
-          <h2>내 역할의 범위</h2>
-          <p>팀이 복구와 전체 전환을 함께 진행했고, 저는 DB 연결 문제 분석, 전환 설계와 회원정보 조회 캐시 도입에 참여했습니다.</p>
+          <details class="implementation-details">
+            <summary>구현 범위 · 사용 기술</summary>
+            <ul class="tags" aria-label="기술"><li>Java</li><li>Spring</li><li>Oracle</li><li>Redis Cluster</li><li>MongoDB</li><li>Caffeine</li></ul>
+            <ul class="feature-grid"><li><strong>장애 분석</strong><span>DB 연결 실패가 어느 단계에서 났는지 확인</span></li><li><strong>제약 검토</strong><span>런타임 버전 고정이 유지보수와 연동에 주는 영향</span></li><li><strong>전환 설계</strong><span>로그인 · 회원 기능의 Java/Spring 전환</span></li><li><strong>조회 캐시</strong><span>회원정보 조회에 Caffeine 로컬 캐시</span></li></ul>
+          </details>
         </section>
 
         <section id="closing" class="case-section">

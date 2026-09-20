@@ -63,6 +63,27 @@ const server = http.createServer((req, res) => {
           assert(home.workTop < 900, `projects should appear in the first screen at ${width}`);
           homeMeasurements.push(home);
           assert.equal(await page.locator('.project-card').count(), 3);
+          const gaps = await page.locator('.project-card').evaluateAll(cards => cards.map(card =>
+            card.querySelector('.project-more').getBoundingClientRect().top - card.querySelector('.tags').getBoundingClientRect().bottom));
+          assert(gaps.every(gap => gap < 80), `project card trailing whitespace at ${width}: ${gaps}`);
+          if (width === 390) assert(home.height < 6200, 'mobile homepage stays concise');
+        }
+        if (url === '/resume.html') {
+          if (width === 390) assert(await page.evaluate(() => document.documentElement.scrollHeight < 7500), 'collapsed mobile resume stays concise');
+          const disclosure = page.locator('.career-details');
+          assert(!(await disclosure.evaluate(el => el.open)), 'operational history starts collapsed');
+          await disclosure.locator('summary').click();
+          assert(await disclosure.evaluate(el => el.open), 'operational history opens');
+          const expanded = await page.evaluate(() => ({width: innerWidth, scroll: document.documentElement.scrollWidth}));
+          assert.equal(expanded.scroll, expanded.width, 'expanded history does not overflow');
+          await disclosure.locator('summary').click();
+        }
+        if (url.startsWith('/work/')) {
+          const disclosure = page.locator('.implementation-details');
+          await disclosure.locator('summary').click();
+          assert(await disclosure.evaluate(el => el.open), 'implementation details open');
+          assert(await page.evaluate(() => document.documentElement.scrollWidth === innerWidth), 'expanded implementation fits');
+          await disclosure.locator('summary').click();
         }
         checks++;
       }
@@ -104,6 +125,14 @@ const server = http.createServer((req, res) => {
     await page.evaluate(() => { window.print = () => { window.__printed = true; }; });
     await page.getByRole('button', { name: '인쇄' }).click();
     assert(await page.evaluate(() => window.__printed));
+    await page.evaluate(() => dispatchEvent(new Event('beforeprint')));
+    assert(await page.locator('.career-details').evaluate(el => el.open), 'printing includes collapsed operational history');
+    await page.evaluate(() => dispatchEvent(new Event('afterprint')));
+    assert(!(await page.locator('.career-details').evaluate(el => el.open)), 'printing restores collapsed state');
+    await page.locator('.career-details summary').click();
+    await page.evaluate(() => { dispatchEvent(new Event('beforeprint')); dispatchEvent(new Event('afterprint')); });
+    assert(await page.locator('.career-details').evaluate(el => el.open), 'printing preserves already expanded history');
+    await page.locator('.career-details summary').click();
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.pdf({ path: path.join(output, 'public-resume.pdf'), format: 'A4', margin: { top: '15mm', bottom: '15mm', left: '15mm', right: '15mm' } });
     const missing = await page.goto(origin + '/missing');

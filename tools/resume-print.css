@@ -14,6 +14,17 @@ p, li { orphans: 3; widows: 3; }
 .template-compact .hl-label { font-size: 7.5pt; }
 .template-compact .company-head { background: #f3f5f7; }
 .template-compact section.block { margin-top: 15px; }
+.hl { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.template-compact .hl-label { font-size: 8pt; }
+.template-compact .hl-tile { padding: 8px; }
+.template-compact .resume-page-start { break-before: page; margin-top: 0; }
+.template-compact .pj-decisions { padding-left: 14px; margin: 5px 0 0; font-size: 9.6pt; line-height: 1.65; }
+.template-compact .pj-decisions li + li { margin-top: 5px; }
+.template-compact .os-line { margin-bottom: 9px; line-height: 1.65; }
+.template-simple section.block { margin-top: 14px; }
+.template-simple .section-title { margin-bottom: 8px; }
+.template-simple .os-item { margin-bottom: 8px; }
+.template-simple .skills-row { margin-bottom: 4px; }
 .template-modern .m-body { padding: 5mm 0 0; }
 .template-modern .m-header { padding: 6mm 8mm; background: #234f73; }
 .template-modern .skill-block { display: grid; grid-template-columns: 100px 1fr; gap: 8px; margin-bottom: 5px; }

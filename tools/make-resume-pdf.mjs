@@ -7,7 +7,17 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { profile, caseStudies, experience, openSource, contributions, resume, affiliateMetrics } from './content.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const builder = path.resolve(root, '..', 'resume-builder');
+const builder = path.join(root, 'resume-builder');
+if (!fs.existsSync(path.join(builder, 'package.json'))) {
+  throw new Error('Initialize resume-builder: git submodule update --init --recursive');
+}
+const require = createRequire(path.join(builder, 'package.json'));
+let puppeteer;
+try {
+  puppeteer = require('puppeteer');
+} catch (cause) {
+  throw new Error('Install the PDF dependencies: npm ci --prefix resume-builder', { cause });
+}
 const byKey = Object.fromEntries(caseStudies.map(c => [c.key, c]));
 const site = 'https://rojae.kr';
 const strip = s => s.replace(/<[^>]+>/g, '');
@@ -34,7 +44,7 @@ const companies = experience.map((co, i) => ({
       const role = c ? `${c.team} — ${c.role}` : `${p.team} — ${p.role}`;
       const sections = [{ label: '내용', items: p.points }];
       if (c && impact[c.key]) sections.push({ label: '성과', text: impact[c.key] });
-      return { id: p.ref || `p${i}${n}`, order: n + 1, title, period: p.period.replace('—', '~'), role, intro: c ? strip(c.summary) : p.points[0], sections, tech: (c ? c.stack : p.tags).join(', ') };
+      return { id: p.ref || `p${i}${n}`, order: n + 1, title, period: p.period.replace('—', '~'), role, intro: c ? strip(c.summary) : p.points[0], sections, details: resume.projectDetails[p.ref], tech: (c ? c.stack : p.tags).join(', ') };
     }),
     ...(co.yearly.length ? [{
       id: `ops${i}`, order: 99, title: `${co.name} 회원·인증 운영 개선`, period: co.period.replace('—', '~'), role: '직접 담당',
@@ -51,8 +61,8 @@ const data = {
   highlights: resume.highlights,
   skills: resume.skills,
   openSource: [
-    ...openSource.filter(o => ['OpenFluxGate', 'IssueLinker'].includes(o.title)).map(o => ({ name: o.title, tagline: o.text, url: o.href.startsWith('http') ? o.href : `${site}/${o.href}` })),
-    { name: 'OpenFeign', tagline: `코어 라이브러리 개선 ${contributions.length}건 기여 · 병합 (${contributions.map(c => `#${c.number}`).join(', ')})`, url: contributions[0].href },
+    ...openSource.filter(o => ['OpenFluxGate', 'IssueLinker'].includes(o.title)).map(o => ({ name: o.title, tagline: o.title === 'OpenFluxGate' ? 'Redis Lua 기반 분산 Rate Limiting과 Spring Boot 2.7/3.x 스타터, 동적 규칙 관리 어드민을 개발해 Maven Central에 배포. 사내 코드 리뷰·POC 단계.' : o.text, url: o.href.startsWith('http') ? o.href : `${site}/${o.href}` })),
+    ...contributions.map(c => ({ name: `OpenFeign #${c.number}`, tagline: `${c.text}. ${c.merged} 병합.`, url: c.href })),
   ],
   experience: companies,
   education: resume.education,
@@ -62,8 +72,6 @@ const data = {
 const output = path.join(root, 'output', 'resume');
 fs.mkdirSync(output, { recursive: true });
 fs.writeFileSync(path.join(output, 'site.json'), JSON.stringify(data, null, 2));
-const require = createRequire(path.join(builder, 'package.json'));
-const puppeteer = require('puppeteer');
 const theme = fs.readFileSync(path.join(builder, 'styles/theme.css'), 'utf8');
 const printCss = fs.readFileSync(path.join(root, 'tools/resume-print.css'), 'utf8');
 const templates = ['compact', 'simple', 'modern', 'classic'];
@@ -73,9 +81,16 @@ try {
   for (const t of templates) {
     const mod = await import(pathToFileURL(path.join(builder, 'templates', `${t}.mjs`)).href);
     const templateData = structuredClone(data);
+    if (t === 'compact') {
+      const current = templateData.experience[0];
+      const continuation = { ...current, company: `${current.company} (계속)`, pageStart: true, projects: current.projects.slice(4) };
+      current.projects = current.projects.slice(0, 4);
+      templateData.experience.splice(1, 0, continuation);
+    }
     if (t !== 'compact') for (const company of templateData.experience) for (const project of company.projects) {
-      project.intro = byKey[project.id]?.sub || '';
-      if (project.sections.some(section => section.label === '내용')) project.sections = project.sections.filter(section => section.label === '내용');
+      project.intro = '';
+      if (project.details) project.sections = [{ label: '설계와 결과', items: project.details }];
+      else if (project.sections.some(section => section.label === '내용')) project.sections = project.sections.filter(section => section.label === '내용');
     }
     const page = await browser.newPage();
     await page.setContent(`<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${profile.name} 이력서</title><style>${theme}\n${mod.css}\n${printCss}</style></head><body class="template-${t}"><div class="page">${mod.render(templateData)}</div></body></html>`);
@@ -85,6 +100,24 @@ try {
       const work = [...document.querySelectorAll('section.block')].find(el => el.querySelector('.company'));
       summary.after(work);
     });
+    if (t === 'compact') await page.evaluate(companies => {
+      document.querySelectorAll('.company').forEach((element, index) => {
+        const company = companies[index];
+        if (company.pageStart) element.classList.add('resume-page-start');
+        element.querySelectorAll('.pj').forEach((project, projectIndex) => {
+          const details = company.projects[projectIndex].details;
+          if (!details) return;
+          const list = document.createElement('ul');
+          list.className = 'pj-decisions';
+          for (const text of details) {
+            const item = document.createElement('li');
+            item.textContent = text;
+            list.append(item);
+          }
+          project.querySelector('.pj-desc').replaceWith(list);
+        });
+      });
+    }, templateData.experience);
     await page.evaluate(() => document.fonts.ready);
     fs.writeFileSync(path.join(output, `${t}.html`), await page.content());
     await page.pdf({ path: path.join(root, 'resume', `${t}.pdf`), format: 'A4', printBackground: true, preferCSSPageSize: true,

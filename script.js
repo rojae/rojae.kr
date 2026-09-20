@@ -19,11 +19,21 @@
   });
 
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  let closedForScreen = null;
+  window.addEventListener('beforeprint', () => {
+    if (closedForScreen !== null) return;
+    closedForScreen = [...document.querySelectorAll('.career-details:not([open]), .implementation-details:not([open])')];
+    closedForScreen.forEach(details => { details.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    closedForScreen?.forEach(details => { details.open = false; });
+    closedForScreen = null;
+  });
 })();
 
 // 다이어그램 · 이미지 확대 보기 (라이트박스): 드래그로 이동, 휠 · 핀치 · 버튼으로 확대
 (() => {
-  const targets = document.querySelectorAll('.diagram-figure svg, .shot img, .project-media img');
+  const targets = document.querySelectorAll('.diagram-figure svg, .shot img');
   if (!targets.length || !('HTMLDialogElement' in window)) return;
   const dialog = document.createElement('dialog');
   dialog.className = 'lightbox';
