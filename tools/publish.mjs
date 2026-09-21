@@ -13,7 +13,7 @@ const allowed = new Set([
   ...['compact', 'simple', 'modern', 'classic'].map(k => `resume/${k}.pdf`),
   ...['avatar.png', 'fluxgate-repository.png', 'mark.svg'].map(k => `assets/${k}`),
   ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs'].map(k => `tools/${k}`),
-  'tests/content.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs',
+  'tests/content.test.mjs', 'tests/career-facts.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs',
 ]);
 
 export function parseStatus(raw) {
@@ -102,7 +102,7 @@ PLAYWRIGHT_MODULE로 기존 Playwright 설치 경로를 지정할 수 있습니�
   preflight();
   run(process.execPath, ['tools/build.mjs']);
   if (!args.includes('--no-pdf')) run(process.execPath, ['tools/make-resume-pdf.mjs']);
-  run(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs']);
+  run(process.execPath, ['--test', 'tests/content.test.mjs', 'tests/career-facts.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs']);
   if (!args.includes('--no-verify')) run(process.execPath, ['verify.cjs'], { ...process.env, PLAYWRIGHT_MODULE: playwright });
   const files = preflight();
   if (files.length) {

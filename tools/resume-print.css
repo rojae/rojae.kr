@@ -4,6 +4,8 @@ body { background: white; }
 * { letter-spacing: 0 !important; }
 .pj, .project, .os-item, .os-line, .edu, .edu-item, .skill-row, .skills-row, .skill-block { break-inside: avoid; }
 .company-head, .pj-line1, .project-head { break-after: avoid; }
+.section-title { break-after: avoid; }
+.template-classic section.block:has(.skill-list) { break-inside: avoid; }
 p, li { orphans: 3; widows: 3; }
 .template-compact .page { font-size: 10pt; line-height: 1.6; }
 .template-compact .pj { margin-bottom: 10px; }

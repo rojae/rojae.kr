@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>외부 파트너 제휴 연동 플랫폼 — 오재성</title>
-  <meta name="description" content="삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 트랜잭션과 배치 집계 구조를 결정하고 운영 어드민까지 개발했습니다.">
+  <meta name="description" content="삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 제휴 전용 Gateway 경로, 트랜잭션과 배치 집계 구조를 결정하고 운영 관리자까지 개발했습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="외부 파트너 제휴 연동 플랫폼 — 오재성">
-  <meta property="og:description" content="삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 트랜잭션과 배치 집계 구조를 결정하고 운영 어드민까지 개발했습니다.">
+  <meta property="og:description" content="삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 제휴 전용 Gateway 경로, 트랜잭션과 배치 집계 구조를 결정하고 운영 관리자까지 개발했습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -32,15 +32,15 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">동의 하나에도 순서가 있다</a></li><li><a href="#s2">묶음으로 오는 배치</a></li><li><a href="#s3">실패를 어디까지 책임질 것인가</a></li><li><a href="#s4">만들고 끝이 아니라 운영까지</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">제휴 전용 진입 경로를 분리한 이유</a></li><li><a href="#s2">인증 완료와 동의 저장의 실패를 분리</a></li><li><a href="#s3">묶음으로 오는 배치</a></li><li><a href="#s4">외부 호출과 파일 오류를 운영자가 확인하도록</a></li><li><a href="#s5">만들고 끝이 아니라 운영까지</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
         <header class="page-head">
           <div class="project-meta"><span class="badge">지마켓</span><span>삼성카드 첫 적용</span></div>
           <h1>외부 파트너 제휴 연동 플랫폼</h1>
-          <p class="page-lead">삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 트랜잭션과 배치 집계 구조를 결정하고 운영 어드민까지 개발했습니다.</p>
-          <p class="case-outcome">동의 일 평균 약 500명 · 조회·배치 모니터링 어드민 운영</p>
+          <p class="page-lead">삼성카드 제휴를 첫 적용 대상으로, 양쪽 앱의 동의와 배치·탈회·리워드를 연동했습니다. 2인 팀에서 제휴 전용 Gateway 경로, 트랜잭션과 배치 집계 구조를 결정하고 운영 관리자까지 개발했습니다.</p>
+          <p class="case-outcome">동의 일 평균 약 500명 · 동의·배치·리워드 관리자 운영</p>
         </header>
         <dl class="facts">
           <div><dt>기간</dt><dd>2026.01 — 2026.06 개발, 이후 운영</dd></div>
@@ -55,32 +55,35 @@
           <p>까다로운 점은 동의가 한 곳에서 나오지 않는다는 것이었습니다. 지마켓 앱의 안내 화면에서도, 제휴사 앱에서도 동의가 발생합니다. 한 방향으로 API를 호출하는 것만으로는 두 시스템의 동의 상태가 맞지 않고, 외부 연동이 실패했다고 회원 탈퇴 같은 핵심 처리가 막혀서도 안 됐습니다. 2인 팀에서 구조를 제가 결정하고, 설계와 구현, 이후 운영까지 맡았습니다.</p>
         </section>
         <section id="s1" class="case-section">
-          <h2>동의 하나에도 순서가 있다</h2>
-          <p>본인 인증이 끝난 뒤 동의를 저장하는 흐름은 두 트랜잭션으로 나누기로 결정했습니다. 인증 성공 이벤트를 커밋 이후에 받아서, 동의와 동의 이력은 새 트랜잭션으로 저장합니다. 동의 저장이 실패해도 이미 끝난 인증을 되돌리지 않고, 두 실패를 따로 다루기 위해서였습니다. 같은 항목에 이미 동의가 있으면 성공으로 분류해서, 같은 요청이 두 번 와도 결과가 달라지지 않게 했습니다.</p>
-          <p>이 분리는 인증과 동의 저장의 실패 영향을 나누기 위한 선택입니다. 이벤트의 영속 전달이나 프로세스 종료 후 자동 복구까지 보장하는 구조는 아닙니다.</p>
+          <h2>제휴 전용 진입 경로를 분리한 이유</h2>
+          <p>제휴 API의 Gateway 경로를 분리하고, 특정 route를 통해 Nginx로 들어오도록 구성했습니다. 제휴 트래픽에 방화벽·보안 정책과 모니터링을 적용할 지점을 구분하기 위해서였습니다.</p>
+          <p>후속 업체도 같은 진입 구조를 사용하도록 설계했습니다. 업체별 경로와 정책을 추가하는 일은 Gateway에서, 동의와 배치의 업무 규칙은 애플리케이션에서 다루도록 책임을 나눴습니다.</p>
         </section>
         <section id="s2" class="case-section">
-          <h2>묶음으로 오는 배치</h2>
-          <p>일배치는 하루치 데이터가 여러 묶음으로 나뉘어 들어오고, 묶음들이 거의 동시에 도착하기도 합니다. 처음 마스터 행을 만드는 경합과 이미 있는 행에 누적하는 경합은 실패하는 방식이 달라서 따로 처리하기로 했습니다. 마스터 생성은 별도 트랜잭션에서 유니크 경합을 받아내고, 누적 갱신은 마스터 행에 비관적 락을 걸어 순서대로 반영합니다. 같은 묶음 번호가 다시 오면 누적하지 않고, 마지막 묶음이 들어오면 빠진 번호와 건수를 비교합니다.</p>
-          <p>검증 범위는 수신 묶음의 누락과 건수 일치입니다. 동의·철회의 선후관계와 회원 상태 일치는 별도의 업무 규칙으로 다뤄야 합니다.</p>
+          <h2>인증 완료와 동의 저장의 실패를 분리</h2>
+          <p>본인 인증이 끝난 뒤 동의를 저장하는 흐름은 두 트랜잭션으로 나누기로 결정했습니다. 인증 성공 이벤트를 커밋 이후에 받아서, 동의와 동의 이력은 새 트랜잭션으로 저장합니다. 동의 저장이 실패해도 이미 끝난 인증을 되돌리지 않고, 두 실패를 따로 다루기 위해서였습니다. 같은 항목에 이미 동의가 있으면 성공으로 분류해서, 같은 요청이 두 번 와도 결과가 달라지지 않게 했습니다.</p>
+          <p>여러 동의 항목은 항목별 새 트랜잭션으로 처리했습니다. 한 항목의 저장이 실패해도 이미 완료한 인증과 다른 항목의 저장 결과가 함께 롤백되지 않도록 하고, 동의 상태와 이력은 같은 트랜잭션에서 반영했습니다.</p>
         </section>
         <section id="s3" class="case-section">
-          <h2>실패를 어디까지 책임질 것인가</h2>
-          <p>리워드 응모는 외부 시스템을 호출합니다. 호출이 실패하면 MongoDB에 기록해 두고, 제휴사 · 회원 · 이벤트 조합에 유니크 인덱스를 걸어 같은 실패가 두 번 쌓이지 않게 했습니다. 사용자 흐름을 막지 않으면서 나중에 확인하고 재처리할 근거를 남기는 구조입니다.</p>
-          <p>유니크 인덱스가 방지하는 것은 실패 기록의 중복입니다. 외부 지급의 중복 방지와 전달 보장은 별도 문제이며, 이 구조는 Transactional Outbox가 아닌 실패 이력 저장 방식입니다.</p>
-          <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
+          <h2>묶음으로 오는 배치</h2>
+          <p>일배치는 하루치 데이터가 여러 묶음으로 나뉘어 도착합니다. 동시에 처음 도착한 요청들이 집계 행을 중복 생성하는 문제와, 여러 요청이 집계 값을 덮어쓰는 문제를 나눠 해결했습니다. 집계 행은 별도 트랜잭션과 유니크 제약으로 확보하고, 누적 갱신은 비관적 락으로 순서대로 반영했습니다.</p>
+          <p>같은 배치의 동일 묶음 번호를 다시 받으면 누적하지 않고 정상 종료합니다. 수신 묶음 수가 전체 묶음 수 이상이면 번호 누락과 항목 건수를 검사해 완료 또는 불일치 상태를 기록합니다. 도착 순서가 바뀌어도 가장 큰 묶음 번호만 보고 완료로 처리하지 않도록 했습니다.</p>
         </section>
         <section id="s4" class="case-section">
+          <h2>외부 호출과 파일 오류를 운영자가 확인하도록</h2>
+          <p>리워드는 회원·제휴 경로, 인증 성공, 유효한 마케팅 동의를 확인한 뒤 외부 응모 API를 호출합니다. 실패한 호출은 MongoDB에 기록하고, 제휴사·회원·이벤트 조합의 유니크 인덱스로 실패 기록 중복을 막았습니다. 운영자는 관리자 화면에서 실패 대상을 조회할 수 있습니다.</p>
+          <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
+        </section>
+        <section id="s5" class="case-section">
           <h2>만들고 끝이 아니라 운영까지</h2>
-          <p>동의 규모는 일 평균 약 500명입니다. 앞선 집계에서 누적 약 1만 명가 동의했습니다. 운영팀이 개별 문의와 배치 결과를 확인할 수 있도록 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 Next.js 어드민으로 만들었습니다.</p>
+          <p>동의 규모는 일 평균 약 500명입니다. 운영팀이 개별 문의와 배치 결과를 확인할 수 있도록 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 Next.js 관리자 화면으로 만들었습니다.</p>
           <p>연동 이력과 개인정보 조회 감사 기록을 분리하고 목적에 따라 보관 기간을 달리했습니다. 운영자가 처리 상태와 조회 이력을 각각 확인할 수 있도록 구성했습니다.</p>
         </section>
 
         <section id="scope" class="case-section">
           <h2>구조와 구현</h2>
-          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 640" role="img" aria-label="제휴 연동 서비스 구조도: 지마켓 앱과 제휴사 앱 양쪽에서 발생한 동의를 제휴 연동 서비스가 실시간 동의, 일배치 정합, 월배치 파일, 탈회, 리워드로 처리하고 Oracle과 MongoDB에 저장한다. 제휴사 시스템과는 동의 API, 일배치, SFTP, 리워드 API로 연동하며, 운영 어드민에서 제휴사 관리, 동의 조회, 배치 모니터링, 접근 감사를 제공한다.">
+          <figure class="flow-figure diagram-figure"><svg class="diagram" viewBox="0 0 980 656" role="img" aria-label="제휴 연동 서비스 구조도: 제휴 요청은 전용 Gateway route와 Nginx로 인입된다. 서비스는 동의·일배치·월배치·탈회·리워드를 처리한다. 일배치는 수신 묶음 수를 확인한 후 누락 번호와 건수를 검사한다. 관리자에서 처리 현황과 개인정보 조회 이력을 확인한다.">
   <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="var(--text-3)"/></marker></defs>
-  
   <rect x="250" y="20" width="480" height="390" rx="16" fill="var(--accent-soft)" stroke="color-mix(in srgb, var(--accent) 35%, var(--line))" stroke-width="1.2"/>
   <text x="490" y="44" font-size="15" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴 연동 서비스</text>
   <text x="490" y="64" font-size="11.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">동의 · 정합 · 탈회 · 리워드를 한 서비스로</text>
@@ -88,30 +91,24 @@
   <text x="490" y="96" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">실시간 동의</text>
   <text x="490" y="116" font-size="10.5" font-weight="500" fill="var(--text-2)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">본인 인증 커밋 이후(AFTER_COMMIT) → 동의 · 이력은 새 트랜잭션(REQUIRES_NEW)</text>
   <text x="490" y="131" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">이미 동의된 항목은 성공으로 분류해 같은 요청이 와도 결과가 같음</text>
-  
   <rect x="275" y="156" width="208" height="64" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="379" y="173" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">일배치 정합</text>
   <text x="379" y="192" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">묶음 수신 · 마스터 행 비관적 락</text>
-  <text x="379" y="208" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">마지막 묶음에서 누락 번호 · 건수 비교</text>
-  
+  <text x="379" y="208" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">수신 묶음 수 충족 → 누락 번호 · 건수 검사</text>
   <rect x="497" y="156" width="208" height="64" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="601" y="173" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">월배치 파일</text>
   <text x="601" y="192" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Spring Batch chunk · SFTP</text>
   <text x="601" y="208" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">레코드 오류는 skip, 시스템 오류는 실패</text>
-  
   <rect x="275" y="236" width="208" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="379" y="253" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">탈회 연동</text>
   <text x="379" y="272" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">회원 처리와 외부 반영 실패 분리</text>
-  
   <rect x="497" y="236" width="208" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="601" y="253" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">리워드 응모</text>
   <text x="601" y="272" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">외부 호출 실패 → 실패 기록 보관</text>
-  
   <path d="M300 320 a80 8 0 0 1 160 0 v60 a80 8 0 0 1 -160 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <path d="M300 320 a80 8 0 0 0 160 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
   <text x="380" y="352" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Oracle</text>
   <text x="380" y="368" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">동의 · 이력 · 배치 마스터</text>
-  
   <path d="M520 320 a80 8 0 0 1 160 0 v60 a80 8 0 0 1 -160 0 z" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <path d="M520 320 a80 8 0 0 0 160 0" fill="none" stroke="var(--line)" stroke-width="1.2"/>
   <text x="600" y="352" font-size="12.5" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">MongoDB</text>
@@ -125,33 +122,33 @@
   <rect x="30" y="146" width="150" height="50" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="105" y="164" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴사 앱</text>
   <text x="105" y="182" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴사 화면에서 동의</text>
-  <path d="M180 103 L225 103 L225 106 L275 106" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
-  <path d="M180 171 L225 171 L225 114 L275 114" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
-  <text x="105" y="216" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">양쪽에서 발생하는 동의를</text>
-  <text x="105" y="231" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">한 상태로 맞추는 것이 과제</text>
+  <path d="M180 103 L205 103 L205 106 L275 106" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <rect x="20" y="232" width="170" height="60" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
+  <text x="105" y="249" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴 전용 Gateway route</text>
+  <text x="105" y="268" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">Nginx 진입 경로</text>
+  <path d="M105 196 L105 232" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <path d="M190 262 L228 262 L228 122 L275 122" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="105" y="316" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">방화벽 · 보안 정책 · 모니터링</text>
+  <text x="105" y="334" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">후속 업체도 같은 구조로 연결</text>
   <text x="875" y="60" font-size="11" font-weight="700" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴사 시스템</text>
-  
   <rect x="800" y="78" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="875" y="95" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">동의 API</text>
   <text x="875" y="114" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">실시간 수신 · 회신</text>
-  
   <rect x="800" y="146" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="875" y="163" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">일배치 전송</text>
   <text x="875" y="182" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">묶음 단위 · 건수</text>
-  
   <rect x="800" y="214" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="875" y="231" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">SFTP 파일</text>
   <text x="875" y="250" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">월 단위</text>
-  
   <rect x="800" y="282" width="150" height="50" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="875" y="299" font-size="13" font-weight="700" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">리워드 응모 API</text>
   <text x="875" y="318" font-size="11" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">외부 지급</text>
   <path d="M730 110 L765 110 L765 103 L800 103" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
-  <path d="M800 171 L765 171 L765 180 L730 180" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
+  <text x="875" y="204" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">제휴 전용 경로로 수신</text>
   <path d="M800 239 L760 239 L760 188 L730 188" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
   <path d="M730 261 L765 261 L765 307 L800 307" stroke="var(--text-3)" stroke-width="1.4" fill="none" marker-end="url(#ah)"/>
   <rect x="238" y="8" width="504" height="414" rx="18" fill="none" stroke="var(--text-3)" stroke-width="1.2" stroke-dasharray="5 4"/>
-  <text x="250" y="434" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="start" font-family="inherit" dominant-baseline="middle">업무 흐름 개념도 · 실제 네트워크와 배포 구성은 생략</text>
+  <text x="490" y="640" font-size="10" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">업무·진입 경로 개념도 · 일배치 API도 제휴 전용 경로 사용 · 물리적 방화벽 구성은 생략</text>
   <rect x="250" y="470" width="480" height="150" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
   <text x="490" y="494" font-size="14" font-weight="800" fill="var(--text)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">운영 어드민 (Next.js)</text>
   <rect x="268" y="512" width="104" height="36" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.2"/>
@@ -167,11 +164,11 @@
   <text x="490" y="593" font-size="10.5" font-weight="500" fill="var(--text-3)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">연동 이력과, 그 이력을 누가 조회했는지의 기록을 분리 · 보관 기간 차등</text>
   <path d="M490 470 L490 424" stroke="var(--accent)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#ah)"/>
   <text x="575" y="452" font-size="11" font-weight="600" fill="var(--accent)" text-anchor="middle" font-family="inherit" dominant-baseline="middle">상태 확인 · 재처리 근거</text>
-</svg><figcaption>기능 사이의 책임을 그린 개념도입니다. 실제 네트워크와 배포 구조는 다릅니다.</figcaption></figure>
+</svg><figcaption>제휴 API는 별도 Gateway route와 Nginx 진입 경로를 거칩니다. 월별 파일은 SFTP·Spring Batch로 처리합니다. 방화벽의 물리적 배치가 아닌 기능과 진입 경로를 나타냅니다.</figcaption></figure>
           <details class="implementation-details">
             <summary>구현 범위 · 사용 기술</summary>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li><li>OpenShift · ArgoCD</li></ul>
-            <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li></ul>
+            <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li><li><strong>제휴 전용 진입 경로</strong><span>Gateway route · Nginx · 업체 확장 시 공통 적용</span></li></ul>
           </details>
         </section>
 

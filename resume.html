@@ -57,7 +57,7 @@
           <div>
             <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 설계 · 구현 · 운영 — 구조 결정 담당</p>
-            <ul class="points"><li>양쪽 앱의 동의·배치·탈회·리워드와 운영 어드민을 개발했습니다. 삼성카드를 첫 제휴사로 적용해 동의 일 평균 약 500명 규모로 운영합니다.</li><li>인증 커밋 이후 동의와 이력을 새 트랜잭션으로 저장해 실패 영향을 분리했습니다. 이 분리는 이벤트의 영속 전달이나 프로세스 종료 후 자동 복구를 보장하지 않습니다.</li><li>일배치 마스터 생성은 유니크 제약으로 경합을 처리하고, 누적 갱신은 비관적 락으로 직렬화했습니다. 같은 묶음의 재수신은 집계에서 제외하고 누락 번호와 건수를 검증합니다.</li></ul>
+            <ul class="points"><li>양쪽 앱의 동의·배치·탈회·리워드와 운영 어드민을 개발했습니다. 삼성카드를 첫 제휴사로 적용해 동의 일 평균 약 500명 규모로 운영합니다.</li><li>제휴 전용 Gateway route와 Nginx 진입 경로를 분리했습니다. 보안 정책·모니터링 적용 지점을 구분하고 후속 업체도 같은 구조로 연결하도록 설계했습니다.</li><li>인증 커밋 후 동의 상태와 이력을 항목별 새 트랜잭션으로 저장했습니다. 배치 집계는 유니크 제약과 행 잠금으로 중복·동시 수신을 처리하고, 수신 묶음 수·누락 번호·건수를 검사합니다.</li></ul>
             
           </div>
         </article>
@@ -74,8 +74,8 @@
           <p class="period">2024.01 — 2024.12</p>
           <div>
             <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 프로젝트 리딩 · 설계 결정 · 핵심 구현</p>
-            <ul class="points"><li>사이트별 인증 로직과 단일 업체 의존을 줄이기 위해 6개 인증 유형을 공통 서비스로 통합. 도메인 설정과 업체별 트래픽 비율을 어드민에서 관리하도록 설계·구현했습니다.</li><li>비율 변경은 신규 요청에 적용하고 진행 중인 인증은 별도로 처리합니다. 자동 장애 전환이 아니라 운영자가 판단해 배포 없이 조정하는 방식입니다.</li><li>서비스 개편과 업체 비율 조정 이후 월 인증 비용 약 1/3 절감, 인증 관련 CS 문의 90% 이상 감소. PASS 연동, 계좌점유인증 은행 정보 API, 전자쿠폰 인증 세션을 직접 구현했습니다.</li></ul>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 프로젝트 주도 · 설계 · 통합인증 전체 구현</p>
+            <ul class="points"><li>지마켓·옥션·ESMPLUS의 소유·본인·계좌·정보·기업인증과 외부 업체 연동을 모두 구현했습니다. 정보인증에는 아이디·비밀번호와 소셜인증이 포함됩니다.</li><li>공통 세션은 UUID와 관리자 설정의 유효기간으로 활성 여부를 확인합니다. E쿠폰에는 본인·소유인증을 연동했습니다.</li><li>도메인 설정과 인증 업체별 요청 비율을 관리자 화면에서 변경하도록 구성했습니다. 비율은 신규 요청에 적용해 운영자가 배포 없이 대응할 수 있게 했습니다.</li></ul>
             
           </div>
         </article>
@@ -115,11 +115,11 @@
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2025</span><span class="year-theme">회원 API 연동과 메시지 운영 감시</span></div>
-              <ul class="year-items"><li><strong>메시지 · 로그인 모니터링</strong><span>이메일 · 알림톡 · 앱푸시 발송과 로그인 이벤트를 Kafka로 적재해 InfluxDB → Grafana로 지연 · 에이전트 상태를 관측. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>전자쿠폰 인증 문의 대응</strong><span>구매한 전자쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
+              <ul class="year-items"><li><strong>메시지 · 로그인 모니터링</strong><span>이메일 · 알림톡 · 앱푸시 발송과 로그인 이벤트를 Kafka로 적재해 InfluxDB → Grafana로 지연 · 에이전트 상태를 관측. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>E쿠폰 인증 문의 대응</strong><span>구매한 E쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2024</span><span class="year-theme">회원 입력과 인증 흐름 개선</span></div>
-              <ul class="year-items"><li><strong>로그인 · 가입 입력 간소화</strong><span>옥션 로그인과 개인 · 사업자 구매회원 가입의 반복 입력을 줄이고, 지마켓 간편가입의 성명 공백 예외 처리 추가</span></li><li><strong>휴대폰번호 변경 PASS 인증</strong><span>옥션 회원 휴대폰번호 변경에 PASS 통합인증 적용, 성인인증 후 선물받기 화면으로 돌아오지 않던 이동 흐름 수정</span></li><li><strong>계좌점유인증 · 전자쿠폰 인증</strong><span>유입 경로별 은행 정보 응답 API와 연동 가이드, 전자쿠폰 본인 · 소유인증 세션 관리</span></li></ul>
+              <ul class="year-items"><li><strong>로그인 · 가입 입력 간소화</strong><span>옥션 로그인과 개인 · 사업자 구매회원 가입의 반복 입력을 줄이고, 지마켓 간편가입의 성명 공백 예외 처리 추가</span></li><li><strong>휴대폰번호 변경 PASS 인증</strong><span>옥션 회원 휴대폰번호 변경에 PASS 통합인증 적용, 성인인증 후 선물받기 화면으로 돌아오지 않던 이동 흐름 수정</span></li><li><strong>계좌점유인증 · E쿠폰 인증</strong><span>유입 경로별 은행 정보 응답 API와 연동 가이드, E쿠폰 본인 · 소유인증 연동</span></li></ul>
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2023</span><span class="year-theme">가입 예외 처리와 판매 권한 API</span></div>

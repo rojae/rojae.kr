@@ -46,8 +46,9 @@ test('web resume retains operational history in an accessible disclosure', () =>
   for (const format of ['compact', 'simple', 'modern', 'classic']) assert(html.includes(`resume/${format}.pdf`));
 });
 
-test('selected resume projects explain decisions and preserve guarantee boundaries', () => {
+test('selected resume projects explain concrete decisions without unsupported guarantees', () => {
   assert.match(JSON.stringify(resume.projectDetails?.auth), /신규 요청|진행 중/);
-  assert.match(JSON.stringify(resume.projectDetails?.affiliate), /영속 전달|자동 복구/);
+  assert.match(JSON.stringify(resume.projectDetails?.affiliate), /항목별 새 트랜잭션/);
+  assert.doesNotMatch(JSON.stringify(resume.projectDetails?.affiliate), /무유실|자동 복구를 보장/);
   assert.equal(resume.highlights.length, 3);
 });

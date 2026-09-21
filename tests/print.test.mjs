@@ -5,6 +5,12 @@ import vm from 'node:vm';
 
 const script = fs.readFileSync(new URL('../script.js', import.meta.url), 'utf8');
 
+test('classic PDF keeps the skills heading and all skill rows together', () => {
+  const css = fs.readFileSync(new URL('../tools/resume-print.css', import.meta.url), 'utf8');
+  assert.match(css, /\.template-classic section\.block:has\(\.skill-list\)\s*\{\s*break-inside: avoid;/);
+  assert.match(css, /\.section-title\s*\{\s*break-after: avoid;/);
+});
+
 function setup() {
   const details = [{ open: false }, { open: true }];
   const events = new Map();

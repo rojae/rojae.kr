@@ -31,5 +31,7 @@ Reuse project cards, lists, native links/details, diagrams and the existing ligh
 5. Card trailing whitespace under 80px; 390px homepage below 6200px and collapsed web resume below 7500px. No clipping, broken local links or missing images.
 
 ## Open evidence questions
-- Comparison periods and aggregation basis for authentication cost and CS reductions are not documented in the supplied material. Keep the supplied results qualified as post-change outcomes until clarified.
+- Comparison periods and aggregation basis for authentication cost and CS reductions are not documented. Omit the percentages until those comparisons can be supported.
+- Authentication has five types, with ID/password and social authentication grouped under information authentication. The UUID session and administrator-defined validity are shared across types.
+- Affiliate Gateway route and Nginx entry separation are user-confirmed design decisions for security policy, monitoring and future partners; the diagram does not claim a verified firewall topology.
 - The public Studio demo returned 404 during this review. Use an actual, inspectable screenshot only when available; do not fabricate one.

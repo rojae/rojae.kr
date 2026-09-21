@@ -89,6 +89,27 @@ const server = http.createServer((req, res) => {
       }
     }
     await page.setViewportSize({ width: 1440, height: 1000 });
+    for (const key of ['auth', 'affiliate', 'fluxgate']) {
+      await page.goto(`${origin}/work/${key}.html`);
+      await page.evaluate(() => document.fonts.ready);
+      const diagram = page.locator('.diagram-figure > svg');
+      const problems = await diagram.evaluate(svg => {
+        const texts = [...svg.querySelectorAll('text')].map(el => ({ text: el.textContent, box: el.getBBox() }));
+        const viewport = svg.viewBox.baseVal;
+        const errors = [];
+        for (const [i, a] of texts.entries()) {
+          if (a.box.x < 0 || a.box.y < 0 || a.box.x + a.box.width > viewport.width || a.box.y + a.box.height > viewport.height) errors.push(`outside: ${a.text}`);
+          for (const b of texts.slice(i + 1)) {
+            const width = Math.min(a.box.x + a.box.width, b.box.x + b.box.width) - Math.max(a.box.x, b.box.x);
+            const height = Math.min(a.box.y + a.box.height, b.box.y + b.box.height) - Math.max(a.box.y, b.box.y);
+            if (width > 1 && height > 1) errors.push(`overlap: ${a.text} / ${b.text}`);
+          }
+        }
+        return errors;
+      });
+      assert.deepEqual(problems, [], `${key}: diagram labels`);
+      await diagram.screenshot({ path: path.join(output, `diagram-${key}.png`) });
+    }
     await page.goto(origin);
     await page.screenshot({ path: path.join(output, 'desktop.png'), fullPage: true });
     await page.screenshot({ path: path.join(output, 'desktop-first-screen.png') });

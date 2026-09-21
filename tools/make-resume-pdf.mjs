@@ -25,7 +25,7 @@ const strip = s => s.replace(/<[^>]+>/g, '');
 // 프로젝트별 '성과' 한 줄 (compact 템플릿은 성과가 있으면 성과를, 없으면 intro를 보여줌)
 const impact = {
   affiliate: `실시간 동의·배치·탈회·리워드와 운영 어드민을 개발, 동의 ${affiliateMetrics.daily} 규모 운영. 인증 커밋 이후 동의 저장은 별도 트랜잭션으로 분리하고, 배치 중복 판정과 집계에는 유니크 제약·비관적 락을 적용.`,
-  auth: '지식 · 소셜 · 소유 · 본인 · 계좌 · 기업 인증을 한 서비스의 모듈로 통합하고, 도메인별 연동과 인증업체 비율을 어드민에서 조정하는 구조를 결정 · 구현. 월 인증 비용 약 1/3 절감, 인증 관련 CS 문의 90% 이상 감소.',
+  auth: '다섯 인증 유형과 외부 업체 연동, 공통 UUID 세션과 관리자 기능 전체 구현. 도메인 설정과 세션 유효기간, 인증 업체별 신규 요청 비율을 관리자 화면에서 변경.',
   terms: '약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝을 설계하고 HTML 에디터 어드민 · 공개 약관 페이지를 개발. 지마켓 · 옥션 · ESMPLUS 약관 페이지를 한 서비스에서 운영 중이며, 후속 약관 동의 서비스로 확장.',
   platform: '공통 · 사이트별 모듈을 조합해 배포하는 구조(팀 공동) 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부를 분산. 프로덕션 운영 중.',
   login: '로그인 불가 장애 이후 DB 연결 문제 분석과 Java/Spring 전환 설계에 참여. 런타임 버전 고정이 연동 기술 적용을 막던 구조를 검토하고 회원정보 조회 캐시(Caffeine) 도입에 참여.',
@@ -36,7 +36,7 @@ const companies = experience.map((co, i) => ({
   id: `c${i}`,
   company: co.name === '지마켓' ? '주식회사 지마켓' : co.name,
   team: co.team,
-  period: co.period.replace('—', '~'),
+  period: co.period.replace('—', '~').replace('현재', '재직 중'),
   projects: [
     ...co.projects.map((p, n) => {
       const c = p.ref ? byKey[p.ref] : null;
@@ -83,7 +83,7 @@ try {
     const templateData = structuredClone(data);
     if (t === 'compact') {
       const current = templateData.experience[0];
-      const continuation = { ...current, company: `${current.company} (계속)`, pageStart: true, projects: current.projects.slice(4) };
+      const continuation = { ...current, pageStart: true, projects: current.projects.slice(4) };
       current.projects = current.projects.slice(0, 4);
       templateData.experience.splice(1, 0, continuation);
     }
