@@ -72,11 +72,13 @@
         <section id="s4" class="case-section">
           <h2>외부 호출과 파일 오류를 운영자가 확인하도록</h2>
           <p>리워드는 회원·제휴 경로, 인증 성공, 유효한 마케팅 동의를 확인한 뒤 외부 응모 API를 호출합니다. 실패한 호출은 MongoDB에 기록하고, 제휴사·회원·이벤트 조합의 유니크 인덱스로 실패 기록 중복을 막았습니다. 운영자는 관리자 화면에서 실패 대상을 조회할 수 있습니다.</p>
+          <p>삼성카드 제휴의 쿠폰 발급 실패 건은 주기적으로 재처리하는 절차를 실제 운영했습니다. 재처리된 실패 건은 이후 쿠폰 발급으로 이어졌고, 사용자가 이벤트 쿠폰 혜택을 받을 수 있었습니다.</p>
           <p>월배치는 Spring Batch chunk 처리로 파일을 적재하는데, 레코드 검증이나 복호화 오류는 제한된 수까지 건너뛰고 재암호화 같은 시스템 오류는 작업 실패로 남겼습니다. 한 행의 데이터 문제로 전체 파일을 멈추지는 않되, 시스템 문제는 조용히 넘기지 않기 위해서입니다.</p>
         </section>
         <section id="s5" class="case-section">
           <h2>만들고 끝이 아니라 운영까지</h2>
           <p>동의 규모는 일 평균 약 500명입니다. 운영팀이 개별 문의와 배치 결과를 확인할 수 있도록 제휴사 관리, 동의 조회, 배치 모니터링, 리워드 실패 목록을 Next.js 관리자 화면으로 만들었습니다.</p>
+          <p>실제 제휴 처리 담당자가 어드민에서 동의를 철회할 수 있도록 구현했습니다. 동의는 별도 금융사 페이지에서 인증해야 하므로 어드민에서는 동의 처리 기능을 제공하지 않았습니다.</p>
           <p>연동 이력과 개인정보 조회 감사 기록을 분리하고 목적에 따라 보관 기간을 달리했습니다. 운영자가 처리 상태와 조회 이력을 각각 확인할 수 있도록 구성했습니다.</p>
         </section>
 
@@ -168,7 +170,7 @@
           <details class="implementation-details">
             <summary>구현 범위 · 사용 기술</summary>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li><li>Oracle</li><li>MongoDB</li><li>Next.js</li><li>SFTP</li><li>OpenShift · ArgoCD</li></ul>
-            <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출, 실패 기록 보관</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회 · 배치 모니터링 · 접근 감사</span></li><li><strong>제휴 전용 진입 경로</strong><span>Gateway route · Nginx · 업체 확장 시 공통 적용</span></li></ul>
+            <ul class="feature-grid"><li><strong>실시간 동의</strong><span>본인 인증 이후의 동의 저장, 제휴사에서 오는 동의 수신</span></li><li><strong>일배치 정합</strong><span>묶음으로 나뉘어 오는 일배치의 누락 · 건수 확인</span></li><li><strong>월배치 파일</strong><span>SFTP 파일을 chunk 단위로 적재, 레코드 오류 분리</span></li><li><strong>탈회 연동</strong><span>회원 탈퇴 처리와 외부 반영의 실패를 분리</span></li><li><strong>리워드 응모</strong><span>외부 응모 호출 · 실패 기록 · 쿠폰 실패 건 주기 재처리 운영</span></li><li><strong>운영 어드민</strong><span>제휴사 관리 · 동의 조회·철회 · 배치 모니터링 · 접근 감사</span></li><li><strong>제휴 전용 진입 경로</strong><span>Gateway route · Nginx · 업체 확장 시 공통 적용</span></li></ul>
           </details>
         </section>
 

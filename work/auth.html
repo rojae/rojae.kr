@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s4">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">장애 시 비율 조정과 TTL 재시도</a></li><li><a href="#s4">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s5">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -64,11 +64,16 @@
           <p>인증 업체별 요청 비율을 관리자 화면에서 조정하도록 만들었습니다. 운영자는 업체 장애나 이용 비용을 고려해 신규 요청의 비중을 배포 없이 바꿀 수 있습니다. 변경된 비율은 신규 요청에 적용하고, 진행 중인 인증은 기존 흐름으로 처리합니다.</p>
         </section>
         <section id="s3" class="case-section">
+          <h2>장애 시 비율 조정과 TTL 재시도</h2>
+          <p>휴대폰 본인인증에서 외부 인증업체에 장애가 발생하면 해당 업체를 자동 비활성화하고, 대체 인증업체로 요청을 분산하도록 비율을 조정했습니다. 로컬에 보관한 장애 상태의 TTL을 10분으로 두고, 만료 후 비율을 보정해 다시 시도하는 흐름까지 구현했습니다.</p>
+          <p>장애 상태의 TTL 만료 후 재시도와, 정상화를 확인한 뒤 원래 요청 비율로 자동 복귀하는 기능은 별개입니다. 원래 비율로의 자동 복귀(auto recovery)는 설계 리뷰까지 진행했지만, 기존 서비스가 정상 운영 중인 점을 고려해 구현에는 반영하지 않았습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
           <h2>다섯 인증 유형이 공유하는 세션</h2>
           <p>세션은 특정 인증이나 E쿠폰만을 위한 기능이 아니라 통합인증의 공통 기능입니다. UUID로 세션을 조회하고, 관리자 화면에서 정한 유효기간을 기준으로 활성 여부를 확인하도록 구현했습니다.</p>
           <p>인증별 처리 로직은 각 모듈이 담당하고, 세션 유효성 확인은 공통으로 사용합니다. E쿠폰에는 본인·소유인증을 연동해 공통 세션으로 인증 내역과 이력을 관리했습니다.</p>
         </section>
-        <section id="s4" class="case-section">
+        <section id="s5" class="case-section">
           <h2>연동부터 운영까지 맡은 범위</h2>
           <p>다섯 인증 유형의 API와 외부 업체 연동, 공통 세션, 도메인 설정과 업체별 요청 비율 관리 기능을 모두 구현했습니다. 계좌인증은 유입 경로별 은행 정보 API와 연동 가이드를 제공하고, E쿠폰은 세션 상태 때문에 인증이 진행되지 않는 문의까지 확인했습니다.</p>
           <p>오픈 직전 연동 명세가 바뀐 경험을 계기로 회의록·설계 문서·진행 상황을 공유하며 연동 서비스와 변경 사항을 맞췄습니다.</p>
@@ -158,7 +163,7 @@
           <details class="implementation-details">
             <summary>구현 범위 · 사용 기술</summary>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
-            <ul class="feature-grid"><li><strong>인증 모듈</strong><span>소유 · 본인 · 계좌 · 정보 · 기업인증</span></li><li><strong>정보인증</strong><span>아이디·비밀번호 및 소셜인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>업체별 트래픽 비율을 운영 중에 변경</span></li><li><strong>공통 세션</strong><span>UUID 조회 · 관리자 설정 유효기간 · 활성 여부 확인</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
+            <ul class="feature-grid"><li><strong>인증 모듈</strong><span>소유 · 본인 · 계좌 · 정보 · 기업인증</span></li><li><strong>정보인증</strong><span>아이디·비밀번호 및 소셜인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>관리자 설정 · 장애 시 자동 비활성화·대체 업체 분산</span></li><li><strong>공통 세션</strong><span>UUID 조회 · 관리자 설정 유효기간 · 활성 여부 확인</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
           </details>
         </section>
 
