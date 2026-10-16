@@ -35,7 +35,7 @@
           <p class="hero-kicker">Server Engineer</p>
           <h1 id="hero-title">오재성<br><em>백엔드 개발자</em></h1>
           <p class="hero-tagline">Java / Spring · 6년 이상의 PG·커머스 개발 경험</p>
-          <p class="hero-lead">지마켓에서 회원·인증·제휴 서비스를 개발하고 운영합니다. 여러 서비스가 함께 쓰는 인증과 세션, 외부 제휴 연동을 설계하고 운영자가 설정과 처리 상태를 확인하는 관리자 화면까지 구현했습니다.</p>
+          <p class="hero-lead">지마켓에서 인증업체 장애 시 요청을 분산하고, 제휴의 동의·배치·쿠폰 실패를 나눠 처리하는 백엔드를 개발합니다. 더존비즈온에서는 비용을 고려한 전자문서 인프라와 API·운영 절차를 만들고 인증 심사 준비·보완에 참여했습니다.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#work">프로젝트 보기</a>
             <a class="btn" href="resume.html">이력서</a>
@@ -63,7 +63,7 @@
             <p class="project-sub">지마켓 · 옥션 · ESMPLUS 공통 인증</p>
             <p class="project-outcome">지마켓·옥션·ESMPLUS 공통 적용 · 배포 없이 인증 설정 변경</p>
             <p class="project-role">프로젝트 주도 · 설계 · 통합인증 전체 구현</p>
-            <ul class="points"><li>소유·본인·계좌·정보·기업인증과 공통 UUID 세션 전체 구현</li><li>장애 업체 자동 비활성화·비율 조정 · TTL 10분 후 보정·재시도</li></ul>
+            <ul class="points"><li>동시 장애 카운트는 Lua로 갱신 · 상태 알림과 누락 보완 분리</li><li>장애 업체 자동 비활성화·비율 조정 · TTL 10분 후 보정·재시도</li></ul>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li></ul>
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
@@ -75,7 +75,7 @@
             <p class="project-sub">삼성카드 첫 적용</p>
             <p class="project-outcome">동의 일 평균 약 500명 · 동의·배치·리워드 관리자 운영</p>
             <p class="project-role">설계 · 구현 · 운영 — 구조 결정 담당</p>
-            <ul class="points"><li>제휴 전용 Gateway 경로로 보안 정책·모니터링 적용 지점 분리</li><li>쿠폰 실패 건 주기 재처리 운영 · 후속 쿠폰·이벤트 혜택 연결</li></ul>
+            <ul class="points"><li>인증·동의 실패 분리 · 배치 생성 경합과 누적 갱신을 별도 처리</li><li>쿠폰 실패 건 주기 재처리 운영 · 후속 쿠폰·이벤트 혜택 연결</li></ul>
             <ul class="tags" aria-label="기술"><li>Java 21</li><li>Spring Boot 3.2</li><li>WebFlux</li><li>Spring Batch</li></ul>
             <span class="project-more link">자세히 읽기 <span class="arrow" aria-hidden="true">→</span></span>
           </div>
@@ -116,7 +116,7 @@
         <article class="career-row">
           <p class="period">2020.07 — 2022.09</p>
           <div><h3>더존비즈온 <span>전자금융서비스 Unit</span></h3>
-          <p>PG 결제 서비스를 개발·운영했습니다. 전자문서 유통 프로젝트에서는 인프라와 API·배치·관리자를 개발하고 KISA 인증 심사 대응에 참여했습니다.</p></div>
+          <p>PG 결제 서비스를 개발·운영했습니다. 신규 전자문서 서비스의 인프라 설계·개발을 맡고, 인증 심사 준비부터 보완·적합 판정까지 참여했습니다.</p></div>
         </article>
       </div>
     </section>

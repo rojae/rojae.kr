@@ -389,7 +389,7 @@ export function edocDiagram() {
   p.push(box(390, 24, 250, 76, { fill: 'var(--surface)', r: 12 }));
   p.push(text(515, 42, 'WEB · Nginx ×3', { size: 12.5, weight: 800 }));
   [0, 1, 2].forEach(i => p.push(node(402 + i * 78, 52, 70, 38, `web-${i + 1}`, i === 2 ? '별도 도메인' : 'ip_hash')));
-  p.push(text(515, 112, 'Node.js 프론트 · PM2 fork ×4 · 무중단 reload', { size: 10, fill: 'var(--text-3)' }));
+  p.push(text(515, 112, 'Node.js 프론트 · PM2 fork ×4 · reload 호출', { size: 10, fill: 'var(--text-3)' }));
   // WAS HA → WAS
   p.push(arrow(640, 62, 680, 62));
   p.push(ha(680, 40, 120, 'HAProxy ×2', 'WAS VIP'));

@@ -158,7 +158,7 @@ function renderIndex() {
         <article class="career-row">
           <p class="period">${co.period}</p>
           <div><h3>${co.name} <span>${co.team}</span></h3>
-          <p>${co.name === '지마켓' ? '회원·인증·제휴 서비스를 설계하고 운영합니다. 통합인증 프로젝트 리딩, 약관 공통화, 레거시 전환과 개인정보 보호 업무를 담당했습니다.' : 'PG 결제 서비스를 개발·운영했습니다. 전자문서 유통 프로젝트에서는 인프라와 API·배치·관리자를 개발하고 KISA 인증 심사 대응에 참여했습니다.'}</p></div>
+          <p>${co.name === '지마켓' ? '회원·인증·제휴 서비스를 설계하고 운영합니다. 통합인증 프로젝트 리딩, 약관 공통화, 레거시 전환과 개인정보 보호 업무를 담당했습니다.' : 'PG 결제 서비스를 개발·운영했습니다. 신규 전자문서 서비스의 인프라 설계·개발을 맡고, 인증 심사 준비부터 보완·적합 판정까지 참여했습니다.'}</p></div>
         </article>`).join('')}
       </div>
     </section>
@@ -327,7 +327,7 @@ function renderResume() {
           <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
         <p class="page-lead">${resume.summary[0]}</p>
-        <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (2쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
+        <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (3쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
         <div class="resume-contact">
           <a href="mailto:${profile.email}">${profile.email}</a>
           <a href="${profile.github}">github.com/rojae</a>

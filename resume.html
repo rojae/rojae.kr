@@ -39,8 +39,8 @@
           </div>
           <span class="resume-actions no-print"><a class="btn btn-primary" href="resume.pdf" download="오재성_이력서.pdf">PDF 다운로드</a><button type="button" class="btn" data-print>인쇄</button></span>
         </div>
-        <p class="page-lead">PG와 커머스에서 6년 이상 Java/Spring 백엔드를 개발·운영했습니다. 현재 지마켓 Member Engineering에서 회원·인증과 외부 파트너 연동을 담당합니다.</p>
-        <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (2쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
+        <p class="page-lead">PG와 커머스에서 Java/Spring 백엔드를 개발·운영했습니다. 지마켓에서는 인증업체 장애의 요청 분산과 제휴 동의·배치·쿠폰 실패의 처리 경계를 설계했습니다. 더존비즈온에서는 비용을 고려한 전자문서 인프라와 API·운영 절차를 만들고 심사 준비·보완에 참여했습니다.</p>
+        <p class="resume-formats no-print">PDF 다른 형식: <a href="resume/compact.pdf" download="오재성_이력서_compact.pdf">컴팩트 (3쪽)</a> · <a href="resume/simple.pdf" download="오재성_이력서_simple.pdf">심플</a> · <a href="resume/modern.pdf" download="오재성_이력서_modern.pdf">모던</a> · <a href="resume/classic.pdf" download="오재성_이력서_classic.pdf">클래식</a></p>
         <div class="resume-contact">
           <a href="mailto:rojae@kakao.com">rojae@kakao.com</a>
           <a href="https://github.com/rojae">github.com/rojae</a>
@@ -57,7 +57,7 @@
           <div>
             <h4><a href="work/affiliate.html">외부 파트너 제휴 연동 플랫폼 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">삼성카드 첫 적용 · 2인 팀 · 설계 · 구현 · 운영 — 구조 결정 담당</p>
-            <ul class="points"><li>양쪽 앱의 동의·배치·탈회·리워드와 운영 어드민을 개발했습니다. 삼성카드를 첫 제휴사로 적용해 동의 일 평균 약 500명 규모로 운영합니다.</li><li>제휴 전용 Gateway route와 Nginx 진입 경로를 분리했습니다. 보안 정책·모니터링 적용 지점을 구분하고 후속 업체도 같은 구조로 연결하도록 설계했습니다.</li><li>인증 커밋 후 동의 상태와 이력을 항목별 새 트랜잭션으로 저장했습니다. 배치 집계는 유니크 제약과 행 잠금으로 중복·동시 수신을 처리하고, 수신 묶음 수·누락 번호·건수를 검사합니다.</li></ul>
+            <ul class="points"><li>동의 한 항목이 실패해도 완료된 인증·다른 동의를 보존하도록 커밋 후 항목별 새 트랜잭션으로 저장했습니다. 부분 성공은 상태·이력으로 운영합니다.</li><li>집계 행 생성의 유니크 충돌은 별도 트랜잭션에 격리하고 재조회합니다. 중복 검사·누적 갱신은 같은 배치의 행 잠금 안에서 수행해 락 대기를 감수하며 누락·건수를 검증합니다.</li><li>브라우저 UUID·상태 조회는 인증 이후 동의까지의 흐름입니다. 백엔드 쿠폰 실패는 별도 주기 재처리로 후속 혜택에 연결했습니다. 동의 일 평균 약 500명 규모입니다.</li></ul>
             
           </div>
         </article>
@@ -66,7 +66,7 @@
           <div>
             <h4><a href="work/platform.html">회원 도메인 공통 모듈화 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">지마켓 · 옥션 통합 백엔드 · 팀 공동 설계 · 제휴 · 인증 모듈 개발 · 게이트웨이 라우팅 구성</p>
-            <ul class="points"><li>회원정보 · 로그인 · 캐싱 API를 공통 · 사이트별 모듈로 나누는 팀 공동 구조 개선에 참여</li><li>공통 구조 위에서 제휴 · 인증 모듈을 개발하고, Gravitee API 게이트웨이 라우팅으로 서비스별 호출부 분산</li></ul>
+            <ul class="points"><li>DB 통합 후에도 API를 중복 개발하던 문제에 팀과 공통·사이트별 모듈 구조를 설계했습니다. 본인은 제휴·인증 모듈을 맡아 재사용 기능과 사이트 정책을 나눴습니다.</li><li>후속 제휴에 공통 모듈을 재사용하고 Gravitee 진입 경로를 구성했습니다. 재사용은 공통 결함의 영향도 함께 공유하므로 사이트별 차이를 남겼습니다.</li></ul>
             
           </div>
         </article>
@@ -75,7 +75,7 @@
           <div>
             <h4><a href="work/auth.html">통합인증 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">지마켓 · 옥션 · ESMPLUS 공통 인증 · 3인 팀 · 프로젝트 주도 · 설계 · 통합인증 전체 구현</p>
-            <ul class="points"><li>지마켓·옥션·ESMPLUS의 소유·본인·계좌·정보·기업인증과 외부 업체 연동을 모두 구현했습니다. 정보인증에는 아이디·비밀번호와 소셜인증이 포함됩니다.</li><li>공통 세션은 UUID와 관리자 설정의 유효기간으로 활성 여부를 확인합니다. E쿠폰에는 본인·소유인증을 연동했습니다.</li><li>도메인 설정과 인증 업체별 요청 비율을 관리자 화면에서 변경하도록 구성했습니다. 비율은 신규 요청에 적용해 운영자가 배포 없이 대응할 수 있게 했습니다.</li></ul>
+            <ul class="points"><li>세 사이트·다섯 인증 유형과 UUID 공통 세션을 전체 구현했습니다. 신규 요청의 업체 비율을 설정으로 분리하고 장애 업체 자동 비활성화·대체 분산·TTL 10분 후 보정/재시도를 구현했습니다.</li><li>장애 횟수 갱신은 Lua로 원자 처리하고 EVALSHA로 본문 반복 전송을 줄였습니다. 상태 변경은 Pub/Sub으로 알리고 RDB 주기 동기화로 알림 누락 경로를 보완했습니다.</li><li>정상화 후 원래 요청 비율 자동 복귀는 설계 검토 후 안정 운영 중 변경에 보수적으로 판단해 미반영했습니다.</li></ul>
             
           </div>
         </article>
@@ -83,8 +83,8 @@
           <p class="period">2024.06 — 2024.12</p>
           <div>
             <h4><a href="work/terms.html">약관 관리 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
-            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 약관 모델 · 구조 결정, 주요 개발 · 사내 리뷰 발표</p>
-            <ul class="points"><li>지마켓 · 옥션 · ESMPLUS 약관을 약관 · 약관그룹 · 그룹 매핑 모델과 시행일자 기반 버저닝으로 통합 관리</li><li>HTML 에디터가 붙은 어드민, 공개 약관 페이지, Querydsl 동적 조회, 사이트 확장 구조</li></ul>
+            <p class="job-sub">지마켓 · 옥션 · ESMPLUS 통합 약관 · 4인 팀 · 약관 모델 · 주요 구현 · 동료와 공동 발표</p>
+            <ul class="points"><li>사이트별 HTML·익일 반영으로 약관 버전을 식별하기 어려워 내용·버전·시행일과 화면별 그룹·순서를 분리했습니다.</li><li>노출은 시행일에 자동 전환하되 버전 번호는 운영자가 오류를 수정하도록 관리합니다. naming strategy·설정으로 사이트별 DB 이름 차이를 흡수하고 주요 구현·공동 발표를 맡았습니다.</li></ul>
             
           </div>
         </article>
@@ -93,7 +93,7 @@
           <div>
             <h4><a href="work/login.html">로그인 시스템 Java/Spring 전환 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">로그인 장애 이후의 근본 대응 · 팀 프로젝트 · 원인 분석 · 전환 설계 기여</p>
-            <ul class="points"><li>로그인이 불가능했던 장애 이후 DB 연결 문제 분석과 Java/Spring 전환 설계에 참여</li><li>기존 런타임 제약이 연동 기술 적용을 막던 구조를 검토하고, 회원정보 조회 캐시(Caffeine) 도입에 참여</li></ul>
+            <ul class="points"><li>DB 연결 실패 장애의 분석과 Java/Spring 전환 설계에 참여했습니다. 재기동 복구와 보안 라이브러리로 고정된 런타임의 연동 제약을 별도 문제로 다뤘습니다.</li><li>회원정보 Caffeine 캐시 적용은 팀 작업입니다. 인스턴스별 캐시를 쓰면 조회 부하를 줄이는 대신 갱신 시점이 달라질 수 있다는 비용이 남습니다.</li></ul>
             
           </div>
         </article>
@@ -115,7 +115,7 @@
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2025</span><span class="year-theme">회원 API 연동과 메시지 운영 감시</span></div>
-              <ul class="year-items"><li><strong>메시지 · 로그인 모니터링</strong><span>이메일 · 알림톡 · 앱푸시 발송과 로그인 이벤트를 Kafka로 적재해 InfluxDB → Grafana로 지연 · 에이전트 상태를 관측. 이후 메일 발송 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>E쿠폰 인증 문의 대응</strong><span>구매한 E쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
+              <ul class="year-items"><li><strong>메시지 · 로그인 모니터링</strong><span>API 접수만으로 확인하기 어려운 발송 지연·에이전트 상태를 Kafka·InfluxDB·Grafana로 관측하도록 개발하고 실제 메일 지연 장애 대응</span></li><li><strong>관심상품 · 관심매장 API</strong><span>지마켓 PC · 모바일 연동 구현, 명세 변경이 필요한 다른 서비스와 연동 수정 협의</span></li><li><strong>E쿠폰 인증 문의 대응</strong><span>구매한 E쿠폰의 본인인증이 불가한 사유를 확인하고 처리</span></li></ul>
             </li>
             <li class="year">
               <div class="year-head"><span class="year-num">2024</span><span class="year-theme">회원 입력과 인증 흐름 개선</span></div>
@@ -133,6 +133,10 @@
               <div class="year-head"><span class="year-num">상시</span><span class="year-theme">개인정보 보호 운영</span></div>
               <ul class="year-items"><li><strong>분리보관 · ISMS-P</strong><span>탈퇴회원 개인정보 분리보관 · 파기 운영, ISMS-P 심사에서 처리 절차 설명. 불안정하던 .NET 배치를 Spring Cloud Data Flow로 전환</span></li><li><strong>배포 · 운영 환경</strong><span>OpenShift(Kubernetes) 위에서 ArgoCD 기반 GitOps로 회원 서비스 배포 · 운영</span></li></ul>
             </li>
+            <li class="year">
+              <div class="year-head"><span class="year-num">분석·공유</span><span class="year-theme">JVM DNS와 연결 수명</span></div>
+              <ul class="year-items"><li><strong>IP 변경 후 504 분석</strong><span>기존 HTTP 연결 재사용과 새 연결의 DNS 조회를 나누고 성공·실패 조회 캐시를 구분. 재현 코드와 사내 발표·외부 기록으로 공유</span></li></ul>
+            </li>
           </ol>
         </details>
       </div>
@@ -143,7 +147,7 @@
           <div>
             <h4><a href="work/edoc.html">전자문서 유통 서비스 <span class="arrow" aria-hidden="true">→</span></a></h4>
             <p class="job-sub">KISA 전자문서유통중계자 인증 · 인프라부터 서비스까지 · 2인 팀 (팀장 + 본인) · 인프라 설계 · API · 관리자 · 배치 개발</p>
-            <ul class="points"><li>HAProxy · Nginx · Tomcat · Redis Sentinel · MaxScale · MariaDB Galera로 서버 22대 이중화 인프라 구성</li><li>API · 관리자 · 배치 서비스와 KISA VPN 연동 개발, 전자문서유통중계자 인증 심사 적합 · 가오픈</li></ul>
+            <ul class="points"><li>2인 팀에서 라이선스 비용을 고려한 Galera와 MaxScale·Keepalived 접속 경계를 설계하고 22대 인프라·API·관리자·배치·KISA VPN을 개발했습니다.</li><li>노드 상태·재기동·인증서 갱신과 첫 서버 확인 후 다음 서버 배포 절차를 인계했습니다. 심사 준비·보완에 참여해 서비스는 2022.07 2차 적합·09 가오픈했습니다.</li></ul>
             
           </div>
         </article>
@@ -152,7 +156,7 @@
           <div>
             <h4>PG 결제 서비스 개발 · 운영</h4>
             <p class="job-sub">상점 관리자 개편 · 2~3인 팀 · 개발 · 운영</p>
-            <ul class="points"><li>카드 · 계좌이체 · 가상계좌 · 휴대폰 결제를 다루는 PG 서비스 개발 · 운영</li><li>상점 관리자를 JSP 기반에서 Spring JPA · QueryDSL 기반으로 개편</li></ul>
+            <ul class="points"><li>브라우저 갱신 뒤 특정 카드 인증 실패에 대응하고 인증업체에 공유. VAN 통신 장애는 담당자가 알 수 있도록 알림 추가</li><li>결제수단별 한도·결제완료 통보·정산 배치 개발. 상점 관리자 개편은 Spring MVC·JPA·MyBatis를 병행하고 팀 문서·지식 공유</li></ul>
             
           </div>
         </article>
@@ -169,7 +173,7 @@
         <div class="timeline">
           <div class="timeline-item">
             <p class="period">Owner</p>
-            <div><h3><a class="link" href="work/fluxgate.html">OpenFluxGate</a></h3><p class="team">Redis 기반 분산 Rate Limiting 라이브러리와 규칙 관리 어드민. Maven Central 배포.</p></div>
+            <div><h3><a class="link" href="work/fluxgate.html">OpenFluxGate</a></h3><p class="team">동시 요청의 토큰 확인·차감을 Redis Lua로 원자 처리하고 규칙 관리 경로를 분리했습니다. 0.3.7 공개 배포·사내 POC이며 현재 LTS 구현과 구분합니다.</p></div>
           </div>
           <div class="timeline-item">
             <p class="period">Owner</p>

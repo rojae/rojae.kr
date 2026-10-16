@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenFluxGate — 오재성</title>
-  <meta name="description" content="여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.">
+  <meta name="description" content="서버가 늘어도 전체 허용량을 유지하도록 동시 요청의 토큰 확인·차감을 Redis Lua로 묶었습니다. 제한 엔진과 Spring Boot 스타터를 Maven Central에 배포하고, 규칙을 관리하는 FluxGate Studio와 문서 포털을 별도로 개발했습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="OpenFluxGate — 오재성">
-  <meta property="og:description" content="여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.">
+  <meta property="og:description" content="서버가 늘어도 전체 허용량을 유지하도록 동시 요청의 토큰 확인·차감을 Redis Lua로 묶었습니다. 제한 엔진과 Spring Boot 스타터를 Maven Central에 배포하고, 규칙을 관리하는 FluxGate Studio와 문서 포털을 별도로 개발했습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -32,14 +32,14 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">판단은 Redis 안에서 한 번에</a></li><li><a href="#s2">무엇을 같은 대상으로 볼 것인가</a></li><li><a href="#s3">앱의 직접 연동과 HTTP 호출을 함께 지원</a></li><li><a href="#s4">규칙 관리와 요청 처리를 분리</a></li><li><a href="#s5">지금 상태</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">왜 만들었나</a></li><li><a href="#s1">판단은 Redis 안에서 한 번에</a></li><li><a href="#s2">무엇을 같은 대상으로 볼 것인가</a></li><li><a href="#s3">앱의 직접 연동과 HTTP 호출을 함께 지원</a></li><li><a href="#s4">규칙 관리와 요청 처리를 분리</a></li><li><a href="#s5">현재 LTS에서 다루는 원자성과 재시도 경계</a></li><li><a href="#s6">지금 상태</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
         <header class="page-head">
           <div class="project-meta"><span class="badge">오픈소스</span><span>Redis 기반 분산 Rate Limiting</span></div>
           <h1>OpenFluxGate</h1>
-          <p class="page-lead">여러 인스턴스로 늘어난 서비스가 같은 허용량을 나눠 쓰게 하는 분산 Rate Limiting 라이브러리입니다. 라이브러리만이 아니라 Spring Boot 스타터, 규칙을 관리하는 어드민(FluxGate Studio), 문서 포털까지 만들어 Maven Central에 배포했습니다.</p>
+          <p class="page-lead">서버가 늘어도 전체 허용량을 유지하도록 동시 요청의 토큰 확인·차감을 Redis Lua로 묶었습니다. 제한 엔진과 Spring Boot 스타터를 Maven Central에 배포하고, 규칙을 관리하는 FluxGate Studio와 문서 포털을 별도로 개발했습니다.</p>
           <p class="case-outcome">Spring Boot 2.7 / 3.x 스타터, Maven Central v0.3.x 배포</p>
         </header>
         <dl class="facts">
@@ -56,7 +56,8 @@
         </section>
         <section id="s1" class="case-section">
           <h2>판단은 Redis 안에서 한 번에</h2>
-          <p>남은 토큰을 확인하는 것과 차감하는 것이 분리되어 있으면, 동시에 들어온 요청이 같은 잔여량을 보고 함께 통과합니다. 그래서 확인과 차감을 Lua 스크립트 하나로 Redis 안에서 실행합니다. 토큰 보충 계산에는 애플리케이션 서버 시간이 아니라 Redis 서버 시간을 쓰고 정수 연산만 사용해서, 인스턴스 간 시계 차이와 부동소수 오차가 허용량에 섞이지 않게 했습니다.</p>
+          <p>남은 토큰을 확인하는 것과 차감하는 것이 분리되어 있으면, 동시에 들어온 요청이 같은 잔여량을 보고 함께 통과할 수 있습니다. 확인과 차감을 Lua 스크립트 하나로 묶어 Redis 안에서 원자적으로 실행합니다. 토큰 보충 시각은 Redis TIME을 사용해 애플리케이션 인스턴스 간 시계 차이의 영향을 줄였습니다.</p>
+          <p>스크립트는 EVALSHA에 KEYS·ARGV를 전달해 실행하고 NOSCRIPT 시 대체 경로를 둡니다. 스크립트 본문 반복 전송은 줄이지만 매 요청의 Redis 실행은 남습니다. 원자성의 대가로 해당 Redis 키·슬롯에 판단이 모이므로 핫키와 Redis 가용성은 별도로 고려해야 합니다.</p>
         </section>
         <section id="s2" class="case-section">
           <h2>무엇을 같은 대상으로 볼 것인가</h2>
@@ -69,12 +70,17 @@
         <section id="s4" class="case-section">
           <h2>규칙 관리와 요청 처리를 분리</h2>
           <p>FluxGate Studio는 Next.js UI와 Spring Boot Admin API로 구성했습니다. Admin API는 Keycloak 기반 인증을 사용하고, 규칙 생성·수정·활성화와 규칙 현황을 제공합니다. 규칙은 MongoDB에 저장하며 MongoDB 어댑터를 설정한 앱이 읽습니다. HTTP 샘플은 별도의 Redis 규칙 저장소를 사용합니다.</p>
-          <p>규칙 변경은 Redis Pub/Sub으로 알리고, 앱의 규칙 캐시를 무효화해 다음 조회에서 다시 읽도록 구성했습니다. Studio는 규칙을 관리하고, 각 앱의 요청 처리 지표는 Micrometer로 관측하도록 역할을 나눴습니다.</p>
+          <p>규칙 변경은 Redis Pub/Sub으로 알리고 앱의 캐시를 무효화·재조회합니다. 현재 LTS 구현은 주기 조회도 두어 알림 누락을 보완합니다. 요청 차감의 Lua 원자성과 규칙 변경 알림은 별도 역할이며, Studio는 규칙 관리, Micrometer는 요청 처리 관측을 담당합니다.</p>
           <p>Spring Boot 2.7과 3.x 스타터를 각각 제공하고 Maven Central에 배포했습니다. 적용 예제와 Docusaurus 문서 포털을 함께 관리합니다.</p>
         </section>
         <section id="s5" class="case-section">
+          <h2>현재 LTS에서 다루는 원자성과 재시도 경계</h2>
+          <p>현재 LTS 소스에서는 멀티 밴드의 조건을 모두 검사한 뒤 차감합니다. 여러 키가 같은 Redis 슬롯에 있을 때의 원자 처리와, 다른 슬롯에 걸친 실패 뒤 보상 환급은 구분합니다. 슬롯을 넘는 환급 전체는 원자적이지 않습니다.</p>
+          <p>실행 여부가 불명확한 차감은 자동 재시도를 제한해 이중 차감 위험을 다룹니다. 공개 배포본 0.3.7 이후 LTS 개발에서 추가한 개선입니다.</p>
+        </section>
+        <section id="s6" class="case-section">
           <h2>지금 상태</h2>
-          <p>Maven Central에 io.github.openfluxgate로 v0.3.7을 공개 배포했습니다. 사내 POC와 팀 코드 리뷰를 진행하고 있으며, 실무 서비스 운영 이력과는 구분한 개인 프로젝트입니다.</p>
+          <p>제한 엔진·Spring Boot 스타터를 Maven Central의 io.github.openfluxgate로 v0.3.7 공개 배포했습니다. 사내 POC와 팀 코드 리뷰를 진행하고 있으며, 실무 서비스 운영 이력과는 구분한 개인 프로젝트입니다.</p>
         </section>
 
         <section id="scope" class="case-section">

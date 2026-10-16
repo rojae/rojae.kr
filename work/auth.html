@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>통합인증 서비스 — 오재성</title>
-  <meta name="description" content="3인 팀에서 프로젝트를 주도하며 다섯 인증 유형, 외부 업체 연동, 공통 세션과 관리자 기능을 모두 구현했습니다. 지마켓·옥션·ESMPLUS가 같은 인증 서비스를 사용하고, 운영자는 배포 없이 인증 설정과 업체별 요청 비율을 조정합니다.">
+  <meta name="description" content="업체 한 곳의 장애가 인증 전체로 번지는 문제를 줄이기 위해 업체별 요청 비율과 장애 상태를 분리했습니다. 3인 팀에서 기술 설계를 주도하고 다섯 인증 유형·공통 세션·관리자를 구현했으며, 장애 자동 비활성화와 TTL 이후 재시도를 신규 요청 정책에 연결했습니다.">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:title" content="통합인증 서비스 — 오재성">
-  <meta property="og:description" content="3인 팀에서 프로젝트를 주도하며 다섯 인증 유형, 외부 업체 연동, 공통 세션과 관리자 기능을 모두 구현했습니다. 지마켓·옥션·ESMPLUS가 같은 인증 서비스를 사용하고, 운영자는 배포 없이 인증 설정과 업체별 요청 비율을 조정합니다.">
+  <meta property="og:description" content="업체 한 곳의 장애가 인증 전체로 번지는 문제를 줄이기 위해 업체별 요청 비율과 장애 상태를 분리했습니다. 3인 팀에서 기술 설계를 주도하고 다섯 인증 유형·공통 세션·관리자를 구현했으며, 장애 자동 비활성화와 TTL 이후 재시도를 신규 요청 정책에 연결했습니다.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/mark.svg">
   <link rel="stylesheet" href="../style.css">
@@ -32,14 +32,14 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">장애 시 비율 조정과 TTL 재시도</a></li><li><a href="#s4">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s5">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">어떤 상황이었나</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">장애 횟수 갱신과 상태 알림의 역할을 나누다</a></li><li><a href="#s4">장애 시 비율 조정과 TTL 재시도</a></li><li><a href="#s5">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s6">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구조와 구현</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
         <header class="page-head">
           <div class="project-meta"><span class="badge">지마켓</span><span>지마켓 · 옥션 · ESMPLUS 공통 인증</span></div>
           <h1>통합인증 서비스</h1>
-          <p class="page-lead">3인 팀에서 프로젝트를 주도하며 다섯 인증 유형, 외부 업체 연동, 공통 세션과 관리자 기능을 모두 구현했습니다. 지마켓·옥션·ESMPLUS가 같은 인증 서비스를 사용하고, 운영자는 배포 없이 인증 설정과 업체별 요청 비율을 조정합니다.</p>
+          <p class="page-lead">업체 한 곳의 장애가 인증 전체로 번지는 문제를 줄이기 위해 업체별 요청 비율과 장애 상태를 분리했습니다. 3인 팀에서 기술 설계를 주도하고 다섯 인증 유형·공통 세션·관리자를 구현했으며, 장애 자동 비활성화와 TTL 이후 재시도를 신규 요청 정책에 연결했습니다.</p>
           <p class="case-outcome">지마켓·옥션·ESMPLUS 공통 적용 · 배포 없이 인증 설정 변경</p>
         </header>
         <dl class="facts">
@@ -64,16 +64,21 @@
           <p>인증 업체별 요청 비율을 관리자 화면에서 조정하도록 만들었습니다. 운영자는 업체 장애나 이용 비용을 고려해 신규 요청의 비중을 배포 없이 바꿀 수 있습니다. 변경된 비율은 신규 요청에 적용하고, 진행 중인 인증은 기존 흐름으로 처리합니다.</p>
         </section>
         <section id="s3" class="case-section">
+          <h2>장애 횟수 갱신과 상태 알림의 역할을 나누다</h2>
+          <p>동시 요청이 Redis의 장애 횟수를 함께 갱신하므로, 관련 카운트 갱신을 Lua 안에 묶어 원자적으로 실행했습니다. 스크립트는 SHA로 캐시하고 EVALSHA에 변수를 전달해 호출했습니다. EVALSHA는 실행을 생략하거나 결과를 캐시하는 기능이 아니라 스크립트 본문의 반복 전송을 줄이는 방식입니다.</p>
+          <p>상태 변경은 Redis Pub/Sub으로 Caffeine 캐시에 알리고, RDB 원천 데이터를 주기적으로 다시 읽어 알림 누락 경로를 보완했습니다. 이 규모의 상태 변경에 Kafka까지 추가할 필요는 없다고 판단했습니다. Lua는 갱신의 원자성, Pub/Sub은 변경 알림, 주기 동기화는 누락 보완을 담당하며 각각의 역할을 구분했습니다.</p>
+        </section>
+        <section id="s4" class="case-section">
           <h2>장애 시 비율 조정과 TTL 재시도</h2>
           <p>휴대폰 본인인증에서 외부 인증업체에 장애가 발생하면 해당 업체를 자동 비활성화하고, 대체 인증업체로 요청을 분산하도록 비율을 조정했습니다. 로컬에 보관한 장애 상태의 TTL을 10분으로 두고, 만료 후 비율을 보정해 다시 시도하는 흐름까지 구현했습니다.</p>
           <p>장애 상태의 TTL 만료 후 재시도와, 정상화를 확인한 뒤 원래 요청 비율로 자동 복귀하는 기능은 별개입니다. 원래 비율로의 자동 복귀(auto recovery)는 설계 리뷰까지 진행했지만, 기존 서비스가 정상 운영 중인 점을 고려해 구현에는 반영하지 않았습니다.</p>
         </section>
-        <section id="s4" class="case-section">
+        <section id="s5" class="case-section">
           <h2>다섯 인증 유형이 공유하는 세션</h2>
           <p>세션은 특정 인증이나 E쿠폰만을 위한 기능이 아니라 통합인증의 공통 기능입니다. UUID로 세션을 조회하고, 관리자 화면에서 정한 유효기간을 기준으로 활성 여부를 확인하도록 구현했습니다.</p>
           <p>인증별 처리 로직은 각 모듈이 담당하고, 세션 유효성 확인은 공통으로 사용합니다. E쿠폰에는 본인·소유인증을 연동해 공통 세션으로 인증 내역과 이력을 관리했습니다.</p>
         </section>
-        <section id="s5" class="case-section">
+        <section id="s6" class="case-section">
           <h2>연동부터 운영까지 맡은 범위</h2>
           <p>다섯 인증 유형의 API와 외부 업체 연동, 공통 세션, 도메인 설정과 업체별 요청 비율 관리 기능을 모두 구현했습니다. 계좌인증은 유입 경로별 은행 정보 API와 연동 가이드를 제공하고, E쿠폰은 세션 상태 때문에 인증이 진행되지 않는 문의까지 확인했습니다.</p>
           <p>오픈 직전 연동 명세가 바뀐 경험을 계기로 회의록·설계 문서·진행 상황을 공유하며 연동 서비스와 변경 사항을 맞췄습니다.</p>
