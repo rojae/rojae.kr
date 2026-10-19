@@ -156,72 +156,85 @@ const write = (name, w, h, title, desc, body) => {
   write('edoc-narrow', N, 808, title, desc, nb);
 }
 
-// ───────────────────────── FluxGate: 요청 처리와 규칙 관리
+// ───────────────────────── FluxGate: Lua 원자적 차감과 Pub/Sub 규칙 변경 감지
 {
-  const title = '확인과 차감은 Redis 안에서 한 번에, 규칙 관리는 별도 경로로';
-  const desc = 'Spring Boot 앱의 Filter가 RateLimitHandler에 판단을 위임합니다. Direct Redis 방식은 앱이 Redis에 직접, HTTP API 방식은 별도 Rate Limit Service를 거쳐 Redis에 갑니다. 두 경로 모두 Redis Lua가 토큰 확인과 차감을 원자적으로 실행해 허용 또는 거부(429)를 정합니다. 규칙 관리는 Studio UI가 Keycloak 인증을 쓰는 Admin API를 호출해 MongoDB에 저장하고, MongoDB 어댑터를 설정한 앱이 읽습니다. 변경은 Redis Pub/Sub으로 알립니다.';
-  const W = 700, b = [head(26, 30, '요청 처리')];
-  b.push(r(16, 50, 262, 128, { fill: 'soft' }));
-  b.push(t(28, 72, 'Spring Boot 앱', { size: 14, fill: 'muted', weight: 650 }));
-  b.push(node(28, 88, 96, 72, [['Filter', { size: 17, weight: 700 }]], { fill: 'white', stroke: 'line' }));
-  b.push(ln(124, 124, 142, 124, { color: 'ink', arrow: true }));
-  b.push(node(146, 88, 120, 72, [['RateLimit', { size: 15, weight: 650, mono: true }], ['Handler', { size: 15, weight: 650, mono: true }]], { fill: 'white', stroke: 'line' }));
-  // Direct Redis
-  b.push(ln(266, 104, 404, 104, { color: 'blue', arrow: true }));
-  b.push(t(336, 94, 'Direct Redis', { size: 15, fill: 'blue', weight: 650, anchor: 'middle' }));
-  // HTTP API → Rate Limit Service → Redis
-  b.push(p('M266 146H286V232H300', { color: 'blue', arrow: true }));
-  b.push(t(280, 206, 'HTTP API', { size: 15, fill: 'blue', weight: 650, anchor: 'end' }));
-  b.push(node(304, 206, 120, 52, [['Rate Limit', { size: 15, weight: 700 }], ['Service', { size: 15, weight: 700 }]], { fill: 'white', stroke: 'line' }));
-  b.push(p('M424 232H483V176', { color: 'blue', arrow: true }));
-  // Redis Lua
-  b.push(node(408, 66, 150, 108, [['Redis Lua', { size: 20, fill: 'blue', weight: 750 }], ['확인 → 차감', { size: 17, weight: 700 }], ['한 번에 실행', { size: 15, fill: 'muted' }]], { fill: 'softBlue', stroke: 'blue' }));
-  b.push(ln(558, 96, 590, 96, { color: 'green', arrow: true }), t(596, 102, '허용', { size: 18, fill: 'green', weight: 750 }));
-  b.push(ln(558, 144, 590, 144, { color: 'red', arrow: true }), t(596, 150, '429 거부', { size: 18, fill: 'red', weight: 750 }));
-  b.push(t(26, 292, '예) 잔여 1을 동시에 본 A·B 중 A만 차감되고 B는 거부됩니다.', { size: 16, weight: 650 }));
-  b.push(t(26, 316, '토큰 보충 시각은 Redis TIME 기준 · 같은 키·슬롯에 판단이 모이는 비용은 남습니다.', { size: 14, fill: 'muted' }));
-  b.push(divider(340, W, 16));
-  b.push(head(26, 372, '규칙 관리'));
-  b.push(node(26, 392, 120, 52, [['Studio UI', { size: 16, weight: 700 }], ['Next.js', { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
-  b.push(ln(146, 418, 178, 418, { color: 'ink', arrow: true }));
-  b.push(node(182, 392, 132, 52, [['Admin API', { size: 16, weight: 700 }], ['규칙 생성·수정', { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
-  b.push(ln(248, 444, 248, 474, { color: 'muted', dash: true }));
-  b.push(node(182, 476, 132, 40, [['Keycloak 인증', { size: 15, weight: 650 }]], { fill: 'soft' }));
-  b.push(ln(314, 418, 346, 418, { color: 'green', arrow: true }));
-  b.push(store(350, 388, 112, 60, [['MongoDB', { size: 16, fill: 'green', weight: 700 }]]));
-  b.push(ln(462, 418, 494, 418, { color: 'green', arrow: true }));
-  b.push(node(498, 392, 186, 52, [['MongoDB 어댑터 앱', { size: 15, weight: 700 }], ['규칙 조회', { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
-  b.push(t(498, 474, '변경 알림: Redis Pub/Sub', { size: 14, fill: 'muted' }), t(498, 496, '→ 캐시 무효화 · 재조회', { size: 14, fill: 'muted' }));
-  b.push(divider(536, W, 16));
-  b.push(t(26, 564, '차감의 원자성과 규칙 변경 알림은 서로 다른 역할입니다.', { size: 16, weight: 700 }));
-  write('fluxgate-wide', W, 584, title, desc, b);
-
-  const N = 330, nb = [head(14, 24, '요청 처리')];
-  nb.push(node(14, 38, 140, 46, [['Filter', { size: 17, weight: 700 }]], { fill: 'white', stroke: 'line' }));
-  nb.push(ln(154, 61, 172, 61, { color: 'ink', arrow: true }));
-  nb.push(node(176, 38, 140, 46, [['RateLimitHandler', { size: 13.5, weight: 650, mono: true }]], { fill: 'white', stroke: 'line' }));
-  nb.push(p('M246 84V100H84V122', { color: 'blue', arrow: true }), p('M246 100H246V122', { color: 'blue', arrow: true }));
-  nb.push(t(84, 140, 'Direct Redis', { size: 14, fill: 'blue', weight: 650, anchor: 'middle' }));
-  nb.push(t(246, 140, 'HTTP API', { size: 14, fill: 'blue', weight: 650, anchor: 'middle' }));
-  nb.push(node(176, 152, 140, 50, [['Rate Limit', { size: 15, weight: 700 }], ['Service', { size: 15, weight: 700 }]], { fill: 'white', stroke: 'line' }));
-  nb.push(ln(84, 150, 84, 232, { color: 'blue', arrow: true }), ln(246, 202, 246, 232, { color: 'blue', arrow: true }));
-  nb.push(node(14, 236, 302, 96, [['Redis Lua', { size: 20, fill: 'blue', weight: 750 }], ['확인 → 차감 한 번에 실행', { size: 16, weight: 700 }]], { fill: 'softBlue', stroke: 'blue' }));
-  nb.push(p('M100 332V356', { color: 'green', arrow: true }), t(100, 380, '허용', { size: 18, fill: 'green', weight: 750, anchor: 'middle' }));
-  nb.push(p('M230 332V356', { color: 'red', arrow: true }), t(230, 380, '429 거부', { size: 18, fill: 'red', weight: 750, anchor: 'middle' }));
-  nb.push(t(14, 414, '잔여 1을 동시에 본 A·B 중', { size: 15, weight: 650 }), t(14, 436, 'A만 차감되고 B는 거부됩니다.', { size: 15, weight: 650 }));
-  nb.push(divider(458, N, 14));
-  nb.push(head(14, 486, '규칙 관리'));
-  const steps = [['Studio UI', 'Next.js'], ['Admin API', 'Keycloak 인증'], ['MongoDB', '규칙 저장'], ['MongoDB 어댑터 앱', '규칙 조회']];
-  steps.forEach(([a, s], i) => {
-    const yy = 500 + i * 74;
-    if (a === 'MongoDB') nb.push(store(85, yy - 4, 160, 62, [[a, { size: 16, fill: 'green', weight: 700 }], [s, { size: 14, fill: 'muted' }]]));
-    else nb.push(node(14, yy, 302, 54, [[a, { size: 16, weight: 700 }], [s, { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
-    if (i < steps.length - 1) nb.push(ln(165, yy + 54, 165, yy + 72, { color: i === 0 ? 'ink' : 'green', arrow: true }));
+  const title = 'Lua 스크립트로 차감을 원자적으로 판단하고, Redis Pub/Sub으로 규칙 변경을 감지합니다';
+  const desc = '요청마다 Redis에서 Lua 스크립트 하나가 실행됩니다. 스크립트는 Redis TIME으로 현재 시각을 읽고, 경과 시간만큼 토큰을 보충하고, 모든 밴드의 잔여를 확인한 뒤 전부 차감하거나 하나도 차감하지 않습니다. Redis는 스크립트 실행 중 다른 명령을 끼워 넣지 않으므로 잔여 1을 동시에 노린 A와 B 중 먼저 실행된 A만 허용되고 B는 429로 거부됩니다. 앱이 Redis를 직접 쓰는 Direct Redis 방식과 HTTP API로 Rate Limit Service를 호출하는 방식 모두 같은 스크립트로 판단합니다. 규칙은 Studio UI에서 Keycloak 인증을 쓰는 Admin API로 바꾸고 MongoDB에 저장합니다. 변경이 커밋되면 Admin API가 Redis Pub/Sub 채널에 발행하고, 구독한 앱 인스턴스가 규칙 캐시를 무효화한 뒤 다시 읽습니다. 현재 LTS는 주기 조회로 알림 누락을 보완합니다.';
+  const W = 700, b = [head(26, 30, '① 차감 판단 · Lua 스크립트 한 번의 실행', 'blue')];
+  // 동시 요청
+  b.push(t(26, 96, '요청 A', { size: 17, weight: 750 }), t(26, 160, '요청 B', { size: 17, weight: 750 }));
+  b.push(t(26, 118, '먼저 실행', { size: 14, fill: 'muted' }), t(26, 182, 'A가 끝난 뒤 실행', { size: 14, fill: 'muted' }));
+  b.push(ln(92, 91, 158, 91, { color: 'blue', arrow: true }), ln(92, 155, 158, 155, { color: 'blue', arrow: true }));
+  // Redis 안의 스크립트
+  b.push(r(162, 52, 352, 196, { fill: 'softBlue', stroke: 'blue' }));
+  b.push(t(180, 80, 'Redis', { size: 17, fill: 'blue', weight: 750 }), t(236, 80, 'token_bucket_consume.lua', { size: 14, fill: 'blue', mono: true }));
+  const steps = ['Redis TIME으로 현재 시각 읽기', '경과 시간만큼 토큰 보충', '모든 밴드의 잔여 확인', '전부 차감 또는 하나도 차감 안 함'];
+  steps.forEach((s, i) => {
+    const y = 114 + i * 30;
+    b.push(`<circle cx="190" cy="${y - 5}" r="10" fill="${C.blue}"/>`, t(190, y, String(i + 1), { size: 13, fill: 'white', weight: 750, anchor: 'middle' }));
+    b.push(t(210, y, s, { size: 16, weight: i === 3 ? 750 : 550 }));
   });
-  nb.push(t(14, 820, '변경 알림은 Redis Pub/Sub → 캐시 무효화', { size: 14, fill: 'muted' }));
-  nb.push(divider(840, N, 14));
-  nb.push(t(14, 866, '차감의 원자성과 규칙 알림은', { size: 16, weight: 700 }), t(14, 889, '서로 다른 역할입니다.', { size: 16, weight: 700 }));
-  write('fluxgate-narrow', N, 904, title, desc, nb);
+  b.push(t(180, 234, '실행 중에는 다른 명령이 끼어들지 않습니다', { size: 14, fill: 'blue', weight: 650 }));
+  // 결과
+  b.push(ln(514, 106, 548, 106, { color: 'green', arrow: true }), t(554, 104, 'A 허용', { size: 18, fill: 'green', weight: 750 }), t(554, 126, '잔여 1 → 0', { size: 14, fill: 'muted' }));
+  b.push(ln(514, 186, 548, 186, { color: 'red', arrow: true }), t(554, 184, 'B 429 거부', { size: 18, fill: 'red', weight: 750 }), t(554, 206, '잔여 0 · 상태 유지', { size: 14, fill: 'muted' }));
+  b.push(t(26, 278, 'Direct Redis와 HTTP API(Rate Limit Service) 두 연동 방식 모두 이 스크립트로 판단합니다.', { size: 14, fill: 'muted' }));
+  b.push(divider(300, W, 16));
+  b.push(head(26, 332, '② 규칙 변경 감지 · Redis Pub/Sub', 'green'));
+  b.push(node(26, 350, 120, 52, [['Studio UI', { size: 16, weight: 700 }], ['Next.js', { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
+  b.push(ln(146, 376, 178, 376, { color: 'ink', arrow: true }));
+  b.push(node(182, 350, 140, 52, [['Admin API', { size: 16, weight: 700 }], ['Keycloak 인증', { size: 14, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
+  b.push(ln(322, 376, 354, 376, { color: 'green', arrow: true }), t(338, 366, '저장', { size: 13, fill: 'green', anchor: 'middle' }));
+  b.push(store(358, 346, 116, 60, [['MongoDB', { size: 16, fill: 'green', weight: 700 }]]));
+  // 커밋 후 발행
+  b.push(ln(252, 402, 252, 446, { color: 'green', arrow: true }), t(262, 430, '커밋 후 발행', { size: 14, fill: 'green', weight: 650 }));
+  b.push(node(182, 450, 140, 56, [['Redis Pub/Sub', { size: 16, fill: 'green', weight: 750 }], ['rule-reload 채널', { size: 13.5, fill: 'muted' }]], { fill: 'softGreen', stroke: 'green' }));
+  // 구독한 앱으로 전파
+  b.push(p('M322 478H420', { color: 'green' }), p('M420 436V540', { color: 'green' }));
+  const apps = [436, 488, 540];
+  apps.forEach((y, i) => { b.push(ln(420, y, 516, y, { color: 'green', arrow: true })); b.push(node(520, y - 20, 160, 40, [[`앱 인스턴스 ${['1', '2', 'N'][i]}`, { size: 15, weight: 700 }]], { fill: 'white', stroke: 'line' })); });
+  b.push(t(468, 430, '구독', { size: 14, fill: 'green', weight: 650, anchor: 'middle' }));
+  // 무효화 후 재조회
+  b.push(p('M600 416V376H478', { color: 'green', dash: true, arrow: true }));
+  b.push(t(610, 384, '캐시 무효화', { size: 14, fill: 'green', weight: 650 }), t(610, 404, '→ 재조회', { size: 14, fill: 'green', weight: 650 }));
+  b.push(t(680, 584, '알림 누락은 주기 조회로 보완 (LTS)', { size: 14, fill: 'muted', anchor: 'end' }));
+  b.push(divider(604, W, 16));
+  b.push(t(26, 632, '차감 판단의 원자성은 Lua가, 규칙 변경 전파는 Pub/Sub이 맡습니다.', { size: 16, weight: 700 }));
+  write('fluxgate-wide', W, 650, title, desc, b);
+
+  const N = 330, nb = [head(14, 24, '① 차감 판단 · Lua 스크립트', 'blue')];
+  nb.push(t(84, 54, '요청 A', { size: 16, weight: 750, anchor: 'middle' }), t(246, 54, '요청 B', { size: 16, weight: 750, anchor: 'middle' }));
+  nb.push(t(84, 74, '먼저 실행', { size: 13.5, fill: 'muted', anchor: 'middle' }), t(246, 74, 'A가 끝난 뒤', { size: 13.5, fill: 'muted', anchor: 'middle' }));
+  nb.push(ln(84, 82, 84, 104, { color: 'blue', arrow: true }), ln(246, 82, 246, 104, { color: 'blue', arrow: true }));
+  nb.push(r(14, 108, 302, 204, { fill: 'softBlue', stroke: 'blue' }));
+  nb.push(t(28, 134, 'Redis', { size: 16, fill: 'blue', weight: 750 }), t(80, 134, 'consume.lua', { size: 13.5, fill: 'blue', mono: true }));
+  const nsteps = ['Redis TIME으로 현재 시각', '경과 시간만큼 토큰 보충', '모든 밴드의 잔여 확인', '전부 차감 또는 전부 안 함'];
+  nsteps.forEach((s, i) => {
+    const y = 168 + i * 30;
+    nb.push(`<circle cx="36" cy="${y - 5}" r="10" fill="${C.blue}"/>`, t(36, y, String(i + 1), { size: 13, fill: 'white', weight: 750, anchor: 'middle' }));
+    nb.push(t(56, y, s, { size: 15, weight: i === 3 ? 750 : 550 }));
+  });
+  nb.push(t(28, 298, '실행 중 다른 명령이 끼어들지 않음', { size: 13.5, fill: 'blue', weight: 650 }));
+  nb.push(ln(84, 312, 84, 334, { color: 'green', arrow: true }), ln(246, 312, 246, 334, { color: 'red', arrow: true }));
+  nb.push(t(84, 358, 'A 허용', { size: 17, fill: 'green', weight: 750, anchor: 'middle' }), t(84, 378, '잔여 1 → 0', { size: 13.5, fill: 'muted', anchor: 'middle' }));
+  nb.push(t(246, 358, 'B 429 거부', { size: 17, fill: 'red', weight: 750, anchor: 'middle' }), t(246, 378, '잔여 0', { size: 13.5, fill: 'muted', anchor: 'middle' }));
+  nb.push(t(14, 410, 'Direct Redis · HTTP API 모두 같은 스크립트', { size: 13.5, fill: 'muted' }));
+  nb.push(divider(430, N, 14));
+  nb.push(head(14, 458, '② 규칙 변경 감지 · Pub/Sub', 'green'));
+  nb.push(node(14, 472, 140, 52, [['Studio UI', { size: 16, weight: 700 }], ['Next.js', { size: 13.5, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
+  nb.push(ln(154, 498, 172, 498, { color: 'ink', arrow: true }));
+  nb.push(node(176, 472, 140, 52, [['Admin API', { size: 16, weight: 700 }], ['Keycloak 인증', { size: 13.5, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
+  nb.push(p('M246 524V546H84V566', { color: 'green', arrow: true }), t(165, 542, '저장', { size: 13, fill: 'green', anchor: 'middle' }));
+  nb.push(store(24, 570, 120, 54, [['MongoDB', { size: 15, fill: 'green', weight: 700 }]]));
+  nb.push(ln(246, 524, 246, 566, { color: 'green', arrow: true }), t(256, 552, '커밋 후 발행', { size: 13, fill: 'green', weight: 650 }));
+  nb.push(node(176, 570, 140, 54, [['Redis Pub/Sub', { size: 15, fill: 'green', weight: 750 }], ['rule-reload', { size: 13, fill: 'muted' }]], { fill: 'softGreen', stroke: 'green' }));
+  nb.push(ln(246, 624, 246, 650, { color: 'green', arrow: true }), t(256, 642, '구독', { size: 13, fill: 'green', weight: 650 }));
+  nb.push(node(176, 654, 140, 54, [['앱 인스턴스들', { size: 15, weight: 700 }], ['캐시 무효화', { size: 13.5, fill: 'muted' }]], { fill: 'white', stroke: 'line' }));
+  nb.push(p('M176 681H84V628', { color: 'green', dash: true, arrow: true }), t(92, 700, '재조회', { size: 13.5, fill: 'green', weight: 650 }));
+  nb.push(t(14, 740, '알림 누락은 주기 조회로 보완 (LTS)', { size: 13.5, fill: 'muted' }));
+  nb.push(divider(760, N, 14));
+  nb.push(t(14, 786, '차감의 원자성은 Lua가,', { size: 16, weight: 700 }), t(14, 809, '규칙 변경 전파는 Pub/Sub이 맡습니다.', { size: 16, weight: 700 }));
+  write('fluxgate-narrow', N, 824, title, desc, nb);
 }
 
 // ───────────────────────── 약관: 화면 구성과 버전·시행일

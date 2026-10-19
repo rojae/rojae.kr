@@ -455,9 +455,9 @@ export const caseStudies = [
     team: '개인 오픈소스',
     role: '설계 · 개발 · 배포',
     stack: ['Java', 'Spring Boot 2.7 / 3.x', 'Bucket4j', 'Redis · Lua', 'MongoDB', 'Micrometer', 'Next.js', 'Keycloak'],
-    summary: '서버가 늘어도 전체 허용량을 유지하도록 동시 요청의 토큰 확인·차감을 Redis Lua로 묶었습니다. 제한 엔진과 Spring Boot 스타터를 Maven Central에 배포하고, 규칙을 관리하는 FluxGate Studio와 문서 포털을 별도로 개발했습니다.',
+    summary: '서버가 늘어도 전체 허용량을 유지하도록 동시 요청의 토큰 확인·차감을 Lua 스크립트 하나로 묶어 Redis에서 원자적으로 실행했습니다. 규칙 변경은 Redis Pub/Sub으로 알려 각 앱이 감지하고 캐시를 갱신하게 했습니다. 제한 엔진과 Spring Boot 스타터를 Maven Central에 배포하고, 규칙을 관리하는 FluxGate Studio와 문서 포털을 별도로 개발했습니다.',
     cardPoints: [
-      'Redis 토큰 버킷을 Lua 스크립트로 한 번에 판단',
+      'Lua 원자적 차감 · Pub/Sub 규칙 변경 감지',
       '멀티 밴드 규칙 · MongoDB 동적 규칙 · IP/사용자/API 키 복합 키',
       'Spring Boot 2.7 / 3.x 스타터, Maven Central v0.3.x 배포',
     ],
@@ -475,7 +475,7 @@ export const caseStudies = [
         [['요청'], ['FluxGate Filter', '제한 키 식별 (IP · 사용자 · API 키)'], ['토큰 버킷 판단', 'Redis + Lua'], ['허용 / 제한 응답']],
         [['FluxGate Studio'], ['규칙 저장 (MongoDB)'], ['재시작 없이 규칙 반영']],
       ],
-      caption: '두 연동 방식 모두 최종 판단은 Redis Lua 한 번의 실행입니다. 규칙 관리는 요청 처리와 다른 경로이고, A·B 예시는 설명용입니다.',
+      caption: '위는 Lua 스크립트 한 번의 실행 안에서 끝나는 차감 판단, 아래는 규칙 변경이 Redis Pub/Sub으로 각 앱에 전달되는 경로입니다. A·B 예시는 설명용이며, Pub/Sub은 전달을 보장하지 않으므로 현재 LTS는 주기 조회를 함께 둡니다.',
     },
     story: [
       { heading: '왜 만들었나', paragraphs: [
