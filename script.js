@@ -34,6 +34,8 @@
 // 다이어그램 · 이미지 확대 보기 (라이트박스): 드래그로 이동, 휠 · 핀치 · 버튼으로 확대
 (() => {
   const targets = document.querySelectorAll('.diagram-figure svg, .shot img');
+  // 다이어그램은 가로 · 세로 두 벌이 있으므로 지금 보이는 쪽을 엽니다.
+  const visible = fig => [...fig.querySelectorAll('svg.diagram')].find(svg => svg.getClientRects().length) || fig.querySelector('svg');
   if (!targets.length || !('HTMLDialogElement' in window)) return;
   const dialog = document.createElement('dialog');
   dialog.className = 'lightbox';
@@ -69,20 +71,21 @@
     const fig = el.closest('figure');
     title.textContent = (fig && fig.querySelector('figcaption')?.textContent) || el.getAttribute('alt') || el.getAttribute('aria-label') || '';
     dialog.showModal();
-    requestAnimationFrame(() => { content.style.width = '1200px'; fit(); });
+    const vb = el.viewBox && el.viewBox.baseVal;
+    requestAnimationFrame(() => { content.style.width = vb && vb.width ? `${Math.round(vb.width * 1.7)}px` : '1200px'; fit(); });
   };
   targets.forEach(el => {
     el.classList.add('zoomable');
     el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
     el.addEventListener('click', () => open(el));
     el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(el); } });
-    if (el.matches('.diagram-figure svg')) {
-      const button = document.createElement('button');
-      button.type = 'button'; button.className = 'diagram-open';
-      button.textContent = '구조도 확대';
-      button.addEventListener('click', () => open(el));
-      el.after(button);
-    }
+  });
+  document.querySelectorAll('.diagram-figure').forEach(fig => {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'diagram-open';
+    button.textContent = '그림 확대';
+    button.addEventListener('click', () => open(visible(fig)));
+    [...fig.querySelectorAll('svg.diagram')].pop().after(button);
   });
   // 버튼
   dialog.addEventListener('click', e => {

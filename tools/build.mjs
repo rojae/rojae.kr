@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { profile, ways, caseStudies, experience, openSource, contributions, writing, education, resume } from './content.mjs';
-import { diagrams } from './diagrams.mjs';
+import { diagrams, diagramTitle } from './diagrams.mjs';
 import { wordmarkSvg } from './logo.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -68,6 +68,12 @@ function flow(f) {
   ).join('<span class="flow-arrow" aria-hidden="true"></span>')}</div>`).join('');
   return `<figure class="flow-figure"><div class="flow">${rows}</div><figcaption>${f.caption}</figcaption></figure>`;
 }
+
+// 상세 페이지 다이어그램: 제목 → 그림(가로 · 세로 두 벌) → 해석 캡션 순서로 읽힙니다.
+const figures = c => (c.figures ?? (c.diagram ? [{ diagram: c.diagram, caption: c.flow.caption }] : []))
+  .filter(f => diagrams[f.diagram])
+  .map(f => `<figure class="flow-figure diagram-figure"><p class="diagram-title">${diagramTitle(f.diagram)}</p>${diagrams[f.diagram]()}<figcaption>${f.caption}</figcaption></figure>`)
+  .join('\n          ');
 
 function projectMeta(c, period = c.period) {
   return `<div class="project-meta"><span class="badge">${c.badge}</span><span>${period}</span><span>${c.team}</span></div>`;
@@ -287,7 +293,7 @@ ${c.story.map((st, n) => `
 
         <section id="scope" class="case-section">
           <h2>구조와 구현</h2>
-          ${c.diagram && diagrams[c.diagram] ? `<figure class="flow-figure diagram-figure">${diagrams[c.diagram]()}<figcaption>${c.flow.caption}</figcaption></figure>` : flow(c.flow)}
+          ${figures(c) || flow(c.flow)}
           <details class="implementation-details">
             <summary>구현 범위 · 사용 기술</summary>
             ${tags(c.stack)}

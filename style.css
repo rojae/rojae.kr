@@ -8,6 +8,9 @@
   --line: #e6e8ec;
   --accent: #2f5bd8;
   --accent-soft: #eef2fd;
+  /* 다이어그램 팔레트 (블로그 시각 설계와 같은 값) */
+  --dg-ink: #192e42; --dg-muted: #52677c; --dg-blue: #285fbc; --dg-green: #157458; --dg-red: #b33c42;
+  --dg-line: #cdd8e3; --dg-soft: #f2f5f9; --dg-soft-blue: #edf3fd; --dg-soft-green: #eef7f2; --dg-soft-red: #fbeef0; --dg-bg: #ffffff;
   --radius: 8px;
   --container: 1040px;
   --gutter: 24px;
@@ -26,6 +29,8 @@
     --line: #262a32;
     --accent: #7c9cff;
     --accent-soft: #1b2236;
+    --dg-ink: #e3eaf2; --dg-muted: #a4b1bf; --dg-blue: #8db0ff; --dg-green: #5ccb9f; --dg-red: #f29096;
+    --dg-line: #34404d; --dg-soft: #1b2028; --dg-soft-blue: #18233a; --dg-soft-green: #142a22; --dg-soft-red: #2e191c; --dg-bg: #0f1115;
   }
 }
 
@@ -307,12 +312,23 @@ ul { margin: 0; padding: 0; list-style: none; }
 .flow-row .flow-col:first-child .node { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); color: var(--accent); }
 .flow-arrow { width: 24px; height: 1px; background: var(--text-3); position: relative; flex: none; }
 .flow-arrow::after { content: ""; position: absolute; right: -1px; top: -3px; border: 3.5px solid transparent; border-left: 6px solid var(--text-3); border-right: 0; }
-.diagram-figure { padding: 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
-.diagram { display: block; width: 100%; height: auto; font-family: var(--sans); }
-.diagram-figure figcaption { padding-top: 10px; }
-.diagram-open { display: block; margin: 10px 0 0 auto; padding: 4px 12px; min-height: 36px; font: inherit; font-size: 13px; color: var(--accent); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.diagram-figure { padding: 24px 24px 18px; border-radius: var(--radius); background: var(--dg-bg); border: 1px solid var(--line); container-type: inline-size; }
+.diagram-figure + .diagram-figure { margin-top: 20px; }
+.diagram-title { margin: 0 0 18px; font-size: 17px; font-weight: 750; line-height: 1.5; color: var(--text); letter-spacing: -.01em; }
+.diagram { display: block; width: 100%; height: auto; margin-inline: auto; font-family: var(--sans); }
+.diagram text { font-family: var(--sans); letter-spacing: -.4px; }
+.diagram .mono { font-family: var(--mono); letter-spacing: -.6px; }
+.diagram-narrow { display: none; }
+/* 그림 컨테이너가 좁으면 세로 도식으로 바꿉니다. 화면 폭이 아닌 실제 본문 폭 기준입니다. */
+@container (max-width: 560px) {
+  .diagram-wide { display: none; }
+  .diagram-narrow { display: block; }
+}
+.diagram-figure figcaption { padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--line); line-height: 1.7; }
+.diagram-open { display: block; margin: 12px 0 0 auto; padding: 4px 12px; min-height: 36px; font: inherit; font-size: 13px; color: var(--accent); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
 @media (max-width: 640px) {
-  .diagram-figure { padding: 10px; }
+  .diagram-figure { padding: 18px 14px 14px; }
+  .diagram-title { font-size: 16px; margin-bottom: 14px; }
 }
 .flow-figure figcaption, .shot figcaption { font-size: 13px; color: var(--text-3); margin-top: 8px; }
 .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -350,6 +366,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .lightbox-stage.is-dragging { cursor: grabbing; }
 .lightbox-content { position: absolute; left: 0; top: 0; width: 1200px; transform-origin: 0 0; background: var(--bg); border-radius: 12px; padding: 12px; box-sizing: border-box; box-shadow: 0 6px 24px -10px rgb(0 0 0 / .3); will-change: transform; }
 .lightbox-content svg, .lightbox-content img { width: 100%; height: auto; display: block; pointer-events: none; }
+.lightbox-content .diagram { display: block; max-width: none !important; }
 .lightbox-content img { border-radius: 8px; }
 @media (max-width: 640px) {
   .lightbox { width: 100vw; height: 100dvh; border-radius: 0; border: 0; }

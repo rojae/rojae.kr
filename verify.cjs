@@ -49,7 +49,7 @@ const server = http.createServer((req, res) => {
         assert.equal(layout.scroll, width, `${url}: scroll at ${width}`);
         assert.deepEqual(layout.overflow, [], `${url}: geometry at ${width}`);
         assert(layout.images, `${url}: images loaded`);
-        for (const diagram of await page.locator('.diagram-figure > svg').all()) {
+        for (const diagram of await page.locator('.diagram-figure > svg.diagram:visible').all()) {
           assert(await diagram.evaluate(el => {
             const r = el.getBoundingClientRect(), parent = el.parentElement.getBoundingClientRect();
             return r.left >= parent.left && r.right <= parent.right;
@@ -88,11 +88,14 @@ const server = http.createServer((req, res) => {
         checks++;
       }
     }
-    await page.setViewportSize({ width: 1440, height: 1000 });
-    for (const key of ['auth', 'affiliate', 'fluxgate']) {
+    for (const [vw, variant] of [[1440, 'wide'], [390, 'narrow']]) await page.setViewportSize({ width: vw, height: 1000 }).then(async () => {
+    for (const key of ['auth', 'affiliate', 'fluxgate', 'terms', 'platform', 'login', 'edoc', 'waf']) {
       await page.goto(`${origin}/work/${key}.html`);
       await page.evaluate(() => document.fonts.ready);
-      const diagram = page.locator('.diagram-figure > svg');
+      for (const [n, diagram] of (await page.locator(`.diagram-figure > svg.diagram-${variant}`).all()).entries()) {
+      assert(await diagram.isVisible(), `${key}: ${variant} diagram visible at ${vw}`);
+      const shown = await diagram.evaluate(svg => svg.getBoundingClientRect().width / svg.viewBox.baseVal.width);
+      assert(shown > 0.85, `${key}: ${variant} diagram scaled to ${shown.toFixed(2)} at ${vw}`);
       const problems = await diagram.evaluate(svg => {
         const texts = [...svg.querySelectorAll('text')].map(el => ({ text: el.textContent, box: el.getBBox() }));
         const viewport = svg.viewBox.baseVal;
@@ -107,9 +110,11 @@ const server = http.createServer((req, res) => {
         }
         return errors;
       });
-      assert.deepEqual(problems, [], `${key}: diagram labels`);
-      await diagram.screenshot({ path: path.join(output, `diagram-${key}.png`) });
+      assert.deepEqual(problems, [], `${key}: ${variant} diagram labels`);
+      await diagram.screenshot({ path: path.join(output, `diagram-${key}-${n}-${variant}.png`) });
+      }
     }
+    });
     await page.goto(origin);
     await page.screenshot({ path: path.join(output, 'desktop.png'), fullPage: true });
     await page.screenshot({ path: path.join(output, 'desktop-first-screen.png') });
@@ -121,7 +126,7 @@ const server = http.createServer((req, res) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.getByRole('link', { name: 'OpenFluxGate', exact: true }).click();
     assert.equal(await page.locator('h1').textContent(), 'OpenFluxGate');
-    await page.locator('.diagram-figure svg').click();
+    await page.locator('.diagram-figure svg.diagram-narrow').first().click();
     await page.waitForTimeout(100);
     assert(await page.locator('dialog.lightbox').evaluate(d => d.open), 'lightbox opens on diagram click');
     const t0 = await page.locator('.lightbox-content').evaluate(el => el.style.transform);

@@ -12,7 +12,8 @@ const allowed = new Set([
   ...['affiliate', 'auth', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].map(k => `work/${k}.html`),
   ...['compact', 'simple', 'modern', 'classic'].map(k => `resume/${k}.pdf`),
   ...['avatar.png', 'fluxgate-repository.png', 'mark.svg'].map(k => `assets/${k}`),
-  ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs'].map(k => `tools/${k}`),
+  ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs', 'make-diagrams.mjs'].map(k => `tools/${k}`),
+  ...['affiliate', 'auth', 'auth-recovery', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].flatMap(k => ['wide', 'narrow'].map(v => `tools/diagrams/${k}-${v}.svg`)),
   'tests/content.test.mjs', 'tests/career-facts.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs',
 ]);
 
