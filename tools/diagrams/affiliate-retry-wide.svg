@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="516" viewBox="0 0 700 516" role="img" aria-labelledby="affiliate-retry-wide-title affiliate-retry-wide-desc">
+<title id="affiliate-retry-wide-title">쿠폰 발급 실패를 이력으로 남기고 다시 처리하는 흐름</title><desc id="affiliate-retry-wide-desc">인증과 동의가 이미 완료된 뒤의 별도 쿠폰 발급 흐름입니다. 쿠폰 발급 요청이 성공하면 완료합니다. 실패하면 실패 이력을 남기고 재시도하며, 재시도 결과는 성공하거나 실패 상태로 남을 수 있습니다. 모든 실패의 자동 복구, 외부 발급의 멱등성이나 정확히 한 번 실행, 분산 원자성을 보장한다는 의미가 아닙니다.</desc>
+<defs>
+<marker id="affiliate-retry-wide-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#192e42" stroke-width="1.5"/></marker>
+<marker id="affiliate-retry-wide-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker>
+<marker id="affiliate-retry-wide-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#157458" stroke-width="1.5"/></marker>
+<marker id="affiliate-retry-wide-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#b33c42" stroke-width="1.5"/></marker>
+<style>text{font-family:&#39;Pretendard&#39;,&#39;Apple SD Gothic Neo&#39;,&#39;Noto Sans KR&#39;,sans-serif;letter-spacing:-.4px;fill:#192e42}</style></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="26" y="32" font-size="18" style="fill:#52677c" font-weight="600" text-anchor="start">인증·동의 완료는 유지 · 쿠폰은 별도 처리</text>
+<rect x="26" y="128" width="180" height="66" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="116.0" y="167.0" font-size="18" style="fill:#285fbc" font-weight="700" text-anchor="middle">쿠폰 발급 요청</text>
+<path d="M206 145H238V98H500" fill="none" stroke="#157458" stroke-width="1.7" marker-end="url(#affiliate-retry-wide-green)"/>
+<text x="324" y="85" font-size="17" style="fill:#157458" font-weight="600" text-anchor="middle">성공</text>
+<rect x="504" y="66" width="170" height="64" rx="6" fill="#f1f8f5" stroke="#157458" stroke-width="1.5"/>
+<text x="589.0" y="104.0" font-size="18" style="fill:#157458" font-weight="700" text-anchor="middle">발급 완료</text>
+<path d="M206 178H238V270H270" fill="none" stroke="#b33c42" stroke-width="1.7" marker-end="url(#affiliate-retry-wide-red)"/>
+<text x="246" y="224" font-size="17" style="fill:#b33c42" font-weight="600" text-anchor="start">실패</text>
+<rect x="274" y="238" width="170" height="64" rx="6" fill="#fbeef0" stroke="#b33c42" stroke-width="1.5"/>
+<text x="359.0" y="276.0" font-size="18" style="fill:#b33c42" font-weight="700" text-anchor="middle">실패 이력</text>
+<path d="M444 270H496" fill="none" stroke="#192e42" stroke-width="1.7" marker-end="url(#affiliate-retry-wide-ink)"/>
+<rect x="500" y="238" width="174" height="64" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="587.0" y="276.0" font-size="18" style="fill:#285fbc" font-weight="700" text-anchor="middle">재시도</text>
+<path d="M587 238V134" fill="none" stroke="#157458" stroke-width="1.7" marker-end="url(#affiliate-retry-wide-green)"/>
+<text x="600" y="186" font-size="17" style="fill:#157458" font-weight="600" text-anchor="start">성공</text>
+<path d="M587 302V362" fill="none" stroke="#b33c42" stroke-width="1.7" marker-end="url(#affiliate-retry-wide-red)"/>
+<text x="600" y="340" font-size="17" style="fill:#b33c42" font-weight="600" text-anchor="start">실패</text>
+<rect x="500" y="366" width="174" height="64" rx="6" fill="#fbeef0" stroke="#b33c42" stroke-width="1.5"/>
+<text x="587.0" y="404.0" font-size="18" style="fill:#b33c42" font-weight="700" text-anchor="middle">실패 상태 유지</text>
+<path d="M14 458H686" stroke="#cdd8e3"/>
+<text x="26" y="490" font-size="17" style="fill:#52677c" font-weight="500" text-anchor="start">재시도 결과에 따라 완료하거나 실패 상태로 남습니다.</text>
+</svg>

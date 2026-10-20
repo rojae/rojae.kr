@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="438" viewBox="0 0 700 438" role="img" aria-labelledby="affiliate-extension-wide-title affiliate-extension-wide-desc">
+<title id="affiliate-extension-wide-title">제휴사 설정을 바꿔 공통 연동 기능을 재사용하는 설계</title><desc id="affiliate-extension-wide-desc">실제 운영은 한 제휴사입니다. 같은 명세의 제휴사를 추가할 때 제휴사 설정을 통해 공통 동의 처리, 처리 이력, 운영 기능을 재사용하도록 설계한 확장 지점입니다. 여러 제휴사를 실제 운영했다는 뜻이 아니며 다른 명세는 추가 구현이 필요합니다.</desc>
+<defs>
+<marker id="affiliate-extension-wide-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#192e42" stroke-width="1.5"/></marker>
+<marker id="affiliate-extension-wide-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker>
+<marker id="affiliate-extension-wide-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#157458" stroke-width="1.5"/></marker>
+<marker id="affiliate-extension-wide-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#b33c42" stroke-width="1.5"/></marker>
+<style>text{font-family:&#39;Pretendard&#39;,&#39;Apple SD Gothic Neo&#39;,&#39;Noto Sans KR&#39;,sans-serif;letter-spacing:-.4px;fill:#192e42}</style></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<rect x="26" y="36" width="252" height="64" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="152.0" y="74.0" font-size="18" style="fill:#285fbc" font-weight="700" text-anchor="middle">같은 명세의 제휴사 추가</text>
+<text x="304" y="75" font-size="17" style="fill:#285fbc" font-weight="600" text-anchor="start">설계한 확장 지점</text>
+<path d="M152 100V150" fill="none" stroke="#285fbc" stroke-width="1.7" stroke-dasharray="5 5" marker-end="url(#affiliate-extension-wide-blue)"/>
+<rect x="26" y="154" width="252" height="64" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="152.0" y="192.0" font-size="18" style="fill:#192e42" font-weight="700" text-anchor="middle">제휴사 설정</text>
+<path d="M278 186H316" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-extension-wide-blue)"/>
+<rect x="320" y="154" width="188" height="64" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="414.0" y="192.0" font-size="18" style="fill:#285fbc" font-weight="700" text-anchor="middle">공통 연동 기능</text>
+<path d="M508 186H536V94H558" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-extension-wide-blue)"/>
+<path d="M508 186H558" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-extension-wide-blue)"/>
+<path d="M536 186V278H558" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-extension-wide-blue)"/>
+<rect x="562" y="62" width="112" height="64" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="618.0" y="100.0" font-size="18" style="fill:#192e42" font-weight="700" text-anchor="middle">동의 처리</text>
+<rect x="562" y="154" width="112" height="64" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="618.0" y="192.0" font-size="18" style="fill:#192e42" font-weight="700" text-anchor="middle">처리 이력</text>
+<rect x="562" y="246" width="112" height="64" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="618.0" y="284.0" font-size="18" style="fill:#192e42" font-weight="700" text-anchor="middle">운영 기능</text>
+<path d="M14 348H686" stroke="#cdd8e3"/>
+<text x="26" y="382" font-size="18" style="fill:#192e42" font-weight="650" text-anchor="start">실제 운영은 한 제휴사입니다.</text>
+<text x="26" y="412" font-size="17" style="fill:#52677c" font-weight="500" text-anchor="start">같은 명세는 공통 기능 재사용 · 다른 명세는 추가 구현 필요</text>
+</svg>

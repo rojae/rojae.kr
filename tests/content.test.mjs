@@ -3,11 +3,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { caseStudies, resume, experience } from '../tools/content.mjs';
 
-test('consent metrics use the confirmed daily average, not an invented first month', () => {
+test('public affiliate copy and shared summaries omit private operating details', () => {
   const affiliate = caseStudies.find(c => c.key === 'affiliate');
-  const text = JSON.stringify({ affiliate, resume, experience });
-  assert.match(text, /일 평균 약 500명/);
-  assert.doesNotMatch(text, /첫 달|200명|최대 500명/);
+  const text = JSON.stringify({
+    affiliate,
+    details: resume.projectDetails.affiliate,
+    highlights: resume.highlights,
+    experience: experience.flatMap(co => co.projects.filter(p => p.ref === 'affiliate')),
+  });
+  assert.doesNotMatch(text, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|CI|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Gateway|Nginx|Ingress|방화벽|member-be|member-batch|500명/);
+  const html = fs.readFileSync(new URL('../work/affiliate.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(html, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|\bCI\b|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Gateway|Nginx|Ingress|방화벽|member-be|member-batch|500명/);
 });
 
 test('public copy does not expose internal security gaps or editorial self-commentary', () => {
@@ -39,7 +45,7 @@ test('case studies lead with the problem while retaining all section anchors', (
 });
 
 test('architecture explains the whole system before detailed decisions', () => {
-  for (const key of ['auth', 'terms', 'fluxgate']) {
+  for (const key of ['affiliate', 'auth', 'terms', 'fluxgate']) {
     const html = fs.readFileSync(new URL(`../work/${key}.html`, import.meta.url), 'utf8');
     const sections = [...html.matchAll(/<section id="([^"]+)" class="case-section">([\s\S]*?)<\/section>/g)];
     assert.deepEqual(sections.slice(0, 3).map(s => s[1]), ['s0', 'architecture', 's1'], key);

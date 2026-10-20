@@ -18,7 +18,7 @@ Keep the white/charcoal foundation, blue links, green outcomes, real portrait, e
 - Default PDF: two deliberately balanced pages. Page one holds the current employer's selected projects; page two holds supporting experience, open source and skills.
 
 ## Content constraints
-Use only supported facts. Keep daily affiliate consent at approximately 500 people; this is not API throughput. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication, service integration, and measured production outcomes are distinct. User-confirmed FluxGate integration does not establish production performance.
+Use only supported facts. Keep affiliate examples conceptual: omit partner identity, volume, schedule, transport, eligibility, commercial terms and network specifics from public copy and diagrams. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication, service integration, and measured production outcomes are distinct. User-confirmed FluxGate integration does not establish production performance.
 
 ## Components and accessibility
 Reuse project cards, lists, native links/details, diagrams and the existing lightbox. Keep text selectable, headings ordered, keyboard focus visible and touch controls reachable. No new dependencies. Preserve PDF download formats, print, email copy and no-JS navigation.
@@ -33,5 +33,5 @@ Reuse project cards, lists, native links/details, diagrams and the existing ligh
 ## Open evidence questions
 - Comparison periods and aggregation basis for authentication cost and CS reductions are not documented. Omit the percentages until those comparisons can be supported.
 - Authentication has five types, with ID/password and social authentication grouped under information authentication. The UUID session and administrator-defined validity are shared across types.
-- Affiliate Gateway route and Nginx entry separation are user-confirmed design decisions for security policy, monitoring and future partners; the diagram does not claim a verified firewall topology.
+- Affiliate diagrams explain shared functions, transaction boundaries, coupon retry and bundle aggregation. They do not expose internal topology or partner contract details.
 - The public Studio demo returned 404 during this review. Use an actual, inspectable screenshot only when available; do not fabricate one.

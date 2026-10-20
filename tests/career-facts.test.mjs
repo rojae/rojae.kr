@@ -10,11 +10,17 @@ test('public authentication describes all five types and the shared session', ()
   assert.doesNotMatch(text, /6개|여섯 가지|전자쿠폰|NICE|90%|1\/3|핵심 구현/);
 });
 
-test('affiliate explains partner routing and distinguishes duplicate bundles from completion', () => {
+test('affiliate preserves design decisions while abstracting the partner contract', () => {
   const affiliate = caseStudies.find(project => project.key === 'affiliate');
-  const text = JSON.stringify([affiliate, resume.projectDetails.affiliate, diagrams.affiliate()]);
-  for (const fact of ['Gateway', 'Nginx', '방화벽', '보안 정책', '모니터링', '업체', '일 평균 약 500명', '수신 묶음 수']) assert(text.includes(fact), fact);
-  assert.doesNotMatch(text, /마지막 묶음|무유실|원천 차단|자동 재시도|누적 약 1만/);
+  const text = JSON.stringify([affiliate, resume.projectDetails.affiliate,
+    ...Object.entries(diagrams).filter(([key]) => key.startsWith('affiliate')).map(([, render]) => render())]);
+  for (const fact of ['같은 명세', '한 제휴사', '추가 구현', '실패 기록', '재처리', '모니터링', '수신 묶음 수', '잠금 대기']) assert(text.includes(fact), fact);
+  assert.doesNotMatch(text, /무유실|원천 차단|자동 재시도|누적 약 1만/);
+  for (const key of ['affiliate-architecture', 'affiliate-extension', 'affiliate-retry', 'affiliate-bundles']) {
+    const svg = diagrams[key]();
+    assert.doesNotMatch(svg, /삼성|09:00|9시|일배치|월배치|SFTP|\bAPI\b|\bCI\b|마케팅|정산|단가|Ingress|Gateway|member-be|member-batch/, key);
+    assert.equal((svg.match(/<svg\b/g) || []).length, 2, key);
+  }
 });
 
 test('FluxGate shows a separate HTTP service and Studio components', () => {
