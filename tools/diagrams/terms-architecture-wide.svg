@@ -44,5 +44,5 @@
 <text x="522.0" y="594" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">편집용 JSON</text>
 <text x="522.0" y="627" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">공개용 HTML</text>
 </g>
-<text x="350" y="690" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">사이트별 테이블·시퀀스 차이는 네이밍 전략과 설정으로 처리</text>
+<text x="350" y="690" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">사이트별 이름 차이 → Hibernate Naming Strategy · config</text>
 </svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="654" viewBox="0 0 700 654" role="img" aria-labelledby="terms-sites-wide-title terms-sites-wide-desc">
+<title id="terms-sites-wide-title">공통 코드는 유지하고, 사이트별 이름은 설정으로 매핑</title><desc id="terms-sites-wide-desc">공통 약관 서비스의 JPA 모델과 Querydsl 조회를 재사용합니다. 사이트별 profile과 config에 있는 접두사 규칙을 Hibernate Naming Strategy에서 적용해 각 사이트의 기존 테이블과 시퀀스 이름에 매핑합니다. 세 갈래는 지마켓, 옥션, ESMPLUS 설정을 각각 적용했을 때의 매핑 결과를 비교한 것입니다. 실제 테이블 이름, 데이터베이스 수, 서버 배치나 요청별 라우팅을 나타내는 그림은 아닙니다.</desc>
+<defs>
+<marker id="terms-sites-wide-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker>
+<marker id="terms-sites-wide-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="#157458" stroke-width="1.5"/></marker>
+<marker id="terms-sites-wide-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="#52677c" stroke-width="1.5"/></marker>
+<style>text{font-family:&#39;Pretendard&#39;,&#39;Apple SD Gothic Neo&#39;,&#39;Noto Sans KR&#39;,sans-serif;letter-spacing:-.4px}</style></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="26" y="30" font-size="18" fill="#285fbc" font-weight="700" text-anchor="start">공통으로 유지하는 코드</text>
+<text x="400" y="30" font-size="18" fill="#157458" font-weight="700" text-anchor="start">사이트마다 바꾸는 설정</text>
+<g class="component"><rect class="node" x="26" y="53" width="310" height="107" rx="7" fill="#edf3fd" stroke="#285fbc" stroke-width="1.4"/>
+<text x="181.0" y="86" font-size="21" fill="#285fbc" font-weight="750" text-anchor="middle">공통 약관 서비스 코드</text>
+<text x="181.0" y="129" font-size="19" fill="#192e42" font-weight="500" text-anchor="middle">JPA Entity · Querydsl</text>
+</g>
+<g class="component"><rect class="node" x="394" y="53" width="280" height="107" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.4"/>
+<text x="534.0" y="86" font-size="21" fill="#157458" font-weight="750" text-anchor="middle">profile · config</text>
+<text x="534.0" y="129" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">테이블·시퀀스 접두사 규칙</text>
+</g>
+<path d="M181 160 V196 H250 V234" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#terms-sites-wide-blue)"/>
+<text x="156" y="193" font-size="16" fill="#285fbc" font-weight="650" text-anchor="end">모델 이름</text>
+<path d="M534 160 V196 H450 V234" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#terms-sites-wide-green)"/>
+<text x="558" y="193" font-size="16" fill="#157458" font-weight="650" text-anchor="start">이름 규칙</text>
+<g class="component"><rect class="node" x="70" y="239" width="560" height="107" rx="7" fill="#edf3fd" stroke="#285fbc" stroke-width="1.4"/>
+<text x="350.0" y="275" font-size="23" fill="#285fbc" font-weight="750" text-anchor="middle">Hibernate Naming Strategy</text>
+<text x="350.0" y="317" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">설정의 규칙을 적용해 테이블·시퀀스 이름 매핑</text>
+</g>
+<path d="M350 346 V395 H120" fill="none" stroke="#285fbc" stroke-width="1.6"/>
+<path d="M350 395 H580" fill="none" stroke="#285fbc" stroke-width="1.6"/>
+<text x="26" y="382" font-size="17" fill="#52677c" font-weight="650" text-anchor="start">사이트별 설정의 적용 결과</text>
+<path d="M120 395 V426" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#terms-sites-wide-blue)"/>
+<g class="component"><rect class="node" x="24" y="431" width="192" height="121" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.4"/>
+<text x="120.0" y="463" font-size="21" fill="#157458" font-weight="750" text-anchor="middle">G마켓</text>
+<text x="120.0" y="498" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">테이블·시퀀스</text>
+<text x="120.0" y="529" font-size="17" fill="#52677c" font-weight="500" text-anchor="middle">기존 이름에 매핑</text>
+</g>
+<path d="M350 395 V426" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#terms-sites-wide-blue)"/>
+<g class="component"><rect class="node" x="254" y="431" width="192" height="121" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.4"/>
+<text x="350.0" y="463" font-size="21" fill="#157458" font-weight="750" text-anchor="middle">옥션</text>
+<text x="350.0" y="498" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">테이블·시퀀스</text>
+<text x="350.0" y="529" font-size="17" fill="#52677c" font-weight="500" text-anchor="middle">기존 이름에 매핑</text>
+</g>
+<path d="M580 395 V426" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#terms-sites-wide-blue)"/>
+<g class="component"><rect class="node" x="484" y="431" width="192" height="121" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.4"/>
+<text x="580.0" y="463" font-size="21" fill="#157458" font-weight="750" text-anchor="middle">ESMPLUS</text>
+<text x="580.0" y="498" font-size="18" fill="#192e42" font-weight="500" text-anchor="middle">테이블·시퀀스</text>
+<text x="580.0" y="529" font-size="17" fill="#52677c" font-weight="500" text-anchor="middle">기존 이름에 매핑</text>
+</g>
+<path d="M16 582 H684" fill="none" stroke="#cdd8e3" stroke-width="1.6"/>
+<text x="350" y="614" font-size="19" fill="#157458" font-weight="700" text-anchor="middle">업무 코드 재사용 · 이름 차이는 설정으로 대응</text>
+<text x="350" y="642" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">사이트별 설정을 각각 적용한 매핑 결과의 비교</text>
+</svg>

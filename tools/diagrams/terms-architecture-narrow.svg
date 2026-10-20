@@ -49,6 +49,6 @@
 <text x="244.0" y="641" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">편집용 JSON</text>
 <text x="244.0" y="680" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">공개용 HTML</text>
 </g>
-<text x="165" y="755" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">사이트별 테이블·시퀀스 차이</text>
-<text x="165" y="781" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">네이밍 전략과 설정으로 처리</text>
+<text x="165" y="755" font-size="17" fill="#52677c" font-weight="500" text-anchor="middle">Hibernate Naming Strategy</text>
+<text x="165" y="781" font-size="16" fill="#52677c" font-weight="500" text-anchor="middle">설정으로 사이트별 이름 차이 처리</text>
 </svg>
