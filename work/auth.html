@@ -32,7 +32,7 @@
     <div class="container case-layout">
       <aside class="toc" aria-label="목차">
         <a class="breadcrumb" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
-        <ol><li><a href="#s0">인증 하나를 바꾸려면 여러 곳을 고쳐야 했다</a></li><li><a href="#architecture">전체 아키텍처</a></li><li><a href="#s1">인증을 모듈로, 설정은 어드민으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">장애 횟수 갱신과 상태 알림의 역할을 나누다</a></li><li><a href="#s4">장애 시 비율 조정과 TTL 재시도</a></li><li><a href="#s5">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s6">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구현 범위 · 사용 기술</a></li><li><a href="#closing">돌아보면</a></li></ol>
+        <ol><li><a href="#s0">80여 개 연동 코드에서 공통 명세를 찾다</a></li><li><a href="#architecture">전체 아키텍처</a></li><li><a href="#s1">업무 판단은 호출 서비스에, 인증 수단은 설정으로</a></li><li><a href="#s2">운영자가 손댈 수 있는 인증</a></li><li><a href="#s3">장애 횟수 갱신과 상태 알림의 역할을 나누다</a></li><li><a href="#s4">장애 시 비율 조정과 TTL 재시도</a></li><li><a href="#s5">다섯 인증 유형이 공유하는 세션</a></li><li><a href="#s6">연동부터 운영까지 맡은 범위</a></li><li><a href="#scope">구현 범위 · 사용 기술</a></li><li><a href="#closing">돌아보면</a></li></ol>
       </aside>
       <article class="case-body">
         <a class="breadcrumb mobile-only" href="../index.html#work"><span aria-hidden="true">←</span> 프로젝트</a>
@@ -50,24 +50,182 @@
 
 
         <section id="s0" class="case-section">
-          <h2>인증 하나를 바꾸려면 여러 곳을 고쳐야 했다</h2>
-          <p>사용자에게는 같은 본인인증인데, 내부의 구현은 서비스마다 달랐습니다. 지마켓과 옥션에 흩어진 인증 로직을 바꾸려면 여러 곳을 함께 수정해야 했습니다. 같은 기능을 계속 따로 관리하는 부담이 통합의 출발점이었습니다.</p>
-          <p>운영에서도 선택지가 필요했습니다. 특정 인증업체 한 곳에 의존하면 장애 시 다른 업체로 우회하거나 비용을 고려해 요청을 나누기 어려웠습니다. 공통 인증 기능을 한곳에서 관리하면서, 운영자가 업체와 요청 비중을 배포 없이 조정할 수 있게 만들고자 했습니다.</p>
-          <p>소유인증, 본인인증, 계좌인증, 정보인증, 기업인증을 하나의 서비스로 묶었습니다. 정보인증에는 아이디·비밀번호와 소셜인증이 포함됩니다. 3인 팀에서 프로젝트를 주도하며 인증 모듈부터 외부 업체 연동, 공통 세션과 관리자 기능까지 전체를 구현했습니다.</p>
+          <h2>80여 개 연동 코드에서 공통 명세를 찾다</h2>
+          <p>소유인증, 본인인증, 계좌인증이 따로 운영되고, 호출하는 클라이언트마다 필요한 정보와 처리 로직도 달랐습니다. 각 연동부가 인증사와 직접 통신하고 엔드포인트도 나뉘어 있어, 인증 기능을 바꾸면 여러 곳을 함께 살펴야 했습니다.</p>
+          <p>지마켓·옥션·ESMPLUS에서 사용 목적별로 발급한 80여 개 연동 코드를 취합해 공통 명세를 설계했습니다. 서로 달랐던 인증 엔드포인트를 공통 API로 통합하고, 각 팀에 명세에 맞춘 연동 개선을 요청했습니다.</p>
+          <p>통합은 2차인증을 위한 소유인증에서 시작했습니다. 이후 본인인증을 추가하고 기존 계좌인증을 공통 인터페이스로 감싸는 범위까지 넓혔습니다. 3인 팀에서 프로젝트를 주도하며 다섯 인증 유형의 모듈, 외부 업체 연동, 공통 세션과 관리자 기능까지 전체를 구현했습니다.</p>
         </section>
         <section id="architecture" class="case-section">
           <h2>전체 아키텍처</h2>
-          <p>세 사이트의 요청을 한 서비스에서 받고, 인증 유형별 처리와 공통 세션·운영 설정을 분리했습니다. 아래는 서비스 내부의 모듈과 외부 연동 관계입니다.</p>
-          <figure class="flow-figure diagram-figure"><p class="diagram-title">다섯 인증 모듈과 공통 세션을 묶은 통합인증 서비스 전체 구조</p><svg xmlns="http://www.w3.org/2000/svg" class="diagram diagram-wide" style="max-width:700px" viewBox="0 0 700 790" role="img" aria-labelledby="dg-auth-architecture-wide-auth-architecture-wide-title dg-auth-architecture-wide-auth-architecture-wide-desc"><title id="dg-auth-architecture-wide-auth-architecture-wide-title">다섯 인증 모듈과 공통 세션을 묶은 통합인증 서비스 전체 구조</title><desc id="dg-auth-architecture-wide-auth-architecture-wide-desc">지마켓, 옥션, ESMPLUS가 하나의 통합인증 서비스에 진입합니다. 도메인 정책으로 인증 유형을 판단하고, 다섯 내부 모듈은 UUID 조회와 관리자 설정 유효기간에 따른 세션 활성 여부 확인을 공통으로 사용합니다. 소유인증, 본인인증, 계좌인증, 정보인증, 기업인증은 별도 마이크로서비스가 아닌 내부 모듈입니다. 외부 연동이 필요한 인증은 업체별 신규 요청 비율에 따라 외부 인증업체를 선택합니다. 인증 관리자는 도메인 연동, 인증업체 비율과 세션 유효기간을 관리합니다. 실선은 요청 처리, 점선은 관리 설정입니다.</desc><defs><marker id="dg-auth-architecture-wide-auth-architecture-wide-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-blue)" stroke-width="1.5"/></marker><marker id="dg-auth-architecture-wide-auth-architecture-wide-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-green)" stroke-width="1.5"/></marker></defs><rect class="service-boundary" x="20" y="105" width="660" height="430" rx="7" fill="var(--dg-soft-blue)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="36" y="131" font-size="17" fill="var(--dg-blue)" font-weight="700" text-anchor="start">통합인증 서비스</text><g class="component"><rect class="node" x="30" y="18" width="200" height="56" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="130" y="45" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">지마켓</text></g><path class="route" d="M130 74 V90" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><g class="component"><rect class="node" x="250" y="18" width="200" height="56" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="350" y="45" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">옥션</text></g><path class="route" d="M350 74 V90" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><g class="component"><rect class="node" x="470" y="18" width="200" height="56" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="570" y="45" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">ESMPLUS</text></g><path class="route" d="M570 74 V90" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M130 90 H570" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M280 90 V140" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="30" y="145" width="300" height="72" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="180" y="172" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">공통 API · 도메인 정책</text><text x="180" y="196" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">도메인 · 인증 유형 판단</text></g><g class="component"><rect class="node" x="370" y="145" width="300" height="72" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/><text x="520" y="172" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">공통 UUID 세션</text><text x="520" y="196" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">조회 · 유효기간 · 활성 여부</text></g><path class="route" d="M330 181 H365" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><path class="route" d="M520 217 V242" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M87 242 H607" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><text x="36" y="235" font-size="16" fill="var(--dg-blue)" font-weight="650" text-anchor="start">인증 유형별 처리 · 공통 세션 사용</text><path class="route" d="M87 242 V275" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="30" y="280" width="114" height="102" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="87" y="307" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">소유인증</text><text x="87" y="331" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰</text><text x="87" y="353" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">이메일</text></g><path class="route" d="M87 382 V410" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M217 242 V275" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="160" y="280" width="114" height="102" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="217" y="307" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">본인인증</text><text x="217" y="331" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰</text><text x="217" y="353" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">본인확인</text></g><path class="route" d="M217 382 V410" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M347 242 V275" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="290" y="280" width="114" height="102" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="347" y="307" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">계좌인증</text><text x="347" y="331" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">1원인증</text><text x="347" y="353" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">계좌주명</text></g><path class="route" d="M347 382 V410" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M477 242 V275" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="420" y="280" width="114" height="102" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="477" y="307" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">정보인증</text><text x="477" y="331" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">ID·비밀번호</text><text x="477" y="353" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">소셜인증</text></g><path class="route" d="M477 382 V410" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M607 242 V275" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="550" y="280" width="114" height="102" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="607" y="307" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">기업인증</text><text x="607" y="331" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사업자확인</text></g><path class="route" d="M607 382 V410" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M87 410 H607" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M350 410 V438" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="100" y="443" width="500" height="72" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="350" y="470" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">인증업체 선택 · 신규 요청 비율 적용</text><text x="350" y="494" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">외부 연동이 필요한 인증만 업체 선택</text></g><path class="route" d="M350 515 V548" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/><g class="component"><rect class="node" x="100" y="553" width="500" height="70" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="350" y="580" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 인증업체</text><text x="350" y="604" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">본인확인 · 계좌확인 · 소셜인증 등</text></g><g class="component"><rect class="node" x="30" y="690" width="640" height="80" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/><text x="350" y="717" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">인증 관리자</text><text x="350" y="741" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">도메인 연동 · 업체별 비율 · 세션 유효기간 관리</text></g><path class="route" d="M670 730 H690 V138 H300 V140" fill="none" stroke="var(--dg-green)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-green)"/><text x="30" y="673" font-size="15" fill="var(--dg-muted)" font-weight="500" text-anchor="start">실선은 요청 처리 · 점선은 관리 설정</text></svg><svg xmlns="http://www.w3.org/2000/svg" class="diagram diagram-narrow" style="max-width:330px" viewBox="0 0 330 1305" role="img" aria-labelledby="dg-auth-architecture-narrow-auth-architecture-narrow-title dg-auth-architecture-narrow-auth-architecture-narrow-desc"><title id="dg-auth-architecture-narrow-auth-architecture-narrow-title">다섯 인증 모듈과 공통 세션을 묶은 통합인증 서비스 전체 구조</title><desc id="dg-auth-architecture-narrow-auth-architecture-narrow-desc">지마켓, 옥션, ESMPLUS가 하나의 통합인증 서비스에 진입합니다. 도메인 정책으로 인증 유형을 판단하고, 다섯 내부 모듈은 UUID 조회와 관리자 설정 유효기간에 따른 세션 활성 여부 확인을 공통으로 사용합니다. 소유인증, 본인인증, 계좌인증, 정보인증, 기업인증은 별도 마이크로서비스가 아닌 내부 모듈입니다. 외부 연동이 필요한 인증은 업체별 신규 요청 비율에 따라 외부 인증업체를 선택합니다. 인증 관리자는 도메인 연동, 인증업체 비율과 세션 유효기간을 관리합니다. 실선은 요청 처리, 점선은 관리 설정입니다.</desc><defs><marker id="dg-auth-architecture-narrow-auth-architecture-narrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-blue)" stroke-width="1.5"/></marker><marker id="dg-auth-architecture-narrow-auth-architecture-narrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-green)" stroke-width="1.5"/></marker></defs><g class="component"><rect class="node" x="16" y="18" width="298" height="68" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="165" y="45" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">지마켓 · 옥션 · ESMPLUS</text><text x="165" y="69" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">연동 서비스</text></g><rect class="service-boundary" x="10" y="115" width="310" height="870" rx="7" fill="var(--dg-soft-blue)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="26" y="143" font-size="18" fill="var(--dg-blue)" font-weight="700" text-anchor="start">통합인증 서비스</text><path class="route" d="M280 86 V160" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="26" y="165" width="278" height="76" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="192" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">공통 API · 도메인 정책</text><text x="165" y="216" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">도메인 · 인증 유형 판단</text></g><path class="route" d="M165 241 V273" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="26" y="278" width="278" height="86" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/><text x="165" y="305" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">공통 UUID 세션</text><text x="165" y="329" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">조회 · 유효기간 · 활성 여부</text></g><path class="route" d="M165 364 V390 H28 V804" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><text x="50" y="410" font-size="16" fill="var(--dg-blue)" font-weight="650" text-anchor="start">한 서비스 안의 다섯 인증 모듈</text><path class="route" d="M28 460 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="50" y="426" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="453" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">소유인증</text><text x="165" y="477" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰 · 이메일</text></g><path class="route" d="M280 460 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M28 546 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="50" y="512" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="539" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">본인인증</text><text x="165" y="563" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰 · 본인확인</text></g><path class="route" d="M280 546 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M28 632 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="50" y="598" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="625" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">계좌인증</text><text x="165" y="649" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">1원인증 · 계좌주명</text></g><path class="route" d="M280 632 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M28 718 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="50" y="684" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="711" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">정보인증</text><text x="165" y="735" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">ID·비밀번호 · 소셜인증</text></g><path class="route" d="M280 718 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M28 804 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="50" y="770" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="797" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">기업인증</text><text x="165" y="821" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사업자확인</text></g><path class="route" d="M280 804 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/><path class="route" d="M302 460 V848 H165 V875" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="26" y="880" width="278" height="90" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/><text x="165" y="907" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">인증업체 선택</text><text x="165" y="931" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">신규 요청에 업체별 비율 적용</text><text x="165" y="953" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">외부 연동이 필요한 인증만</text></g><path class="route" d="M165 970 V1000" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/><g class="component"><rect class="node" x="26" y="1005" width="278" height="90" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/><text x="165" y="1032" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 인증업체</text><text x="165" y="1056" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">본인확인 · 계좌확인</text><text x="165" y="1078" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">소셜인증 등</text></g><g class="component"><rect class="node" x="26" y="1174" width="278" height="112" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/><text x="165" y="1201" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">인증 관리자</text><text x="165" y="1225" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">도메인별 연동 설정</text><text x="165" y="1247" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">업체별 신규 요청 비율</text><text x="165" y="1269" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">공통 세션 유효기간</text></g><path class="route" d="M304 1230 H324 V203 H309" fill="none" stroke="var(--dg-green)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-green)"/><text x="26" y="1156" font-size="15" fill="var(--dg-muted)" font-weight="500" text-anchor="start">실선 요청 처리 · 점선 관리 설정</text></svg><figcaption>지마켓·옥션·ESMPLUS의 요청은 도메인 정책과 인증 유형에 따라 처리됩니다. 외부 업체가 필요한 인증만 업체 선택 경로로 이어지고, UUID 세션과 관리자 설정은 공통으로 사용합니다.</figcaption></figure>
+          <p>호출 서비스가 회원 유형과 업무 조건을 판단해 유입코드·목적코드로 요청합니다. 통합인증은 해당 코드에 연결된 어드민 설정으로 인증을 수행하며, 회원 서비스나 개별 도메인의 업무 로직에 의존하지 않습니다.</p>
+          <figure class="flow-figure diagram-figure"><p class="diagram-title">호출 서비스의 업무 판단과 분리한 통합인증 구조</p><svg xmlns="http://www.w3.org/2000/svg" class="diagram diagram-wide" style="max-width:700px" viewBox="0 0 700 890" role="img" aria-labelledby="dg-auth-architecture-wide-auth-architecture-wide-title dg-auth-architecture-wide-auth-architecture-wide-desc"><title id="dg-auth-architecture-wide-auth-architecture-wide-title">호출 서비스의 업무 판단과 분리한 통합인증 구조</title><desc id="dg-auth-architecture-wide-auth-architecture-wide-desc">호출 서비스가 개인과 사업자 등 회원 유형과 업무 조건을 판단하고 유입코드와 목적코드로 요청합니다. 통합인증은 회원 서비스나 개별 도메인 업무 로직에 의존하지 않고 코드에 연결된 어드민 설정으로 인증을 수행합니다. 사이트, 유입코드, 인증 목적은 설정 관리 체계입니다. 다섯 내부 인증 모듈은 UUID 세션을 공통으로 사용합니다. 외부 연동이 필요한 인증은 인증업체로 이어지며, 휴대폰 본인인증과 계좌인증은 업체별 신규 요청 비중을 조정합니다. 실선은 요청 처리, 점선은 관리 설정입니다.</desc><defs>
+<marker id="dg-auth-architecture-wide-auth-architecture-wide-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-blue)" stroke-width="1.5"/></marker>
+<marker id="dg-auth-architecture-wide-auth-architecture-wide-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-green)" stroke-width="1.5"/></marker>
+</defs>
+<g class="component"><rect class="node" x="30" y="18" width="640" height="86" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="350.0" y="47" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">호출 서비스 · 지마켓 · 옥션 · ESMPLUS</text>
+<text x="350.0" y="73" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">회원 유형·업무 조건 판단</text>
+</g>
+<rect class="service-boundary" x="20" y="150" width="660" height="450" rx="7" fill="var(--dg-soft-blue)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="36" y="176" font-size="18" fill="var(--dg-blue)" font-weight="700" text-anchor="start">통합인증 서비스</text>
+<path class="route" d="M280 104 V190" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<text x="296" y="132" font-size="16" fill="var(--dg-blue)" font-weight="500" text-anchor="start">유입코드 · 목적코드</text>
+<g class="component"><rect class="node" x="30" y="195" width="300" height="80" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="180.0" y="224" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">공통 API · 설정 적용</text>
+<text x="180.0" y="250" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">코드에 연결된 인증 수단</text>
+</g>
+<g class="component"><rect class="node" x="370" y="195" width="300" height="80" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/>
+<text x="520.0" y="224" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">공통 UUID 세션</text>
+<text x="520.0" y="250" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">조회 · 유효기간 · 활성 여부</text>
+</g>
+<path class="route" d="M330 235 H365" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<path class="route" d="M520 275 V314 H87" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M520 314 H607" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<text x="36" y="299" font-size="16" fill="var(--dg-blue)" font-weight="650" text-anchor="start">인증 유형별 처리 · 공통 세션 사용</text>
+<path class="route" d="M87 314 V333" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="30" y="338" width="114" height="110" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="87.0" y="367" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">소유인증</text>
+<text x="87.0" y="393" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">문자</text>
+<text x="87.0" y="417" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">이메일</text>
+</g>
+<path class="route" d="M87 448 V475" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M217 314 V333" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="160" y="338" width="114" height="110" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="217.0" y="367" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">본인인증</text>
+<text x="217.0" y="393" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰·아이핀</text>
+<text x="217.0" y="417" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">신용카드</text>
+</g>
+<path class="route" d="M217 448 V475" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M347 314 V333" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="290" y="338" width="114" height="110" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="347.0" y="367" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">계좌인증</text>
+<text x="347.0" y="393" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">1원인증</text>
+<text x="347.0" y="417" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">계좌주명</text>
+</g>
+<path class="route" d="M347 448 V475" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M477 314 V333" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="420" y="338" width="114" height="110" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="477.0" y="367" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">정보인증</text>
+<text x="477.0" y="393" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">ID·비밀번호</text>
+<text x="477.0" y="417" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">소셜인증</text>
+</g>
+<path class="route" d="M477 448 V475" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M607 314 V333" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="550" y="338" width="114" height="110" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="607.0" y="367" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">기업인증</text>
+<text x="607.0" y="393" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사업자확인</text>
+</g>
+<path class="route" d="M607 448 V475" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M87 475 H607" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M350 475 V500" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<g class="component"><rect class="node" x="100" y="505" width="500" height="76" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="350.0" y="534" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 연동 · 인증업체 선택</text>
+<text x="350.0" y="560" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰 본인·계좌인증: 신규 요청 비중 조정</text>
+</g>
+<path class="route" d="M350 581 V631" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-blue)"/>
+<text x="368" y="613" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="start">외부 연동 시</text>
+<g class="component"><rect class="node" x="100" y="636" width="500" height="78" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="350.0" y="665" font-size="18" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 인증업체</text>
+<text x="350.0" y="691" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">본인확인 · 계좌확인 · 소셜인증 등</text>
+</g>
+<text x="30" y="749" font-size="15" fill="var(--dg-muted)" font-weight="500" text-anchor="start">실선: 요청 처리 · 점선: 관리 설정</text>
+<g class="component"><rect class="node" x="30" y="770" width="640" height="100" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/>
+<text x="350.0" y="799" font-size="18" fill="var(--dg-green)" font-weight="700" text-anchor="middle">통합인증 어드민</text>
+<text x="350.0" y="825" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사이트 &gt; 유입코드(도메인) &gt; 인증 목적</text>
+<text x="350.0" y="849" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">인증 수단 · 업체 비율 · 세션 유효기간</text>
+</g>
+<path class="route" d="M670 820 H690 V186 H300 V190" fill="none" stroke="var(--dg-green)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dg-auth-architecture-wide-auth-architecture-wide-green)"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram diagram-narrow" style="max-width:330px" viewBox="0 0 330 1440" role="img" aria-labelledby="dg-auth-architecture-narrow-auth-architecture-narrow-title dg-auth-architecture-narrow-auth-architecture-narrow-desc"><title id="dg-auth-architecture-narrow-auth-architecture-narrow-title">호출 서비스의 업무 판단과 분리한 통합인증 구조</title><desc id="dg-auth-architecture-narrow-auth-architecture-narrow-desc">호출 서비스가 개인과 사업자 등 회원 유형과 업무 조건을 판단하고 유입코드와 목적코드로 요청합니다. 통합인증은 회원 서비스나 개별 도메인 업무 로직에 의존하지 않고 코드에 연결된 어드민 설정으로 인증을 수행합니다. 사이트, 유입코드, 인증 목적은 설정 관리 체계입니다. 다섯 내부 인증 모듈은 UUID 세션을 공통으로 사용합니다. 외부 연동이 필요한 인증은 인증업체로 이어지며, 휴대폰 본인인증과 계좌인증은 업체별 신규 요청 비중을 조정합니다. 실선은 요청 처리, 점선은 관리 설정입니다.</desc><defs>
+<marker id="dg-auth-architecture-narrow-auth-architecture-narrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-blue)" stroke-width="1.5"/></marker>
+<marker id="dg-auth-architecture-narrow-auth-architecture-narrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--dg-green)" stroke-width="1.5"/></marker>
+</defs>
+<g class="component"><rect class="node" x="16" y="18" width="298" height="104" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="165.0" y="47" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">호출 서비스</text>
+<text x="165.0" y="73" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">지마켓 · 옥션 · ESMPLUS</text>
+<text x="165.0" y="97" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">회원 유형·업무 조건 판단</text>
+</g>
+<rect class="service-boundary" x="10" y="170" width="310" height="900" rx="7" fill="var(--dg-soft-blue)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="26" y="198" font-size="20" fill="var(--dg-blue)" font-weight="700" text-anchor="start">통합인증 서비스</text>
+<path class="route" d="M280 122 V221" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<text x="26" y="149" font-size="18" fill="var(--dg-blue)" font-weight="500" text-anchor="start">유입코드 · 목적코드로 요청</text>
+<g class="component"><rect class="node" x="26" y="226" width="278" height="84" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="255" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">공통 API · 설정 적용</text>
+<text x="165.0" y="281" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">코드별 인증 수단 적용</text>
+</g>
+<path class="route" d="M165 310 V341" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="26" y="346" width="278" height="86" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/>
+<text x="165.0" y="375" font-size="20" fill="var(--dg-green)" font-weight="700" text-anchor="middle">공통 UUID 세션</text>
+<text x="165.0" y="401" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">조회 · 유효기간 · 활성 여부</text>
+</g>
+<path class="route" d="M165 432 V455 H28 V878" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<text x="50" y="483" font-size="18" fill="var(--dg-blue)" font-weight="650" text-anchor="start">한 서비스 안의 다섯 인증 모듈</text>
+<path class="route" d="M28 534 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="50" y="500" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="529" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">소유인증</text>
+<text x="165.0" y="555" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">문자 · 이메일</text>
+</g>
+<path class="route" d="M280 534 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M28 620 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="50" y="586" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="615" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">본인인증</text>
+<text x="165.0" y="641" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰 · 아이핀 · 신용카드</text>
+</g>
+<path class="route" d="M280 620 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M28 706 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="50" y="672" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="701" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">계좌인증</text>
+<text x="165.0" y="727" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">1원인증 · 계좌주명</text>
+</g>
+<path class="route" d="M280 706 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M28 792 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="50" y="758" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="787" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">정보인증</text>
+<text x="165.0" y="813" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">ID·비밀번호 · 소셜인증</text>
+</g>
+<path class="route" d="M280 792 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M28 878 H45" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="50" y="844" width="230" height="68" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="873" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">기업인증</text>
+<text x="165.0" y="899" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사업자확인</text>
+</g>
+<path class="route" d="M280 878 H302" fill="none" stroke="var(--dg-blue)" stroke-width="1.6"/>
+<path class="route" d="M302 534 V924 H165 V958" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<g class="component"><rect class="node" x="26" y="963" width="278" height="90" rx="7" fill="var(--dg-bg)" stroke="var(--dg-blue)" stroke-width="1.5"/>
+<text x="165.0" y="992" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 연동 · 업체 선택</text>
+<text x="165.0" y="1018" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">휴대폰 본인·계좌인증</text>
+<text x="165.0" y="1042" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">신규 요청에 업체 비중 적용</text>
+</g>
+<path class="route" d="M165 1053 V1095" fill="none" stroke="var(--dg-blue)" stroke-width="1.6" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-blue)"/>
+<text x="183" y="1083" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="start">외부 연동 시</text>
+<g class="component"><rect class="node" x="26" y="1100" width="278" height="90" rx="7" fill="var(--dg-soft)" stroke="var(--dg-line)" stroke-width="1.5"/>
+<text x="165.0" y="1129" font-size="20" fill="var(--dg-ink)" font-weight="700" text-anchor="middle">외부 인증업체</text>
+<text x="165.0" y="1155" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">본인확인 · 계좌확인</text>
+<text x="165.0" y="1179" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">소셜인증 등</text>
+</g>
+<text x="26" y="1238" font-size="16" fill="var(--dg-muted)" font-weight="500" text-anchor="start">실선: 요청 처리 · 점선: 관리 설정</text>
+<g class="component"><rect class="node" x="26" y="1267" width="278" height="150" rx="7" fill="var(--dg-soft-green)" stroke="var(--dg-green)" stroke-width="1.5"/>
+<text x="165.0" y="1296" font-size="20" fill="var(--dg-green)" font-weight="700" text-anchor="middle">통합인증 어드민</text>
+<text x="165.0" y="1322" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">사이트 &gt; 유입코드(도메인)</text>
+<text x="165.0" y="1346" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">&gt; 인증 목적</text>
+<text x="165.0" y="1370" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">인증 수단 · 업체별 비율</text>
+<text x="165.0" y="1394" font-size="18" fill="var(--dg-muted)" font-weight="500" text-anchor="middle">공통 세션 유효기간</text>
+</g>
+<path class="route" d="M304 1342 H324 V217 H300 V221" fill="none" stroke="var(--dg-green)" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#dg-auth-architecture-narrow-auth-architecture-narrow-green)"/>
+</svg>
+<figcaption>위에서 아래로 호출 서비스, 통합인증의 내부 모듈, 외부 인증업체를 읽습니다. 실선은 요청 처리, 점선은 어드민 설정입니다. 사이트·유입코드·인증 목적은 설정의 관리 체계이며, 회원 유형을 판단하는 책임은 호출 서비스에 있습니다.</figcaption></figure>
         </section>
         <section id="s1" class="case-section">
-          <h2>인증을 모듈로, 설정은 어드민으로</h2>
-          <p>인증 유형별 기능을 한 서비스 안의 모듈로 정리하고, 어떤 도메인이 어떤 인증을 어떤 설정으로 쓰는지는 코드가 아니라 어드민 설정으로 뺐습니다. 새 서비스가 인증을 붙일 때 코드를 고치는 대신 설정을 추가하면 되는 구조를 목표로 했습니다.</p>
+          <h2>업무 판단은 호출 서비스에, 인증 수단은 설정으로</h2>
+          <p>호출 서비스는 업무 조건을 판단한 뒤 유입코드와 목적코드로 인증을 요청합니다. 통합인증 어드민은 사이트 > 유입코드(도메인) > 인증 목적 구조로 설정을 관리하고, 각 코드에 적용할 인증 수단을 정합니다.</p>
+          <p>같은 E쿠폰 조회라도 사업자회원은 문자·이메일 소유인증을, 개인회원은 휴대폰·아이핀·신용카드 등의 본인인증을 수행합니다. 개인과 사업자를 구분하고 그에 맞는 코드로 요청하는 일은 E쿠폰을 제공하는 호출 서비스가 맡습니다.</p>
+          <p>통합인증은 전달된 코드에 연결된 설정으로 인증을 수행합니다. 회원 서비스에 개인·사업자 여부를 묻거나 쿠폰 업무를 해석할 필요가 없습니다. 업무 판단과 인증 수행의 책임을 나눠 사이트와 도메인이 달라도 공통으로 사용할 수 있도록 설계했습니다.</p>
           <p>외부 인증업체와의 통신도 윈도우 설치형 모듈에서 API 토큰 방식으로 바꾸고, On-Premise ASP.NET에 있던 인증 기능을 Spring Boot로 옮겼습니다.</p>
         </section>
         <section id="s2" class="case-section">
           <h2>운영자가 손댈 수 있는 인증</h2>
-          <p>인증 업체별 요청 비율을 관리자 화면에서 조정하도록 만들었습니다. 운영자는 업체 장애나 이용 비용을 고려해 신규 요청의 비중을 배포 없이 바꿀 수 있습니다. 변경된 비율은 신규 요청에 적용하고, 진행 중인 인증은 기존 흐름으로 처리합니다.</p>
+          <p>기존의 휴대폰 본인인증·아이핀·신용카드 인증에 더해 소셜 인증사를 도입했습니다. 사용자가 간편하게 인증할 수 있는 선택지를 넓히고, 이용 단가와 이벤트 활용도 함께 고려했습니다.</p>
+          <p>휴대폰 본인인증과 계좌인증의 업체 장애에 대응하기 위해 요청 비중 조정 기능을 추가했습니다. 운영자는 업체 장애나 이용 비용을 고려해 신규 요청의 비중을 배포 없이 바꿀 수 있습니다. 장애 시에는 자동 비활성화와 비중 조정으로 대체 업체에 요청을 분산합니다. 변경된 비율은 신규 요청에 적용하고, 진행 중인 인증은 기존 흐름으로 처리합니다.</p>
         </section>
         <section id="s3" class="case-section">
           <h2>장애 횟수 갱신과 상태 알림의 역할을 나누다</h2>
@@ -88,7 +246,7 @@
         </section>
         <section id="s6" class="case-section">
           <h2>연동부터 운영까지 맡은 범위</h2>
-          <p>다섯 인증 유형의 API와 외부 업체 연동, 공통 세션, 도메인 설정과 업체별 요청 비율 관리 기능을 모두 구현했습니다. 계좌인증은 유입 경로별 은행 정보 API와 연동 가이드를 제공하고, E쿠폰은 세션 상태 때문에 인증이 진행되지 않는 문의까지 확인했습니다.</p>
+          <p>소유·본인·계좌·정보·기업인증의 API와 외부 업체 연동, 공통 세션, 코드별 인증 설정과 업체별 요청 비율 관리 기능을 모두 구현했습니다. 정보인증에는 아이디·비밀번호와 소셜인증이 포함됩니다. 계좌인증은 유입 경로별 은행 정보 API와 연동 가이드를 제공하고, E쿠폰은 세션 상태 때문에 인증이 진행되지 않는 문의까지 확인했습니다.</p>
           <p>오픈 직전 연동 명세가 바뀐 경험을 계기로 회의록·설계 문서·진행 상황을 공유하며 연동 서비스와 변경 사항을 맞췄습니다.</p>
         </section>
 
@@ -97,13 +255,13 @@
           <details class="implementation-details">
             <summary>상세 기능과 사용 기술 보기</summary>
             <ul class="tags" aria-label="기술"><li>Java</li><li>Spring Boot</li><li>Spring Security</li><li>WebFlux</li><li>Redis Cluster</li><li>JWT</li><li>JPA</li><li>QueryDSL</li><li>Oracle</li><li>MSSQL</li></ul>
-            <ul class="feature-grid"><li><strong>인증 모듈</strong><span>소유 · 본인 · 계좌 · 정보 · 기업인증</span></li><li><strong>정보인증</strong><span>아이디·비밀번호 및 소셜인증</span></li><li><strong>도메인별 연동</strong><span>연동 서비스마다 쓸 인증 유형과 설정을 어드민에서</span></li><li><strong>인증업체 비율</strong><span>관리자 설정 · 장애 시 자동 비활성화·대체 업체 분산</span></li><li><strong>공통 세션</strong><span>UUID 조회 · 관리자 설정 유효기간 · 활성 여부 확인</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
+            <ul class="feature-grid"><li><strong>인증 모듈</strong><span>소유 · 본인 · 계좌 · 정보 · 기업인증</span></li><li><strong>정보인증</strong><span>아이디·비밀번호 및 소셜인증</span></li><li><strong>코드 기반 연동</strong><span>유입코드·목적코드로 요청 · 인증 수단은 어드민에서 관리</span></li><li><strong>인증업체 비율</strong><span>관리자 설정 · 장애 시 자동 비활성화·대체 업체 분산</span></li><li><strong>공통 세션</strong><span>UUID 조회 · 관리자 설정 유효기간 · 활성 여부 확인</span></li><li><strong>외부사 통신</strong><span>설치형 모듈에서 API 토큰 기반으로</span></li><li><strong>플랫폼 개편</strong><span>On-Premise ASP.NET에서 Spring Boot로</span></li></ul>
           </details>
         </section>
 
         <section id="closing" class="case-section">
           <h2>돌아보면</h2>
-          <blockquote class="closing">공통 인증 로직에 운영 설정을 더하면서 업체 전환이 코드 배포와 분리됐습니다. 비율 조정은 신규 요청에 적용하며, 진행 중인 인증의 처리와는 구분했습니다.</blockquote>
+          <blockquote class="closing">공통 API로 인증을 모으면서도 업무 판단은 호출 서비스에 남겼습니다. 통합인증은 코드와 설정에 따라 인증을 수행하고, 운영자는 인증 수단과 업체별 요청 비중을 관리합니다. 여러 도메인에서 재사용할 수 있는 경계와 운영 중 바꿀 수 있는 범위를 함께 정리한 작업입니다.</blockquote>
         </section>
 
         <p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>
