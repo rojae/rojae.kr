@@ -488,7 +488,7 @@
         </section>
         <section id="s5" class="case-section">
           <h2>데이터 오류와 작업 실패를 구분하다</h2>
-          <p>제휴 데이터 처리는 입력을 검증하고 필요한 형태로 반영하는 별도 흐름으로 구성했습니다. 개별 데이터의 오류와 작업 자체의 실패를 구분해, 어느 범위까지 처리됐고 무엇을 다시 확인해야 하는지 알 수 있도록 했습니다.</p>
+          <p>Spring Batch를 사용해 제휴 데이터를 검증하고 필요한 형태로 반영하는 별도 처리 흐름을 구성했습니다. 개별 데이터의 오류와 작업 자체의 실패를 구분해, 어느 범위까지 처리됐고 무엇을 다시 확인해야 하는지 알 수 있도록 했습니다.</p>
           <p>정상 처리와 오류 내역을 남겨 후속 업무에서 결과를 확인할 수 있게 했습니다. 데이터가 들어왔다는 사실만으로 작업이 끝났다고 보지 않고, 처리 결과까지 운영할 수 있는 상태를 만들었습니다.</p>
           <figure class="flow-figure diagram-figure"><p class="diagram-title">개별 데이터의 처리 결과와 작업의 종료 상태</p><svg xmlns="http://www.w3.org/2000/svg" class="diagram diagram-wide" style="max-width:700px" viewBox="0 0 700 650" role="img" aria-labelledby="dg-affiliate-errors-wide-affiliate-errors-wide-title dg-affiliate-errors-wide-affiliate-errors-wide-desc">
 <title id="dg-affiliate-errors-wide-affiliate-errors-wide-title">개별 데이터의 처리 결과와 작업의 종료 상태</title><desc id="dg-affiliate-errors-wide-affiliate-errors-wide-desc">두 흐름은 개별 데이터와 작업 전체를 서로 다른 단위로 비교합니다. 정상 데이터는 반영하고, 허용된 유형과 한도 안의 개별 오류는 기록한 뒤 건너뛰어 다음 데이터를 처리합니다. 모든 오류를 건너뛰는 것은 아닙니다. 입력 전체 검증 실패나 처리를 계속할 수 없는 오류는 작업 실패로 이어집니다. 작업 완료 여부와 개별 오류는 따로 확인하며, 실패한 작업은 원인과 처리 범위를 확인합니다. 개별 오류가 있어도 작업은 완료될 수 있습니다. 자동 복구나 데이터 한 건마다의 독립 트랜잭션을 나타내는 그림은 아닙니다.</desc>
@@ -593,7 +593,7 @@
 <text x="14" y="890" font-size="17" fill="var(--dg-muted)" font-weight="500" text-anchor="start">입력 전체 검증 실패 등</text>
 <text x="14" y="917" font-size="17" fill="var(--dg-muted)" font-weight="500" text-anchor="start">계속 처리할 수 없으면 작업 실패</text>
 </svg>
-<figcaption>개별 오류를 건너뛰고 작업이 완료될 수도 있습니다. 작업의 종료 상태와 개별 데이터의 처리 결과를 따로 확인합니다.</figcaption></figure>
+<figcaption>Spring Batch로 구현한 처리 흐름입니다. 개별 오류를 건너뛰고 작업이 완료될 수도 있어, 작업 상태와 개별 데이터의 처리 결과를 따로 확인합니다.</figcaption></figure>
         </section>
         <section id="s6" class="case-section">
           <h2>만들고 끝이 아니라 운영까지</h2>
