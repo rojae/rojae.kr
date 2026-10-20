@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="760" viewBox="0 0 330 760" role="img" aria-labelledby="affiliate-boundary-narrow-title affiliate-boundary-narrow-desc">
+<title id="affiliate-boundary-narrow-title">카드사 연동의 송신·수신 경로</title><desc id="affiliate-boundary-narrow-desc">보내는 요청은 제휴 백엔드에서 Nginx를 거쳐 카드사로 갑니다. 받는 요청은 카드사에서 Nginx와 API Gateway를 거쳐 제휴 백엔드로 들어옵니다. API Gateway는 요청을 인증합니다. 송신 경로에 API Gateway가 포함된다는 의미는 아닙니다. 반복된 Nginx 표시는 각 경로의 역할이며 인스턴스 수나 배포 구성을 나타내지 않습니다.</desc>
+<defs><marker id="affiliate-boundary-narrow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker><style>text{font-family:&#39;Pretendard&#39;,&#39;Apple SD Gothic Neo&#39;,&#39;Noto Sans KR&#39;,sans-serif;letter-spacing:-.4px;fill:#192e42}</style></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="14" y="28" font-size="18" style="fill:#52677c" text-anchor="start" font-weight="650">보내는 요청</text>
+<rect x="40" y="48" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="81.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">제휴 백엔드</text>
+<path d="M165 102V126" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-boundary-narrow-arrow)"/>
+<rect x="40" y="130" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="163.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">Nginx</text>
+<path d="M165 184V208" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-boundary-narrow-arrow)"/>
+<rect x="40" y="212" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="245.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">카드사</text>
+<path d="M14 298H316" fill="none" stroke="#cdd8e3"/>
+<text x="14" y="332" font-size="18" style="fill:#52677c" text-anchor="start" font-weight="650">받는 요청</text>
+<rect x="40" y="352" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="385.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">카드사</text>
+<path d="M165 406V430" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-boundary-narrow-arrow)"/>
+<rect x="40" y="434" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="467.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">Nginx</text>
+<path d="M165 488V512" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-boundary-narrow-arrow)"/>
+<rect x="40" y="516" width="250" height="76" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="165.0" y="548.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">API Gateway</text>
+<text x="165.0" y="572.0" font-size="17" style="fill:#52677c" text-anchor="middle" font-weight="650">요청 인증</text>
+<path d="M165 592V616" fill="none" stroke="#285fbc" stroke-width="1.7" marker-end="url(#affiliate-boundary-narrow-arrow)"/>
+<rect x="40" y="620" width="250" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="653.0" font-size="18" style="fill:#192e42" text-anchor="middle" font-weight="650">제휴 백엔드</text>
+<text x="14" y="714" font-size="17" style="fill:#52677c" text-anchor="start" font-weight="500">Nginx는 경로별 역할 표시입니다.</text>
+<text x="14" y="740" font-size="17" style="fill:#52677c" text-anchor="start" font-weight="500">인스턴스 수를 뜻하지 않습니다.</text>
+</svg>

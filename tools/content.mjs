@@ -46,7 +46,13 @@ export const focus = [
 export const caseStudies = [
   {
     key: 'affiliate',
-    architecture: { diagram: 'affiliate-architecture', intro: '서비스 안에서 받은 동의와 카드사에서 전달받은 동의를 공통 연동 기능으로 처리했습니다. 동의 처리와 제휴 데이터 처리는 목적에 맞게 나누고, 관리자는 설정과 처리 결과를 확인할 수 있도록 했습니다.', caption: '동의 처리와 데이터 처리의 역할을 단순화한 개념도입니다. 실제 서버 구성이나 연동 명세를 나타내지는 않습니다.' },
+    architecture: {
+      intro: '사용자 화면은 member-web의 Spring MVC·Thymeleaf로 제공하고, OpenFeign으로 제휴 백엔드를 호출합니다. 운영 도구는 별도의 관리자 웹과 API로 나눴습니다. 화면에서 시작한 요청이 업무 처리와 저장소로 이어지는 구조, 카드사와 주고받는 경로를 차례로 보여줍니다.',
+      figures: [
+        { diagram: 'affiliate-architecture', caption: '대표적인 서버 호출과 저장소의 역할을 나타낸 논리 구성입니다. 관리자 API는 업무 처리를 백엔드에 요청하고, 일부 실패·호출 이력은 MongoDB에서 직접 조회합니다.' },
+        { diagram: 'affiliate-boundary', caption: '카드사와의 송신·수신은 Nginx를 거칩니다. 수신 경로에는 요청 인증을 위한 API Gateway를 두었습니다. 주소와 인증 값 등 운영 설정은 생략했습니다.' },
+      ],
+    },
     wide: true,
     diagram: 'affiliate',
     featured: true,

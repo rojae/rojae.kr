@@ -292,7 +292,7 @@ ${c.story.map((st, n) => `
         <section id="architecture" class="case-section">
           <h2>전체 아키텍처</h2>
           <p>${c.architecture.intro}</p>
-          ${figures({figures: [c.architecture]})}
+          ${figures({figures: c.architecture.figures ?? [c.architecture]})}
         </section>` : ''}`).join('')}
 
         <section id="scope" class="case-section">

@@ -55,6 +55,6 @@ function figure(key) {
 }
 
 // 상세 페이지에서 쓰는 다이어그램 키. 반환값은 { title, markup }입니다.
-const KEYS = ['affiliate', 'affiliate-architecture', 'affiliate-extension', 'affiliate-retry', 'affiliate-bundles', 'auth', 'auth-recovery', 'auth-architecture', 'terms-architecture', 'terms-sites', 'fluxgate-architecture', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'];
+const KEYS = ['affiliate', 'affiliate-architecture', 'affiliate-boundary', 'affiliate-extension', 'affiliate-retry', 'affiliate-bundles', 'auth', 'auth-recovery', 'auth-architecture', 'terms-architecture', 'terms-sites', 'fluxgate-architecture', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'];
 export const diagrams = Object.fromEntries(KEYS.map(key => [key, () => figure(key).markup]));
 export const diagramTitle = key => figure(key).title;

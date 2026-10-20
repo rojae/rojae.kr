@@ -61,7 +61,7 @@ node tools/make-resume-pdf.mjs
 - `tools/content.mjs`의 `resume` 항목과 `experience` · `caseStudies`를 읽고, 템플릿 4종(compact · simple · modern · classic)을 가져와 생성합니다. 중간 데이터와 HTML은 `output/resume/`에 저장하며, 서브모듈에는 생성물을 쓰지 않습니다. 기존 형제 폴더의 개인 데이터·템플릿도 변경하지 않습니다.
 - 결과: `resume.pdf`(compact, 기본 다운로드)와 `resume/{compact,simple,modern,classic}.pdf`.
 - 통합인증·제휴 연동의 설계 설명은 `tools/content.mjs`의 `resume.projectDetails`를 웹 이력서와 PDF가 공유합니다. 다른 프로젝트의 PDF 요약은 `tools/make-resume-pdf.mjs`의 `impact`에서 관리합니다.
-- 제휴 사례는 `tools/content.mjs`에서 사이트·PDF가 공유합니다. 공개 문구와 그림에는 제휴사 실명, 처리 규모·주기, 전달 방식과 내부 운영 조건을 넣지 않고 설계 판단과 기여 범위를 설명합니다.
+- 제휴 사례는 `tools/content.mjs`에서 사이트·PDF가 공유합니다. 공개 문구와 그림에는 제휴사 실명, 처리 규모·주기, 전달 방식과 내부 운영 조건을 넣지 않고 설계 판단과 기여 범위를 설명합니다. 전체 구성도에는 소스로 확인한 컴포넌트와 사용자 확인된 Nginx·API Gateway 요청 방향을 표시하되, 실제 주소와 인증 값은 생략합니다.
 - `tools/resume-print.css`로 인쇄 여백과 프로젝트 단위 페이지 나눔을 조정합니다. 생성 후 PDF를 실제 페이지로 렌더링해 확인해야 합니다.
 - 전화번호는 넣지 않습니다(공개 사이트). `npm ci --prefix resume-builder`로 잠금 파일에 맞는 Puppeteer를 설치합니다.
 - 기본 PDF는 2쪽, 다른 형식은 3쪽을 기준으로 검수합니다. 기본형의 지마켓 경력은 첫 4개 프로젝트 뒤에서 페이지를 나누므로 프로젝트 순서·분량 변경 시 다시 확인합니다.

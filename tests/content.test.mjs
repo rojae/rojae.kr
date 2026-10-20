@@ -11,9 +11,9 @@ test('public affiliate copy and shared summaries omit private operating details'
     highlights: resume.highlights,
     experience: experience.flatMap(co => co.projects.filter(p => p.ref === 'affiliate')),
   });
-  assert.doesNotMatch(text, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|CI|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Gateway|Nginx|Ingress|방화벽|member-be|member-batch|500명/);
+  assert.doesNotMatch(text, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|CI|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Ingress|방화벽|member-be|member-batch|500명/);
   const html = fs.readFileSync(new URL('../work/affiliate.html', import.meta.url), 'utf8');
-  assert.doesNotMatch(html, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|\bCI\b|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Gateway|Nginx|Ingress|방화벽|member-be|member-batch|500명/);
+  assert.doesNotMatch(html, /삼성|09:00|오전\s*9시|일배치|월배치|SFTP|\bCI\b|복호화|재암호화|결제 이력|결제 수단|마케팅|정산 단가|고객당|Ingress|방화벽|member-be|member-batch|500명/);
 });
 
 test('public copy does not expose internal security gaps or editorial self-commentary', () => {
@@ -52,7 +52,11 @@ test('architecture explains the whole system before detailed decisions', () => {
     const overview = sections.find(s => s[1] === 'architecture')[2];
     assert.match(overview, new RegExp(`dg-${key}-architecture-wide-`), key);
     assert.match(overview, new RegExp(`dg-${key}-architecture-narrow-`), key);
-    assert.equal((overview.match(/<figure /g) || []).length, 1, key);
+    assert.equal((overview.match(/<figure /g) || []).length, key === 'affiliate' ? 2 : 1, key);
+    if (key === 'affiliate') {
+      assert.match(overview, /dg-affiliate-boundary-wide-/);
+      assert.match(overview, /dg-affiliate-boundary-narrow-/);
+    }
     for (const story of caseStudies.find(c => c.key === key).story) {
       if (!story.figures?.length) continue;
       const section = sections.find(s => s[2].includes(`<h2>${story.heading}</h2>`));

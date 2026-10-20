@@ -18,7 +18,7 @@ Keep the white/charcoal foundation, blue links, green outcomes, real portrait, e
 - Default PDF: two deliberately balanced pages. Page one holds the current employer's selected projects; page two holds supporting experience, open source and skills.
 
 ## Content constraints
-Use only supported facts. Keep affiliate examples conceptual: omit partner identity, volume, schedule, transport, eligibility, commercial terms and network specifics from public copy and diagrams. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication, service integration, and measured production outcomes are distinct. User-confirmed FluxGate integration does not establish production performance.
+Use only supported facts. Show source-backed affiliate components and user-confirmed Nginx/API Gateway directions. Omit partner identity, volume, schedule, transport contracts, eligibility, commercial terms, addresses and authentication values. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication, service integration, and measured production outcomes are distinct. User-confirmed FluxGate integration does not establish production performance.
 
 ## Components and accessibility
 Reuse project cards, lists, native links/details, diagrams and the existing lightbox. Keep text selectable, headings ordered, keyboard focus visible and touch controls reachable. No new dependencies. Preserve PDF download formats, print, email copy and no-JS navigation.
@@ -33,5 +33,5 @@ Reuse project cards, lists, native links/details, diagrams and the existing ligh
 ## Open evidence questions
 - Comparison periods and aggregation basis for authentication cost and CS reductions are not documented. Omit the percentages until those comparisons can be supported.
 - Authentication has five types, with ID/password and social authentication grouped under information authentication. The UUID session and administrator-defined validity are shared across types.
-- Affiliate diagrams explain shared functions, transaction boundaries, coupon retry and bundle aggregation. They do not expose internal topology or partner contract details.
+- Affiliate diagrams explain shared functions, transaction boundaries, coupon retry and bundle aggregation. The overview may show logical components (including member-web) and request authentication, without deployment instance counts or partner contract details.
 - The public Studio demo returned 404 during this review. Use an actual, inspectable screenshot only when available; do not fabricate one.
