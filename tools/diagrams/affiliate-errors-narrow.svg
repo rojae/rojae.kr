@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="944" viewBox="0 0 330 944" role="img" aria-labelledby="affiliate-errors-narrow-title affiliate-errors-narrow-desc">
+<title id="affiliate-errors-narrow-title">개별 데이터의 처리 결과와 작업의 종료 상태</title><desc id="affiliate-errors-narrow-desc">두 흐름은 개별 데이터와 작업 전체를 서로 다른 단위로 비교합니다. 정상 데이터는 반영하고, 허용된 유형과 한도 안의 개별 오류는 기록한 뒤 건너뛰어 다음 데이터를 처리합니다. 모든 오류를 건너뛰는 것은 아닙니다. 입력 전체 검증 실패나 처리를 계속할 수 없는 오류는 작업 실패로 이어집니다. 작업 완료 여부와 개별 오류는 따로 확인하며, 실패한 작업은 원인과 처리 범위를 확인합니다. 개별 오류가 있어도 작업은 완료될 수 있습니다. 자동 복구나 데이터 한 건마다의 독립 트랜잭션을 나타내는 그림은 아닙니다.</desc>
+<defs>
+<marker id="affiliate-errors-narrow-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#192e42" stroke-width="1.5"/></marker>
+<marker id="affiliate-errors-narrow-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#52677c" stroke-width="1.5"/></marker>
+<marker id="affiliate-errors-narrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker>
+<marker id="affiliate-errors-narrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#157458" stroke-width="1.5"/></marker>
+<marker id="affiliate-errors-narrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#b33c42" stroke-width="1.5"/></marker>
+<style>text{font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;letter-spacing:-.4px}</style>
+</defs><rect width="100%" height="100%" fill="#fff"/>
+<text x="14" y="28" font-size="19" fill="#192e42" font-weight="700" text-anchor="start">개별 데이터</text>
+<text x="14" y="55" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">무엇을 반영했는가</text>
+<g class="component"><rect class="node" x="65" y="84" width="200" height="64" rx="7" fill="#edf3fd" stroke="#285fbc" stroke-width="1.3"/>
+<text x="165.0" y="122.0" font-size="19" fill="#285fbc" font-weight="700" text-anchor="middle">데이터 처리</text>
+</g>
+<g class="component"><rect class="node" x="14" y="204" width="140" height="86" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.3"/>
+<text x="84.0" y="253.0" font-size="19" fill="#157458" font-weight="700" text-anchor="middle">정상 반영</text>
+</g>
+<g class="component"><rect class="node" x="176" y="204" width="140" height="86" rx="7" fill="#fbeef0" stroke="#b33c42" stroke-width="1.3"/>
+<text x="246.0" y="235" font-size="19" fill="#b33c42" font-weight="700" text-anchor="middle">오류 기록</text>
+<text x="246.0" y="262" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">건너뛰기 허용 시</text>
+</g>
+<path class="route" d="M115 148V174H84V200" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#affiliate-errors-narrow-green)"/>
+<path class="route" d="M215 148V174H246V200" fill="none" stroke="#b33c42" stroke-width="1.6" marker-end="url(#affiliate-errors-narrow-red)"/>
+<path class="route" d="M84 290V322H165" fill="none" stroke="#52677c" stroke-width="1.6"/>
+<path class="route" d="M246 290V322H165" fill="none" stroke="#52677c" stroke-width="1.6"/>
+<path class="route" d="M165 322V350" fill="none" stroke="#52677c" stroke-width="1.6" marker-end="url(#affiliate-errors-narrow-muted)"/>
+<g class="component"><rect class="node" x="65" y="354" width="200" height="64" rx="7" fill="#edf3fd" stroke="#285fbc" stroke-width="1.3"/>
+<text x="165.0" y="392.0" font-size="19" fill="#285fbc" font-weight="700" text-anchor="middle">다음 데이터</text>
+</g>
+<text x="14" y="452" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">건너뛰기는 정해 둔 오류 유형과</text>
+<text x="14" y="479" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">한도 안에서만 허용</text>
+<path d="M14 504H316" fill="none" stroke="#cdd8e3"/>
+<text x="14" y="540" font-size="19" fill="#192e42" font-weight="700" text-anchor="start">작업 상태</text>
+<text x="14" y="567" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">실행을 마쳤는가</text>
+<g class="component"><rect class="node" x="65" y="596" width="200" height="64" rx="7" fill="#edf3fd" stroke="#285fbc" stroke-width="1.3"/>
+<text x="165.0" y="634.0" font-size="19" fill="#285fbc" font-weight="700" text-anchor="middle">전체 처리</text>
+</g>
+<g class="component"><rect class="node" x="14" y="716" width="140" height="64" rx="7" fill="#f1f8f5" stroke="#157458" stroke-width="1.3"/>
+<text x="84.0" y="754.0" font-size="19" fill="#157458" font-weight="700" text-anchor="middle">작업 완료</text>
+</g>
+<g class="component"><rect class="node" x="176" y="716" width="140" height="64" rx="7" fill="#fbeef0" stroke="#b33c42" stroke-width="1.3"/>
+<text x="246.0" y="754.0" font-size="19" fill="#b33c42" font-weight="700" text-anchor="middle">작업 실패</text>
+</g>
+<path class="route" d="M115 660V686H84V712" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#affiliate-errors-narrow-green)"/>
+<path class="route" d="M215 660V686H246V712" fill="none" stroke="#b33c42" stroke-width="1.6" marker-end="url(#affiliate-errors-narrow-red)"/>
+<text x="84" y="814" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">개별 오류는</text>
+<text x="84" y="841" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">별도로 확인</text>
+<text x="246" y="814" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">실패 원인과</text>
+<text x="246" y="841" font-size="17" fill="#192e42" font-weight="500" text-anchor="middle">처리 범위 확인</text>
+<text x="14" y="890" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">입력 전체 검증 실패 등</text>
+<text x="14" y="917" font-size="17" fill="#52677c" font-weight="500" text-anchor="start">계속 처리할 수 없으면 작업 실패</text>
+</svg>

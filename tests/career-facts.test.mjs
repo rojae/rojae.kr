@@ -16,7 +16,7 @@ test('affiliate preserves design decisions while abstracting the partner contrac
     ...Object.entries(diagrams).filter(([key]) => key.startsWith('affiliate')).map(([, render]) => render())]);
   for (const fact of ['같은 명세', '한 제휴사', '추가 구현', '실패 기록', '재처리', '모니터링', '수신 묶음 수', '잠금 대기']) assert(text.includes(fact), fact);
   assert.doesNotMatch(text, /무유실|원천 차단|자동 재시도|누적 약 1만/);
-  for (const key of ['affiliate-architecture', 'affiliate-boundary', 'affiliate-extension', 'affiliate-retry', 'affiliate-bundles']) {
+  for (const key of ['affiliate-architecture', 'affiliate-boundary', 'affiliate-extension', 'affiliate-retry', 'affiliate-bundles', 'affiliate-errors']) {
     const svg = diagrams[key]();
     assert.doesNotMatch(svg, /삼성|09:00|9시|일배치|월배치|SFTP|\bCI\b|마케팅|정산|단가|Ingress|member-be|member-batch/, key);
     assert.equal((svg.match(/<svg\b/g) || []).length, 2, key);
