@@ -13,7 +13,7 @@ const allowed = new Set([
   ...['compact', 'simple', 'modern', 'classic'].map(k => `resume/${k}.pdf`),
   ...['avatar.png', 'fluxgate-repository.png', 'mark.svg'].map(k => `assets/${k}`),
   ...['content.mjs', 'build.mjs', 'diagrams.mjs', 'logo.mjs', 'make-logo.py', 'make-resume-pdf.mjs', 'resume-print.css', 'publish.mjs', 'make-diagrams.mjs'].map(k => `tools/${k}`),
-  ...['affiliate', 'auth', 'auth-recovery', 'auth-architecture', 'terms-architecture', 'terms-sites', 'fluxgate-architecture', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].flatMap(k => ['wide', 'narrow'].map(v => `tools/diagrams/${k}-${v}.svg`)),
+  ...['affiliate', 'affiliate-architecture', 'auth', 'auth-recovery', 'auth-architecture', 'terms-architecture', 'terms-sites', 'fluxgate-architecture', 'terms', 'platform', 'login', 'edoc', 'waf', 'fluxgate'].flatMap(k => ['wide', 'narrow'].map(v => `tools/diagrams/${k}-${v}.svg`)),
   'tests/content.test.mjs', 'tests/career-facts.test.mjs', 'tests/publish.test.mjs', 'tests/print.test.mjs', 'tests/submodule.test.mjs',
 ]);
 
