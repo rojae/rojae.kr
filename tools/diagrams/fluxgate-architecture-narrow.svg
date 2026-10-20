@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="1270" viewBox="0 0 330 1270" role="img" aria-labelledby="fluxgate-architecture-narrow-title fluxgate-architecture-narrow-desc"><title id="fluxgate-architecture-narrow-title">FluxGate 전체 구조 · 요청 처리와 규칙 관리</title><desc id="fluxgate-architecture-narrow-desc">Client의 요청은 Spring Boot Filter에서 RateLimitHandler로 전달됩니다. Direct Redis는 앱 내 FluxGate 엔진이, HTTP API는 별도 Rate Limit Service의 엔진이 Redis Lua를 호출합니다. 규칙 관리는 Studio에서 Keycloak 인증을 적용한 Admin API를 거쳐 MongoDB에 저장합니다. Mongo adapter를 설정한 엔진은 Caffeine 캐시로 규칙을 조회하고, Pub/Sub 변경 알림은 캐시를 무효화해 다음 조회에서 원본을 다시 읽게 합니다. HTTP 샘플의 별도 Redis 규칙 원본과 Mongo 원본은 자동 통합되지 않습니다.</desc>
+<defs><marker id="fluxgate-architecture-narrow-arrow-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#192e42" stroke-width="1.5"/></marker><marker id="fluxgate-architecture-narrow-arrow-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#52677c" stroke-width="1.5"/></marker><marker id="fluxgate-architecture-narrow-arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#285fbc" stroke-width="1.5"/></marker><marker id="fluxgate-architecture-narrow-arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#157458" stroke-width="1.5"/></marker><marker id="fluxgate-architecture-narrow-arrow-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="#b33c42" stroke-width="1.5"/></marker><style>text{font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif;letter-spacing:-.4px;fill:#192e42}.mono{font-family:Menlo,Consolas,monospace;letter-spacing:-.6px}</style></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="14" y="26" font-size="16" style="fill:#52677c" font-weight="650" text-anchor="start">요청 처리</text>
+<rect x="90" y="44" width="150" height="44" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="72.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Client</text>
+<path d="M165 88V110" fill="none" stroke="#192e42" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-ink)"/>
+<rect x="14" y="114" width="302" height="148" rx="6" fill="#f2f5f9"/>
+<text x="28" y="138" font-size="14" style="fill:#52677c" font-weight="650" text-anchor="start">Spring Boot 요청 진입</text>
+<rect x="40" y="152" width="250" height="40" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="178.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Filter</text>
+<path d="M165 192V208" fill="none" stroke="#192e42" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-ink)"/>
+<rect x="40" y="212" width="250" height="40" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="238.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">RateLimitHandler</text>
+<path d="M105 252V284H84V310" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-blue)"/>
+<path d="M225 252V284H246V310" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-blue)"/>
+<rect x="14" y="322" width="140" height="84" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="84.0" y="348.0" font-size="16" style="fill:#285fbc" font-weight="700" text-anchor="middle">Direct Redis</text>
+<text x="84.0" y="370.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">앱 내 FluxGate 엔진</text>
+<text x="84.0" y="392.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">Redis 직접 연결</text>
+<rect x="176" y="322" width="140" height="84" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="246.0" y="348.0" font-size="16" style="fill:#285fbc" font-weight="700" text-anchor="middle">HTTP API</text>
+<text x="246.0" y="370.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">Rate Limit Service</text>
+<text x="246.0" y="392.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">FluxGate 엔진</text>
+<path d="M84 406V430H110V450" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-blue)"/>
+<path d="M246 406V430H220V450" fill="none" stroke="#285fbc" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-blue)"/>
+<rect x="40" y="454" width="250" height="64" rx="6" fill="#edf3fd" stroke="#285fbc" stroke-width="1.5"/>
+<text x="165.0" y="481.0" font-size="16" style="fill:#285fbc" font-weight="700" text-anchor="middle">Redis · Lua</text>
+<text x="165.0" y="503.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">허용량 확인·차감</text>
+<path d="M100 518V540" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<path d="M230 518V540" fill="none" stroke="#b33c42" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-red)"/>
+<text x="100" y="566" font-size="18" style="fill:#157458" font-weight="750" text-anchor="middle">허용</text>
+<text x="230" y="566" font-size="18" style="fill:#b33c42" font-weight="750" text-anchor="middle">제한 · 429</text>
+<text x="14" y="602" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="start">HTTP 샘플은 별도 Redis 규칙을 읽습니다.</text>
+<text x="14" y="624" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="start">Mongo 원본과 자동 통합되지 않습니다.</text>
+<path d="M14 650H316" stroke="#cdd8e3" fill="none"/>
+<text x="14" y="682" font-size="16" style="fill:#52677c" font-weight="650" text-anchor="start">규칙 관리 · Mongo adapter 설정 시</text>
+<rect x="14" y="704" width="190" height="54" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="109.0" y="726.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Studio UI</text>
+<text x="109.0" y="748.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">Next.js</text>
+<path d="M109 758V780" fill="none" stroke="#192e42" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-ink)"/>
+<rect x="14" y="784" width="190" height="60" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="109.0" y="809.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Admin API</text>
+<text x="109.0" y="831.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">Keycloak 인증</text>
+<path d="M109 844V878" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<text x="124" y="868" font-size="14" style="fill:#157458" font-weight="500" text-anchor="start">저장</text>
+<rect x="14" y="882" width="190" height="58" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="109.0" y="906.0" font-size="16" style="fill:#157458" font-weight="700" text-anchor="middle">MongoDB</text>
+<text x="109.0" y="928.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">규칙 원본</text>
+<path d="M109 940V966" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<rect x="14" y="970" width="190" height="58" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="109.0" y="994.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Mongo adapter</text>
+<text x="109.0" y="1016.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">설정한 엔진에서 조회</text>
+<path d="M204 814H267V966" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<text x="272" y="876" font-size="14" style="fill:#157458" font-weight="500" text-anchor="middle">저장 후</text>
+<text x="272" y="898" font-size="14" style="fill:#157458" font-weight="500" text-anchor="middle">발행</text>
+<rect x="222" y="970" width="94" height="58" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="269.0" y="994.0" font-size="15" style="fill:#157458" font-weight="700" text-anchor="middle">Redis</text>
+<text x="269.0" y="1016.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">Pub/Sub</text>
+<path d="M109 1028V1102" fill="none" stroke="#157458" stroke-width="1.6" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<text x="14" y="1066" font-size="14" style="fill:#157458" font-weight="500" text-anchor="start">다음 조회 시</text>
+<text x="14" y="1086" font-size="14" style="fill:#157458" font-weight="500" text-anchor="start">원본 재적재</text>
+<path d="M267 1028V1102" fill="none" stroke="#157458" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fluxgate-architecture-narrow-arrow-green)"/>
+<text x="267" y="1066" font-size="14" style="fill:#157458" font-weight="500" text-anchor="middle">캐시</text>
+<text x="267" y="1086" font-size="14" style="fill:#157458" font-weight="500" text-anchor="middle">무효화</text>
+<rect x="14" y="1106" width="302" height="60" rx="6" fill="#fff" stroke="#cdd8e3" stroke-width="1.5"/>
+<text x="165.0" y="1131.0" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="middle">Caffeine 규칙 캐시</text>
+<text x="165.0" y="1153.0" font-size="14" style="fill:#52677c" font-weight="500" text-anchor="middle">서비스별로 사용</text>
+<path d="M14 1192H316" stroke="#cdd8e3" fill="none"/>
+<text x="14" y="1222" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="start">Lua는 요청 판단, Pub/Sub은</text>
+<text x="14" y="1246" font-size="16" style="fill:#192e42" font-weight="700" text-anchor="start">규칙 변경 알림을 담당합니다.</text>
+</svg>

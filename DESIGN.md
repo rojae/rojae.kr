@@ -13,12 +13,12 @@ Keep the white/charcoal foundation, blue links, green outcomes, real portrait, e
 
 ## Information hierarchy
 - Homepage: identity, three selected projects, other work, career, public contributions, writing, working practices, contact.
-- Case study: responsibility and outcome, problem, decisions, architecture and implementation details. Preserve existing section anchors.
+- Case study: responsibility and outcome, problem, overall architecture, design decisions and troubleshooting, implementation scope. Keep the complete system map before detailed analysis; place detail diagrams beside the decisions they explain. Preserve existing section anchors.
 - Resume: concise overview, personal decisions in selected projects, compressed supporting work, public contributions and skills. Additional operational history is available through a native disclosure.
 - Default PDF: two deliberately balanced pages. Page one holds the current employer's selected projects; page two holds supporting experience, open source and skills.
 
 ## Content constraints
-Use only supported facts. Keep daily affiliate consent at approximately 500 people; this is not API throughput. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication and POC are not production adoption.
+Use only supported facts. Keep daily affiliate consent at approximately 500 people; this is not API throughput. Preserve personal versus team scope and manual routing versus automatic failover. Do not invent baseline periods or traffic-normalized savings. OSS publication, service integration, and measured production outcomes are distinct. User-confirmed FluxGate integration does not establish production performance.
 
 ## Components and accessibility
 Reuse project cards, lists, native links/details, diagrams and the existing lightbox. Keep text selectable, headings ordered, keyboard focus visible and touch controls reachable. No new dependencies. Preserve PDF download formats, print, email copy and no-JS navigation.

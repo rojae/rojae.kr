@@ -92,6 +92,9 @@ const server = http.createServer((req, res) => {
     for (const key of ['auth', 'affiliate', 'fluxgate', 'terms', 'platform', 'login', 'edoc', 'waf']) {
       await page.goto(`${origin}/work/${key}.html`);
       await page.evaluate(() => document.fonts.ready);
+      // Element captures can include the sticky header over tall SVGs.
+      // Hide it only for diagram artifacts; later navigation restores the page.
+      await page.addStyleTag({ content: '.site-header { visibility: hidden !important; }' });
       for (const [n, diagram] of (await page.locator(`.diagram-figure > svg.diagram-${variant}`).all()).entries()) {
       assert(await diagram.isVisible(), `${key}: ${variant} diagram visible at ${vw}`);
       const shown = await diagram.evaluate(svg => svg.getBoundingClientRect().width / svg.viewBox.baseVal.width);

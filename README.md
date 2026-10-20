@@ -110,9 +110,10 @@ node tools/build.mjs                         # HTML 재생성
 
 ## 프로젝트 다이어그램
 
-상세 페이지 그림은 블로그 시각 설계 기준(관계를 선으로 표시, 표시 글자 14px 이상, 가로·세로 두 벌)을 따릅니다.
+포트폴리오 상세는 전체 아키텍처로 담당 범위와 서비스 흐름을 먼저 보여 주고, 설계 이유와 트러블슈팅을 상세 그림으로 설명합니다. 전체 구조도를 상세 동작도로 대체하지 않습니다. 관계는 선으로 표시하고, 주요 글자 14px 이상과 가로·세로 구성을 유지합니다.
 
 - 원본: `tools/diagrams/<key>-wide.svg`, `<key>-narrow.svg`. 밝은 팔레트의 독립 SVG라 그대로 열어 볼 수 있습니다.
 - 생성: `node tools/make-diagrams.mjs`가 전자문서·FluxGate·약관·회원 모듈·로그인·WAF 원본을 만듭니다. 통합인증·제휴 연동 원본은 블로그 작업에서 검토한 파일을 그대로 둡니다.
 - 인라인: `tools/diagrams.mjs`가 색을 `--dg-*` 테마 변수로 바꿔 다크 모드를 따르게 합니다. 그림 컨테이너가 560px 이하이면 CSS container query로 세로 도식을 보여 줍니다.
-- 그림 제목은 원본 SVG의 `<title>`, 해석 캡션은 `tools/content.mjs`에서 관리합니다. 한 프로젝트에 여러 장이 필요하면 `figures` 배열을 씁니다.
+- 그림 제목은 원본 SVG의 `<title>`, 해석 캡션은 `tools/content.mjs`에서 관리합니다. `architecture`는 첫 문제 설명 다음에 전체 구조를 배치하고, `story[].figures`는 관련 설명 옆에 상세 그림을 둡니다. 기존 페이지의 `figures`도 지원합니다.
+- 통합인증·약관·FluxGate의 `*-architecture-{wide,narrow}.svg`는 전체 구조용 편집 원본입니다. 상세 동작 그림과 분리해 보관하며 `make-diagrams.mjs` 실행 시 덮어쓰지 않습니다.

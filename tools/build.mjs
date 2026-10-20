@@ -258,7 +258,11 @@ function renderCase(c, i) {
   const prev = caseStudies[i - 1];
   const next = caseStudies[i + 1];
   const slug = (n) => `s${n}`;
-  const toc = [...c.story.map((st, n) => [slug(n), st.heading]), ['scope', '구조와 구현'], ['closing', '돌아보면']];
+  const scopeLabel = c.architecture ? '구현 범위 · 사용 기술' : '구조와 구현';
+  const toc = [...c.story.flatMap((st, n) => [
+    [slug(n), st.heading],
+    ...(n === 0 && c.architecture ? [['architecture', '전체 아키텍처']] : []),
+  ]), ['scope', scopeLabel], ['closing', '돌아보면']];
   const body = `
   <main id="main" class="page case">
     <div class="container case-layout">
@@ -279,23 +283,22 @@ function renderCase(c, i) {
           <div><dt>팀</dt><dd>${c.team}</dd></div>
           <div><dt>역할</dt><dd>${c.role}</dd></div>
         </dl>
-${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<a class="btn" href="${h}" ${ext}>${l} <span aria-hidden="true">↗</span></a>`).join('')}</div>\n` : ''}${c.previews ? `        <div class="link-previews">
-          <p class="link-previews-title">지금 운영 중인 약관 페이지</p>
-          <div class="preview-grid">${c.previews.map(v => `
-            <a class="preview" href="${v.href}" ${ext}><img src="../assets/${v.image}" width="720" height="450" alt="${v.title} 페이지 미리보기" loading="lazy"><span class="preview-body"><strong>${v.title}</strong><span>${v.host} <span aria-hidden="true">↗</span></span></span></a>`).join('')}
-          </div>
-        </div>\n` : ''}
+${c.links.length ? `        <div class="page-links">${c.links.map(([l, h]) => `<a class="btn" href="${h}" ${ext}>${l} <span aria-hidden="true">↗</span></a>`).join('')}</div>\n` : ''}
 ${c.story.map((st, n) => `
         <section id="${slug(n)}" class="case-section">
           <h2>${st.heading}</h2>
-          ${st.paragraphs.map(p => `<p>${p}</p>`).join('\n          ')}
-        </section>`).join('')}
+          ${st.paragraphs.map(p => `<p>${p}</p>`).join('\n          ')}${st.figures?.length ? `\n          ${figures({figures: st.figures})}` : ''}
+        </section>${n === 0 && c.architecture ? `
+        <section id="architecture" class="case-section">
+          <h2>전체 아키텍처</h2>
+          <p>${c.architecture.intro}</p>
+          ${figures({figures: [c.architecture]})}
+        </section>` : ''}`).join('')}
 
         <section id="scope" class="case-section">
-          <h2>구조와 구현</h2>
-          ${figures(c) || flow(c.flow)}
+          <h2>${scopeLabel}</h2>${c.architecture ? '' : `\n          ${figures(c) || flow(c.flow)}`}
           <details class="implementation-details">
-            <summary>구현 범위 · 사용 기술</summary>
+            <summary>${c.architecture ? '상세 기능과 사용 기술 보기' : '구현 범위 · 사용 기술'}</summary>
             ${tags(c.stack)}
             <ul class="feature-grid">${c.features.map(([t, d]) => `<li><strong>${t}</strong><span>${d}</span></li>`).join('')}</ul>
           </details>
@@ -306,7 +309,12 @@ ${c.story.map((st, n) => `
           <blockquote class="closing">${c.closing}</blockquote>
         </section>
 
-        ${c.internal ? '<p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>' : ''}
+${c.previews ? `        <div class="link-previews">
+          <p class="link-previews-title">지금 운영 중인 약관 페이지</p>
+          <div class="preview-grid">${c.previews.map(v => `
+            <a class="preview" href="${v.href}" ${ext}><img src="../assets/${v.image}" width="720" height="450" alt="${v.title} 페이지 미리보기" loading="lazy"><span class="preview-body"><strong>${v.title}</strong><span>${v.host} <span aria-hidden="true">↗</span></span></span></a>`).join('')}
+          </div>
+        </div>\n` : ''}        ${c.internal ? '<p class="note">회사 프로젝트의 소스 코드는 공개하지 않습니다. 구조도는 업무 흐름을 설명하기 위한 개념도입니다.</p>' : ''}
         <nav class="pager" aria-label="다른 프로젝트">
           ${prev ? `<a class="prev" href="${prev.key}.html"><span>← 이전</span><strong>${prev.title}</strong></a>` : ''}
           ${next ? `<a class="next" href="${next.key}.html"><span>다음 →</span><strong>${next.title}</strong></a>` : ''}

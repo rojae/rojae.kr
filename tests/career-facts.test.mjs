@@ -18,7 +18,8 @@ test('affiliate explains partner routing and distinguishes duplicate bundles fro
 });
 
 test('FluxGate shows a separate HTTP service and Studio components', () => {
-  const svg = diagrams.fluxgate();
+  // Visible node labels must describe the architecture; an SVG description alone is insufficient.
+  const svg = diagrams['fluxgate-architecture']().replace(/<desc[\s\S]*?<\/desc>/g, '');
   for (const fact of ['Direct Redis', 'HTTP API', 'Rate Limit Service', 'Studio UI', 'Admin API', 'Keycloak', 'MongoDB', 'Redis']) assert(svg.includes(fact), fact);
   const copy = JSON.stringify(caseStudies.find(project => project.key === 'fluxgate'));
   for (const fact of ['MongoDB 어댑터', 'HTTP 샘플', '규칙 현황', 'Pub/Sub', 'Micrometer']) assert(copy.includes(fact), fact);

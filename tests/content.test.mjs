@@ -38,6 +38,26 @@ test('case studies lead with the problem while retaining all section anchors', (
   }
 });
 
+test('architecture explains the whole system before detailed decisions', () => {
+  for (const key of ['auth', 'terms', 'fluxgate']) {
+    const html = fs.readFileSync(new URL(`../work/${key}.html`, import.meta.url), 'utf8');
+    const sections = [...html.matchAll(/<section id="([^"]+)" class="case-section">([\s\S]*?)<\/section>/g)];
+    assert.deepEqual(sections.slice(0, 3).map(s => s[1]), ['s0', 'architecture', 's1'], key);
+    const overview = sections.find(s => s[1] === 'architecture')[2];
+    assert.match(overview, new RegExp(`dg-${key}-architecture-wide-`), key);
+    assert.match(overview, new RegExp(`dg-${key}-architecture-narrow-`), key);
+    assert.equal((overview.match(/<figure /g) || []).length, 1, key);
+    for (const story of caseStudies.find(c => c.key === key).story) {
+      if (!story.figures?.length) continue;
+      const section = sections.find(s => s[2].includes(`<h2>${story.heading}</h2>`));
+      for (const figure of story.figures) {
+        assert(section[2].includes(`dg-${figure.diagram}-wide-`), `${key}: ${figure.diagram} stays with its explanation`);
+      }
+    }
+    assert.doesNotMatch(sections.find(s => s[1] === 'scope')[2], /<figure /, key);
+  }
+});
+
 test('web resume retains operational history in an accessible disclosure', () => {
   const html = fs.readFileSync(new URL('../resume.html', import.meta.url), 'utf8');
   assert.match(html, /<details class="career-details">/);
